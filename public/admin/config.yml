@@ -1,0 +1,69 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  # ── Projects ────────────────────────────────────────────────────────────────
+  - name: projects
+    label: Projects
+    folder: src/content/projects
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title,        name: title,       widget: string }
+      - { label: Publish Date, name: date,        widget: datetime }
+      - { label: Draft,        name: draft,       widget: boolean, default: false }
+      - { label: Tagline,      name: tagline,     widget: string,  required: false }
+      - { label: Cover Image,  name: cover,       widget: image,   required: false }
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+      - label: Links
+        name: links
+        widget: list
+        required: false
+        fields:
+          - { label: Label, name: label, widget: string }
+          - { label: URL,   name: url,   widget: string }
+      - { label: Body, name: body, widget: markdown }
+
+  # ── Blog / Writing ───────────────────────────────────────────────────────────
+  - name: blog
+    label: Blog
+    folder: src/content/blog
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: Title,        name: title,       widget: string }
+      - { label: Publish Date, name: date,        widget: datetime }
+      - { label: Draft,        name: draft,       widget: boolean, default: false }
+      - { label: Description,  name: description, widget: text,    required: false }
+      - { label: Cover Image,  name: cover,       widget: image,   required: false }
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+      - { label: Body, name: body, widget: markdown }
+
+  # ── About (singleton) ────────────────────────────────────────────────────────
+  - name: pages
+    label: Pages
+    files:
+      - name: about
+        label: About
+        file: src/content/pages/about.md
+        fields:
+          - { label: Title,    name: title,    widget: string }
+          - { label: Headline, name: headline, widget: string,  required: false }
+          - { label: Bio,      name: bio,      widget: markdown }
+          - label: Social Links
+            name: social
+            widget: list
+            required: false
+            fields:
+              - { label: Platform, name: platform, widget: string }
+              - { label: URL,      name: url,      widget: string }
