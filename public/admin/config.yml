@@ -13,23 +13,16 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: Title,        name: title,       widget: string }
-      - { label: Publish Date, name: date,        widget: datetime }
-      - { label: Draft,        name: draft,       widget: boolean, default: false }
-      - { label: Tagline,      name: tagline,     widget: string,  required: false }
-      - { label: Cover Image,  name: cover,       widget: image,   required: false }
+      - { label: Title,       name: title,       widget: string }
+      - { label: Description, name: description,  widget: text }
+      - { label: Thumbnail,   name: thumbnail,    widget: image }
       - label: Tags
         name: tags
         widget: list
         required: false
-      - label: Links
-        name: links
-        widget: list
-        required: false
-        fields:
-          - { label: Label, name: label, widget: string }
-          - { label: URL,   name: url,   widget: string }
-      - { label: Body, name: body, widget: markdown }
+      - { label: Year,        name: year,         widget: number }
+      - { label: URL,         name: url,          widget: string,  required: false }
+      - { label: Featured,    name: featured,     widget: boolean, default: false }
 
   # ── Blog / Writing ───────────────────────────────────────────────────────────
   - name: blog
@@ -49,17 +42,16 @@ collections:
         required: false
       - { label: Body, name: body, widget: markdown }
 
-  # ── About (singleton) ────────────────────────────────────────────────────────
-  - name: pages
-    label: Pages
+  # ── Settings (singleton) ─────────────────────────────────────────────────────
+  - name: settings
+    label: Settings
     files:
-      - name: about
-        label: About
-        file: src/content/pages/about.md
+      - name: general
+        label: General
+        file: src/content/settings/general.md
         fields:
-          - { label: Title,    name: title,    widget: string }
-          - { label: Headline, name: headline, widget: string,  required: false }
-          - { label: Bio,      name: bio,      widget: markdown }
+          - { label: Headline,    name: headline, widget: string }
+          - { label: Bio,         name: bio,      widget: markdown }
           - label: Social Links
             name: social
             widget: list
