@@ -1,0 +1,77 @@
+---
+interface Logo {
+  name: string;
+  abbr?: string; // short text to display if no image
+}
+
+const logos: Logo[] = [
+  { name: 'Palo Alto Networks' },
+  { name: 'Prisma Cloud' },
+  { name: 'Dialpad' },
+  { name: 'UberConference' },
+  { name: 'Aporeto' },
+  { name: 'Placeholder Co.' },
+  { name: 'Another Client' },
+  { name: 'Studio Work' },
+];
+---
+
+<div class="ticker-wrapper" aria-hidden="true">
+  <div class="ticker-track">
+    <!-- Duplicated for seamless loop -->
+    {[...logos, ...logos].map((logo) => (
+      <div class="ticker-item">
+        <span class="ticker-name">{logo.name}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 48px;
+    opacity: 0.45;
+    transition: opacity 0.2s ease;
+    filter: grayscale(1);
+    white-space: nowrap;
+  }
+  .ticker-item:hover {
+    opacity: 1;
+    filter: grayscale(0);
+  }
+  .ticker-name {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+</style>

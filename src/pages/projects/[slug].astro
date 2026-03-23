@@ -1,0 +1,111 @@
+---
+import { getCollection, render } from 'astro:content';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import PasswordGate from '../../components/PasswordGate.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const {
+  title,
+  description,
+  thumbnail,
+  year,
+  role,
+  tags,
+  tools,
+  liveUrl,
+  protected: isProtected,
+  password,
+} = project.data;
+
+// Find next project for bottom navigation
+const allProjects = await getCollection('projects');
+const currentIdx = allProjects.findIndex((p) => p.id === project.id);
+const nextProject = allProjects[(currentIdx + 1) % allProjects.length];
+---
+
+<ProjectLayout
+  title={title}
+  description={description}
+  thumbnail={thumbnail}
+  year={year}
+  role={role}
+  tags={tags}
+  tools={tools}
+  liveUrl={liveUrl}
+>
+  <!-- Password gate (renders over content if protected) -->
+  {isProtected && <PasswordGate slug={project.id} />}
+
+  <!-- Main content (hidden until unlocked if protected) -->
+  <div
+    id="project-content"
+    hidden={isProtected ? true : undefined}
+  >
+    <Content />
+  </div>
+
+  <!-- Next project -->
+  <div slot="next" class="next-project-bar">
+    <div class="container">
+      <a href={`/projects/${nextProject.id}`} class="next-project-link">
+        <span class="next-label">Next project</span>
+        <span class="next-title">{nextProject.data.title}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</ProjectLayout>
+
+<!-- Pass password to client-side PasswordGate script -->
+{isProtected && (
+  <script
+    is:inline
+    define:vars={{ pw: password ?? '' }}
+  >
+    document.body.dataset.projectPassword = pw;
+  </script>
+)}
+
+<style>
+  .next-project-bar {
+    border-top: 1px solid var(--color-border);
+    padding: 48px 0;
+  }
+  .next-project-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--color-text);
+    transition: gap 0.2s ease;
+  }
+  .next-project-link:hover { gap: 24px; }
+  .next-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+  .next-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  svg { flex-shrink: 0; color: var(--color-text-muted); }
+</style>

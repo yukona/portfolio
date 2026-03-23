@@ -1,0 +1,96 @@
+---
+interface TimelineEntry {
+  company: string;
+  role: string;
+  years: string;
+  description: string;
+}
+
+interface Props {
+  entries: TimelineEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<ol class="timeline" role="list">
+  {entries.map((entry) => (
+    <li class="timeline-item" data-reveal-child>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <div>
+            <p class="timeline-company">{entry.company}</p>
+            <p class="timeline-role">{entry.role}</p>
+          </div>
+          <span class="timeline-years">{entry.years}</span>
+        </div>
+        <p class="timeline-desc">{entry.description}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    padding-left: 24px;
+    border-left: 1px solid var(--color-border);
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 48px 32px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 2px solid var(--color-bg);
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .timeline-company {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .timeline-role {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .timeline-years {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+  .timeline-desc {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-header { flex-direction: column; gap: 4px; }
+  }
+</style>
