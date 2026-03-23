@@ -1,8 +1,8 @@
 ---
 title: Web Design & Development
 slug: web-design
-headline: "Websites that work as hard as you do"
-subhead: "Marketing sites, portfolios and web experiences — designed with intent and built to perform."
+headline: "Web experiences built for where things are going"
+subhead: "Marketing sites and web experiences — designed with intent, built to perform, and ready to grow."
 credibility:
   - "Full-stack design: strategy, design and front-end build in one engagement"
   - "Performance-first — fast load times, clean code, great Lighthouse scores"

@@ -1,8 +1,8 @@
 ---
 title: Product Design
 slug: product-design
-headline: "Product design that moves the needle"
-subhead: "End-to-end product design for complex, high-stakes software — from zero-to-one features to full product overhauls."
+headline: "Forecasting what to build. Designing how it works."
+subhead: "End-to-end product design for complex, high-stakes software — from early vision and zero-to-one concepts through full product overhauls."
 credibility:
   - "Founding designer at Aporeto — built the product from 0 to acquisition"
   - "Design Lead at Palo Alto Networks across multiple product lines"

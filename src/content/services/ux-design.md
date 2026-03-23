@@ -1,8 +1,8 @@
 ---
 title: UX Design
 slug: ux-design
-headline: "Experiences people actually want to use"
-subhead: "I design intuitive, research-informed products for web and mobile — from early concepts to polished, shipped interfaces."
+headline: "Envisioning and designing what comes next"
+subhead: "Research-informed and concept-forward — I design intuitive products that feel inevitable, from early vision through polished, shipped interfaces."
 credibility:
   - "10+ years designing enterprise and consumer products"
   - "Led UX for Prisma Cloud — used by thousands of security teams globally"

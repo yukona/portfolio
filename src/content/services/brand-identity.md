@@ -1,8 +1,8 @@
 ---
 title: Brand & Identity
 slug: brand-identity
-headline: "Brands built to grow with you"
-subhead: "From visual language to full brand systems — I help companies define who they are and make it consistent everywhere."
+headline: "Shaping brands that define the future"
+subhead: "Through insight, vision and execution — I shape brand systems that activate consistently from startup to enterprise."
 credibility:
   - "Brand work spanning startups, scaleups and enterprise rebrand projects"
   - "Delivered complete brand systems: logo, type, color, motion, voice"

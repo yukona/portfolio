@@ -101,21 +101,22 @@ const industries = [...allIndustries].sort((a, b) => {
                 <p class="industry-desc">{industry.data.description}</p>
               </div>
               {relatedClients.length > 0 && (
-                <div class="industry-logos">
-                  {relatedClients.slice(0, 4).map((c) => (
-                    <div class="industry-logo-item" title={c!.name}>
+                <div class="industry-tags">
+                  {relatedClients.map((c) => (
+                    <span class="industry-tag">
                       {c!.logo ? (
                         <img
                           src={c!.logo}
-                          alt={c!.name}
-                          class="industry-logo-img"
+                          alt=""
+                          class="tag-logo"
                           loading="lazy"
                           decoding="async"
                         />
                       ) : (
-                        <span class="industry-logo-fallback">{c!.name.charAt(0)}</span>
+                        <span class="tag-initial" aria-hidden="true">{c!.name.charAt(0)}</span>
                       )}
-                    </div>
+                      <span class="tag-name">{c!.name}</span>
+                    </span>
                   ))}
                 </div>
               )}
@@ -327,37 +328,49 @@ const industries = [...allIndustries].sort((a, b) => {
     margin: 0;
   }
 
-  .industry-logos {
+  .industry-tags {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 16px;
     border-top: 1px solid var(--color-border);
   }
-  .industry-logo-item {
-    height: 32px;
-    display: flex;
+  .industry-tag {
+    display: inline-flex;
     align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-bg);
   }
-  .industry-logo-img {
-    height: 32px;
-    width: auto;
+  .tag-logo {
+    width: 16px;
+    height: 16px;
     object-fit: contain;
-    filter: grayscale(1);
-    opacity: 0.5;
+    border-radius: 2px;
+    flex-shrink: 0;
   }
-  .industry-logo-fallback {
-    font-family: var(--font-heading);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-text-muted);
-    width: 32px;
-    height: 32px;
+  .tag-initial {
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: var(--color-border);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+  .tag-name {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    white-space: nowrap;
   }
 
   /* ── CTA ──────────────────────────────────────────── */
