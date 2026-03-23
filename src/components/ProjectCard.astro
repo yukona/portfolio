@@ -28,6 +28,9 @@ const gradients = [
   'linear-gradient(135deg, #0d0d0d 0%, #1a0a0a 50%, #2d1515 100%)',
 ];
 const fallbackBg = gradients[index % gradients.length];
+
+const toTitleCase = (str: string) =>
+  str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
 ---
 
 <a
@@ -35,23 +38,21 @@ const fallbackBg = gradients[index % gradients.length];
   class:list={['project-card', featured ? 'project-card--featured' : '']}
   data-reveal-child
 >
-  <!-- Thumbnail -->
+  <!-- Thumbnail + overlay confined to image area -->
   <div class="card-thumb" style={thumbnail ? '' : `background: ${fallbackBg}`}>
     {thumbnail && (
       <img src={thumbnail} alt={title} loading="lazy" decoding="async" />
     )}
-  </div>
-
-  <!-- Hover overlay with description -->
-  <div class="project-card-overlay">
-    <p class="overlay-desc">{description}</p>
+    <div class="project-card-overlay">
+      <p class="overlay-desc">{description}</p>
+    </div>
   </div>
 
   <!-- Card meta -->
   <div class="card-meta">
     <div class="card-meta-left">
       <h3 class="card-title">{title}</h3>
-      <p class="card-tags">{tags.join(' · ')}</p>
+      <p class="card-tags">{tags.map(toTitleCase).join(' · ')}</p>
     </div>
     <span class="card-year">{year}</span>
   </div>
@@ -81,13 +82,10 @@ const fallbackBg = gradients[index % gradients.length];
   }
   .project-card:hover .card-thumb img { transform: scale(1.04); }
 
-  .project-card-overlay {
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-  }
   .overlay-desc {
     font-size: 15px;
     line-height: 1.6;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.95);
     margin: 0;
   }
 
@@ -96,7 +94,7 @@ const fallbackBg = gradients[index % gradients.length];
     align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    padding: 20px 0 0;
+    padding: 20px 4px 0;
   }
   .card-title {
     font-family: var(--font-heading);

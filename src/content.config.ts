@@ -18,4 +18,59 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+const clients = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/clients' }),
+  schema: z.object({
+    name: z.string(),
+    logo: z.string().optional(),
+    industry: z.string(),
+    featured: z.boolean().default(false),
+  }),
+});
+
+const industries = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/industries' }),
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    description: z.string(),
+    clientSlugs: z.array(z.string()).default([]),
+  }),
+});
+
+const services = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/services' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    headline: z.string(),
+    subhead: z.string(),
+    credibility: z.array(z.string()),
+    process: z.array(z.object({
+      step: z.string(),
+      title: z.string(),
+      description: z.string(),
+    })),
+    outcomes: z.array(z.object({
+      metric: z.string(),
+      label: z.string(),
+    })),
+    serviceItems: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+    })),
+    faqs: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })),
+    ctaHeadline: z.string(),
+    ctaSubhead: z.string(),
+    ctaLabel: z.string(),
+    relatedClientSlugs: z.array(z.string()).default([]),
+    relatedProjectSlugs: z.array(z.string()).default([]),
+    metaDescription: z.string(),
+    order: z.number(),
+  }),
+});
+
+export const collections = { projects, clients, industries, services };

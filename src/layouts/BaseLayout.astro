@@ -76,12 +76,12 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <slot />
 
   <!-- Netlify Identity redirect -->
-  <script>
-    if ((window as any).netlifyIdentity) {
-      (window as any).netlifyIdentity.on('init', (user: any) => {
+  <script is:inline>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function(user) {
         if (!user) {
-          (window as any).netlifyIdentity.on('login', () => {
-            document.location.href = '/admin/';
+          window.netlifyIdentity.on("login", function() {
+            document.location.href = "/admin/";
           });
         }
       });

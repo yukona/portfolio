@@ -1,0 +1,571 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const s = service.data;
+
+// Load related content
+const allProjects = await getCollection('projects');
+const allClients  = await getCollection('clients');
+
+const relatedProjects = allProjects.filter((p) => s.relatedProjectSlugs.includes(p.id));
+const relatedClients  = allClients.filter((c)  => s.relatedClientSlugs.includes(c.id));
+
+const credentialCount = s.credibility.length.toString().padStart(2, '0');
+---
+
+<BaseLayout
+  title={`${s.title} — Kris Burger`}
+  description={s.metaDescription}
+>
+  <!-- ── Page header ──────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="section-label" data-reveal>Services</p>
+      <h1 class="page-headline" data-reveal>{s.headline}</h1>
+      <p class="page-subhead" data-reveal>{s.subhead}</p>
+    </div>
+  </header>
+
+  <!-- ── Credibility ──────────────────────────────────────── -->
+  <section class="section section--surface">
+    <div class="container">
+      <span class="section-label" data-reveal>Why Kris</span>
+      <div class="credibility-grid" data-reveal>
+        <div class="credibility-number" aria-hidden="true">{credentialCount}</div>
+        <ul class="credibility-list">
+          {s.credibility.map((point) => (
+            <li class="credibility-item" data-reveal-child>
+              <span class="credibility-check" aria-hidden="true">—</span>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Outcomes bar ─────────────────────────────────────── -->
+  {s.outcomes.length > 0 && (
+    <div class="outcomes-bar" data-reveal>
+      <div class="container outcomes-inner">
+        {s.outcomes.map((o, i) => (
+          <>
+            <div class="outcome">
+              <span class="outcome-metric">{o.metric}</span>
+              <span class="outcome-label">{o.label}</span>
+            </div>
+            {i < s.outcomes.length - 1 && <div class="outcome-divider" aria-hidden="true" />}
+          </>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- ── Service items ────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <span class="section-label" data-reveal>What's included</span>
+      <div class="items-grid" data-reveal>
+        {s.serviceItems.map((item) => (
+          <div class="item-card" data-reveal-child>
+            <h3 class="item-title">{item.title}</h3>
+            <p class="item-desc">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Process ──────────────────────────────────────────── -->
+  <section class="section section--surface">
+    <div class="container">
+      <span class="section-label" data-reveal>How I work</span>
+      <div class="process-steps" data-reveal>
+        {s.process.map((step) => (
+          <div class="process-step" data-reveal-child>
+            <span class="step-num">{step.step}</span>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Related projects ─────────────────────────────────── -->
+  {relatedProjects.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <span class="section-label" data-reveal>Related work</span>
+        <div class="projects-grid" data-reveal>
+          {relatedProjects.map((p, i) => (
+            <ProjectCard
+              slug={p.id}
+              title={p.data.title}
+              description={p.data.description}
+              tags={p.data.tags}
+              year={p.data.year}
+              thumbnail={p.data.thumbnail}
+              featured={false}
+              index={i}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ── Client logos ─────────────────────────────────────── -->
+  {relatedClients.length >= 2 && (
+    <section class="section section--surface">
+      <div class="container">
+        <span class="section-label" data-reveal>Clients in this space</span>
+        <div class="clients-grid" data-reveal>
+          {relatedClients.map((client) => (
+            <div class="client-cell" data-reveal-child>
+              <div class="client-logo-wrap">
+                {client.data.logo ? (
+                  <img
+                    src={client.data.logo}
+                    alt={client.data.name}
+                    class="client-logo"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span class="client-logo-text">{client.data.name.charAt(0)}</span>
+                )}
+              </div>
+              <span class="client-name">{client.data.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ── FAQ ──────────────────────────────────────────────── -->
+  {s.faqs.length > 0 && (
+    <section class="section">
+      <div class="container faq-container">
+        <span class="section-label" data-reveal>Common questions</span>
+        <div class="faq-list" data-reveal>
+          {s.faqs.map((faq, i) => (
+            <div class="faq-item" data-index={i}>
+              <button class="faq-trigger" aria-expanded="false" aria-controls={`faq-body-${i}`}>
+                <span class="faq-question">{faq.question}</span>
+                <span class="faq-icon" aria-hidden="true">
+                  <svg class="icon-plus"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <svg class="icon-minus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </span>
+              </button>
+              <div class="faq-body" id={`faq-body-${i}`} role="region">
+                <p class="faq-answer">{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ── CTA ──────────────────────────────────────────────── -->
+  <section class="cta-section" data-reveal>
+    <div class="container cta-inner">
+      <h2 class="cta-headline">{s.ctaHeadline}</h2>
+      <p class="cta-subhead">{s.ctaSubhead}</p>
+      <a href="/#contact" class="btn btn-primary">{s.ctaLabel}</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© {new Date().getFullYear()} Kris Burger. All Rights Reserved.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="https://linkedin.com/in/krisburger" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://angel.co/krisburger"        target="_blank" rel="noopener">AngelList</a>
+        <a href="mailto:kris@krisburger.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+</BaseLayout>
+
+<!-- ── FAQ accordion ──────────────────────────────────────────── -->
+<script>
+  document.querySelectorAll('.faq-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item   = btn.closest('.faq-item') as HTMLElement;
+      const body   = item.querySelector('.faq-body') as HTMLElement;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      // Close all
+      document.querySelectorAll('.faq-item').forEach((el) => {
+        const b = el.querySelector('.faq-body') as HTMLElement;
+        const t = el.querySelector('.faq-trigger') as HTMLElement;
+        el.classList.remove('is-open');
+        t?.setAttribute('aria-expanded', 'false');
+        if (b) b.style.maxHeight = '0';
+      });
+
+      // Open clicked if it was closed
+      if (!isOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+<style>
+  /* ── Page header ──────────────────────────────────── */
+  .page-header {
+    padding: 120px 0 80px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .page-headline {
+    font-size: clamp(40px, 6vw, 80px);
+    color: var(--color-text);
+    margin: 16px 0 24px;
+    max-width: 900px;
+  }
+  .page-subhead {
+    font-size: 18px;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  /* ── Section shells ───────────────────────────────── */
+  .section { padding: 96px 0; }
+  .section--surface { background: var(--color-surface); }
+
+  /* ── Credibility ──────────────────────────────────── */
+  .credibility-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .credibility-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+  .credibility-number {
+    font-family: var(--font-heading);
+    font-size: 120px;
+    font-weight: 300;
+    color: var(--color-border);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+  .credibility-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 8px;
+  }
+  .credibility-item {
+    display: flex;
+    gap: 16px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+  .credibility-check {
+    flex-shrink: 0;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-top: 1px;
+  }
+
+  /* ── Outcomes bar ─────────────────────────────────── */
+  .outcomes-bar {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .outcomes-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0;
+    gap: 0;
+  }
+  .outcome {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+  .outcome-metric {
+    font-family: var(--font-heading);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    line-height: 1;
+  }
+  .outcome-label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    max-width: 180px;
+    line-height: 1.4;
+  }
+  .outcome-divider {
+    width: 1px;
+    height: 48px;
+    background: var(--color-border);
+    flex-shrink: 0;
+  }
+
+  /* ── Service items grid ───────────────────────────── */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 768px) { .items-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .items-grid { grid-template-columns: 1fr; } }
+
+  .item-card {
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .item-title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .item-desc {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ── Process steps ────────────────────────────────── */
+  .process-steps {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  /* Connecting line across all steps */
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-border);
+  }
+  .process-step {
+    flex: 1;
+    padding-right: 32px;
+    position: relative;
+  }
+  .process-step:last-child { padding-right: 0; }
+  .step-num {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding-right: 12px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .step-title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .step-desc {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .process-steps { flex-direction: column; gap: 32px; }
+    .process-steps::before { display: none; }
+    .process-step { padding-right: 0; }
+  }
+
+  /* ── Projects grid ────────────────────────────────── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 768px) { .projects-grid { grid-template-columns: 1fr; } }
+
+  /* ── Client logos ─────────────────────────────────── */
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .clients-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .client-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s ease;
+  }
+  .client-cell:hover { border-color: var(--color-text-muted); }
+  .client-logo-wrap {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .client-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.6;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  .client-cell:hover .client-logo { filter: grayscale(0); opacity: 1; }
+  .client-logo-text {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .client-name {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* ── FAQ ──────────────────────────────────────────── */
+  .faq-container { max-width: 760px; }
+  .faq-list { display: flex; flex-direction: column; }
+
+  .faq-item { border-bottom: 1px solid var(--color-border); }
+  .faq-item:first-child { border-top: 1px solid var(--color-border); }
+
+  .faq-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+  .faq-question {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .faq-icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+  }
+  .faq-trigger:hover .faq-icon { color: var(--color-text); }
+  .icon-plus  { display: block; }
+  .icon-minus { display: none;  }
+  .faq-item.is-open .icon-plus  { display: none;  }
+  .faq-item.is-open .icon-minus { display: block; }
+
+  .faq-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .faq-answer {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0;
+    padding-bottom: 20px;
+  }
+
+  /* ── CTA ──────────────────────────────────────────── */
+  .cta-section { padding: 96px 0; text-align: center; }
+  .cta-inner { max-width: 560px; margin: 0 auto; }
+  .cta-headline {
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--color-text);
+    margin-bottom: 16px;
+  }
+  .cta-subhead {
+    font-size: 17px;
+    color: var(--color-text-muted);
+    margin: 0 0 40px;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  .footer { border-top: 1px solid var(--color-border); padding: 32px 0; }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-copy { font-size: 14px; color: var(--color-text-muted); margin: 0; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--color-text); }
+</style>

@@ -150,9 +150,6 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
 /* ── Project card hover ──────────────────────────────────────────────────── */
 .project-card {
   position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
   transition: transform 0.3s ease;
   cursor: pointer;
 }

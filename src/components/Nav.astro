@@ -7,7 +7,8 @@
 
     <ul class="nav-links" role="list">
       <li><a href="/#work">Work</a></li>
-      <li><a href="/#experience">Experience</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/clients">Clients</a></li>
       <li><a href="/#about">About</a></li>
       <li><a href="/#contact">Contact</a></li>
     </ul>
@@ -51,7 +52,8 @@
   </button>
   <ul role="list">
     <li><a href="/#work">Work</a></li>
-    <li><a href="/#experience">Experience</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="/clients">Clients</a></li>
     <li><a href="/#about">About</a></li>
     <li><a href="/#contact">Contact</a></li>
   </ul>
@@ -66,17 +68,18 @@
     left: 0;
     right: 0;
     z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    opacity: 1;
+    pointer-events: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
     background: var(--color-nav-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--color-border);
   }
-  nav.is-visible {
-    opacity: 1;
-    pointer-events: auto;
+  nav.is-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
   }
   .nav-inner {
     display: flex;
@@ -235,16 +238,25 @@
   const close = document.getElementById('mobile-close');
   const themeBtn = document.getElementById('theme-toggle');
 
-  // Fade nav in after 80px scroll
+  // Hide on scroll down, show on scroll up
+  let lastScrollY = window.scrollY;
+  const THRESHOLD = 8; // px of movement before reacting
+
   const onScroll = () => {
-    if (window.scrollY > 80) {
-      nav?.classList.add('is-visible');
-    } else {
-      nav?.classList.remove('is-visible');
+    const currentY = window.scrollY;
+    const delta = currentY - lastScrollY;
+
+    if (delta > THRESHOLD) {
+      // Scrolling down — hide
+      nav?.classList.add('is-hidden');
+    } else if (delta < -THRESHOLD) {
+      // Scrolling up — show
+      nav?.classList.remove('is-hidden');
     }
+
+    lastScrollY = currentY;
   };
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // run on load in case page is already scrolled
 
   // Mobile menu open
   toggle?.addEventListener('click', () => {
