@@ -100,15 +100,34 @@ collections:
 
   # ── Clients ──────────────────────────────────────────────────────────────────
   - name: clients
-    label: Clients
+    label: Client Work
     folder: src/content/clients
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: Name,     name: name,     widget: string }
-      - { label: Logo,     name: logo,     widget: image,   required: false }
-      - { label: Industry, name: industry, widget: string }
-      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Name,       name: name,      widget: string }
+      - { label: Slug,       name: slug,      widget: string }
+      - { label: Logo,       name: logo,      widget: image }
+      - { label: Industry,   name: industry,  widget: string }
+      - { label: Date Range, name: dateRange, widget: string }
+      - { label: Summary,    name: summary,   widget: text }
+      - { label: Protected,  name: protected, widget: boolean, default: false }
+      - { label: Password,   name: password,  widget: string,  required: false }
+      - label: Projects
+        name: projects
+        widget: list
+        fields:
+          - { label: Title,       name: title,       widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Outcome,     name: outcome,     widget: text }
+          - label: Tags
+            name: tags
+            widget: list
+            field: { label: Tag, name: tag, widget: string }
+          - { label: Year,        name: year,        widget: string }
+          - { label: Image,       name: image,       widget: image,  required: false }
+          - { label: Image Alt,   name: imageAlt,    widget: string, required: false }
+          - { label: Live URL,    name: liveUrl,     widget: string, required: false }
 
   # ── Industries ────────────────────────────────────────────────────────────────
   - name: industries

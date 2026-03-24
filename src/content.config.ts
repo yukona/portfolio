@@ -22,9 +22,23 @@ const clients = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/clients' }),
   schema: z.object({
     name: z.string(),
-    logo: z.string().optional(),
+    slug: z.string(),
+    logo: z.string(),
     industry: z.string(),
-    featured: z.boolean().default(false),
+    dateRange: z.string(),
+    summary: z.string(),
+    protected: z.boolean().default(false),
+    password: z.string().optional(),
+    projects: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+      outcome: z.string(),
+      tags: z.array(z.string()),
+      year: z.string(),
+      image: z.string().optional(),
+      imageAlt: z.string().optional(),
+      liveUrl: z.string().optional(),
+    })),
   }),
 });
 

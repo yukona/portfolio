@@ -84,6 +84,11 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
             document.location.href = "/admin/";
           });
         }
+        // When recovery/invite/confirmation token is in the URL hash,
+        // explicitly open the widget so the appropriate form is shown.
+        if (/#(recovery|invite|confirmation)_token=/.test(window.location.hash)) {
+          window.netlifyIdentity.open();
+        }
       });
     }
   </script>
