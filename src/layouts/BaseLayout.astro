@@ -51,8 +51,8 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
 
-  <!-- Netlify Identity -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Netlify Identity (self-hosted to avoid CDN CORS issues) -->
+  <script is:inline src="/netlify-identity-widget.js"></script>
 
   <!-- Dark mode: set before paint to avoid flash -->
   <script is:inline>
