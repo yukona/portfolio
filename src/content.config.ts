@@ -23,8 +23,9 @@ const clients = defineCollection({
   schema: z.object({
     name: z.string(),
     slug: z.string(),
-    logo: z.string(),
-    industry: z.string(),
+    logo: z.string().optional(),
+    logoDark: z.string().optional(),
+    industry: z.array(z.string()).default([]),
     dateRange: z.string(),
     summary: z.string(),
     protected: z.boolean().default(false),
@@ -87,4 +88,13 @@ const services = defineCollection({
   }),
 });
 
-export const collections = { projects, clients, industries, services };
+const values = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/values' }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { projects, clients, industries, services, values };

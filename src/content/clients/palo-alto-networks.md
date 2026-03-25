@@ -2,7 +2,7 @@
 name: Palo Alto Networks
 slug: palo-alto-networks
 logo: /images/clients/pan-logo.svg
-industry: Cybersecurity
+industry: [Cybersecurity]
 dateRange: "2019 – 2024"
 summary: "Design Lead across the Prisma Cloud product suite and platform integrations"
 protected: false

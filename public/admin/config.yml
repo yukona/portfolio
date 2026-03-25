@@ -14,15 +14,64 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: Title,       name: title,       widget: string }
+      - { label: Summary,     name: summary,     widget: string, required: false, hint: "Short 1-line version for cards" }
       - { label: Description, name: description,  widget: text }
       - { label: Thumbnail,   name: thumbnail,    widget: image }
+      - { label: Client,      name: client,      widget: string, required: false, hint: "Client slug (e.g. palo-alto-networks)" }
+      - { label: Role,        name: role,        widget: string, required: false, hint: "e.g. Design Lead, Founding Designer" }
+      - label: Services
+        name: services
+        widget: select
+        multiple: true
+        required: false
+        hint: "Which service categories this project falls under"
+        options:
+          - product-design
+          - design-systems
+          - brand
+          - mobile
+          - enterprise-ux
+      - { label: Protected,   name: protected,   widget: boolean, default: false }
+      - { label: Password,    name: password,    widget: string,  required: false }
       - label: Tags
         name: tags
-        widget: list
+        widget: select
+        multiple: true
         required: false
+        options:
+          - Product Design
+          - UX Research
+          - Prototyping
+          - Design Systems
+          - Design Leadership
+          - Brand
+          - Research
+          - Mobile
+          - iOS
+          - Android
+          - Enterprise UX
+          - Enterprise
+          - Integrations
+          - Security
+          - Systems
+          - Zero Trust
+          - Figma
+          - 0-to-1
+          - Leadership
+          - Fintech
       - { label: Year,        name: year,         widget: number }
       - { label: URL,         name: url,          widget: string,  required: false }
       - { label: Featured,    name: featured,     widget: boolean, default: false }
+      - { label: Challenge,   name: challenge,   widget: text,    required: false, hint: "The problem you were solving" }
+      - { label: Outcome,     name: outcome,     widget: text,    required: false, hint: "The result / impact" }
+      - { label: Body,        name: body,        widget: markdown, required: false }
+      - label: Gallery
+        name: gallery
+        widget: list
+        required: false
+        fields:
+          - { label: Image,   name: image,   widget: image }
+          - { label: Alt Text, name: alt,    widget: string, required: false }
 
   # ── Blog / Writing ───────────────────────────────────────────────────────────
   - name: blog
@@ -38,8 +87,30 @@ collections:
       - { label: Cover Image,  name: cover,       widget: image,   required: false }
       - label: Tags
         name: tags
-        widget: list
+        widget: select
+        multiple: true
         required: false
+        options:
+          - Product Design
+          - UX Research
+          - Prototyping
+          - Design Systems
+          - Design Leadership
+          - Brand
+          - Research
+          - Mobile
+          - iOS
+          - Android
+          - Enterprise UX
+          - Enterprise
+          - Integrations
+          - Security
+          - Systems
+          - Zero Trust
+          - Figma
+          - 0-to-1
+          - Leadership
+          - Fintech
       - { label: Body, name: body, widget: markdown }
 
   # ── Services ─────────────────────────────────────────────────────────────────
@@ -107,8 +178,31 @@ collections:
     fields:
       - { label: Name,       name: name,      widget: string }
       - { label: Slug,       name: slug,      widget: string }
-      - { label: Logo,       name: logo,      widget: image }
-      - { label: Industry,   name: industry,  widget: string }
+      - { label: Logo,        name: logo,      widget: image,  required: false }
+      - { label: Logo (Dark), name: logoDark, widget: image,  required: false, hint: "Optional dark-mode SVG version" }
+      - label: Industry
+        name: industry
+        widget: select
+        multiple: true
+        required: false
+        options:
+          - Cybersecurity
+          - SaaS
+          - Fintech
+          - Enterprise Software
+          - Consumer Goods
+          - Communications
+          - AI & Machine Learning
+          - Marketing & Growth
+          - Government & Nonprofit
+          - Healthcare
+          - HR & Talent
+          - Analytics
+          - Consulting
+          - Identity & Security
+          - Food & Hospitality
+          - Education
+          - Entertainment & Sports
       - { label: Date Range, name: dateRange, widget: string }
       - { label: Summary,    name: summary,   widget: text }
       - { label: Protected,  name: protected, widget: boolean, default: false }
@@ -122,8 +216,30 @@ collections:
           - { label: Outcome,     name: outcome,     widget: text }
           - label: Tags
             name: tags
-            widget: list
-            field: { label: Tag, name: tag, widget: string }
+            widget: select
+            multiple: true
+            required: false
+            options:
+              - Product Design
+              - UX Research
+              - Prototyping
+              - Design Systems
+              - Design Leadership
+              - Brand
+              - Research
+              - Mobile
+              - iOS
+              - Android
+              - Enterprise UX
+              - Enterprise
+              - Integrations
+              - Security
+              - Systems
+              - Zero Trust
+              - Figma
+              - 0-to-1
+              - Leadership
+              - Fintech
           - { label: Year,        name: year,        widget: string }
           - { label: Image,       name: image,       widget: image,  required: false }
           - { label: Image Alt,   name: imageAlt,    widget: string, required: false }
@@ -144,6 +260,17 @@ collections:
         widget: list
         required: false
         field: { label: Slug, name: slug, widget: string }
+
+  # ── Values ───────────────────────────────────────────────────────────────────
+  - name: values
+    label: Values
+    folder: src/content/values
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Name,        name: name,        widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Order,       name: order,       widget: number, default: 0 }
 
   # ── Settings (singleton) ─────────────────────────────────────────────────────
   - name: settings

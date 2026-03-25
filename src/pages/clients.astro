@@ -66,13 +66,16 @@ const industries = [...allIndustries].sort((a, b) => {
         {clients.map((client) => (
           <a href={`/clients/${client.id}`} class="client-cell" data-reveal-child>
             <div class="client-logo-wrap">
-              <img
-                src={client.data.logo}
-                alt={client.data.name}
-                class="client-logo"
-                loading="lazy"
-                decoding="async"
-              />
+              {client.data.logo && client.data.logoDark ? (
+                <>
+                  <img src={client.data.logo}     alt={client.data.name} class="client-logo logo-light" loading="lazy" decoding="async" />
+                  <img src={client.data.logoDark} alt={client.data.name} class="client-logo logo-dark"  loading="lazy" decoding="async" />
+                </>
+              ) : client.data.logo ? (
+                <img src={client.data.logo} alt={client.data.name} class="client-logo logo-adaptive" loading="lazy" decoding="async" />
+              ) : (
+                <span class="client-logo-initial" aria-hidden="true">{client.data.name.charAt(0)}</span>
+              )}
             </div>
             <span class="client-name">
               {client.data.name}
@@ -271,6 +274,27 @@ const industries = [...allIndustries].sort((a, b) => {
   .client-cell:hover .client-logo {
     filter: grayscale(0);
     opacity: 1;
+  }
+  /* Dark mode logo handling */
+  .logo-dark { display: none; }
+  [data-theme="dark"] .logo-light { display: none; }
+  [data-theme="dark"] .logo-dark  { display: block; }
+  [data-theme="dark"] .logo-adaptive { filter: invert(1) grayscale(1); }
+  [data-theme="dark"] .client-cell:hover .logo-adaptive { filter: invert(1) grayscale(0); }
+  [data-theme="dark"] .client-cell:hover .logo-dark { filter: grayscale(0); }
+  /* Fallback initial for missing logos */
+  .client-logo-initial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-muted);
   }
   .client-name {
     display: flex;

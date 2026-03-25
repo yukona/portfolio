@@ -2,7 +2,7 @@
 name: Confidential Client
 slug: confidential-client
 logo: /images/clients/placeholder-logo.svg
-industry: Fintech
+industry: [Fintech]
 dateRange: "2022 – 2023"
 summary: "NDA — available upon request"
 protected: true

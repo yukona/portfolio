@@ -14,6 +14,7 @@ const { client } = Astro.props;
 const {
   name,
   logo,
+  logoDark,
   industry,
   dateRange,
   summary,
@@ -65,18 +66,19 @@ const clientId = client.id;
       <div class="container">
         <div class="header-inner">
           <div class="header-left" data-reveal>
-            <span class="header-eyebrow">{industry} · {dateRange}</span>
+            <span class="header-eyebrow">{[...industry, dateRange].filter(Boolean).join(' · ')}</span>
             <h1 class="header-name">{name}</h1>
             <p class="header-summary">{summary}</p>
           </div>
           <div class="header-right" data-reveal>
-            <img
-              src={logo}
-              alt={`${name} logo`}
-              class="header-logo"
-              loading="eager"
-              decoding="async"
-            />
+            {logo && logoDark ? (
+              <>
+                <img src={logo}     alt={`${name} logo`} class="header-logo logo-light" loading="eager" decoding="async" />
+                <img src={logoDark} alt={`${name} logo`} class="header-logo logo-dark"  loading="eager" decoding="async" />
+              </>
+            ) : logo ? (
+              <img src={logo} alt={`${name} logo`} class="header-logo logo-adaptive" loading="eager" decoding="async" />
+            ) : null}
           </div>
         </div>
       </div>
@@ -321,6 +323,11 @@ const clientId = client.id;
     filter: grayscale(1);
     opacity: 0.5;
   }
+  /* Dark mode logo handling */
+  .logo-dark { display: none; }
+  [data-theme="dark"] .logo-light { display: none; }
+  [data-theme="dark"] .logo-dark  { display: block; }
+  [data-theme="dark"] .logo-adaptive { filter: invert(1) grayscale(1); }
   @media (max-width: 640px) {
     .header-inner {
       grid-template-columns: 1fr;

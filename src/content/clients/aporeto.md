@@ -2,7 +2,7 @@
 name: Aporeto
 slug: aporeto
 logo: /images/clients/aporeto-logo.svg
-industry: Cybersecurity
+industry: [Cybersecurity]
 dateRange: "2016 – 2019"
 summary: "Founding designer — zero-trust cloud security product, from 0 to acquisition by Palo Alto Networks"
 protected: false

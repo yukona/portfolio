@@ -2,7 +2,7 @@
 name: Dialpad
 slug: dialpad
 logo: /images/clients/dialpad-logo.svg
-industry: Unified Communications
+industry: [Communications]
 dateRange: "2013 – 2016"
 summary: "Product Designer for Dialpad and UberConference across desktop, mobile and integrations"
 protected: false
