@@ -25,6 +25,8 @@ const {
   liveUrl,
   protected: isProtected,
   password,
+  pageTitle,
+  metaDescription,
 } = project.data;
 
 // Find next project for bottom navigation
@@ -34,8 +36,8 @@ const nextProject = allProjects[(currentIdx + 1) % allProjects.length];
 ---
 
 <ProjectLayout
-  title={title}
-  description={description}
+  title={pageTitle ?? title}
+  description={metaDescription ?? description}
   thumbnail={thumbnail}
   year={year}
   role={role}

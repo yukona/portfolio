@@ -62,6 +62,8 @@ collections:
       - { label: Year,        name: year,         widget: number }
       - { label: URL,         name: url,          widget: string,  required: false }
       - { label: Featured,    name: featured,     widget: boolean, default: false }
+      - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title (defaults to project title)" }
+      - { label: Meta Description, name: metaDescription, widget: text,   required: false, hint: "SEO description shown in search results" }
       - { label: Challenge,   name: challenge,   widget: text,    required: false, hint: "The problem you were solving" }
       - { label: Outcome,     name: outcome,     widget: text,    required: false, hint: "The result / impact" }
       - { label: Body,        name: body,        widget: markdown, required: false }
@@ -166,6 +168,7 @@ collections:
         widget: list
         required: false
         field: { label: Slug, name: slug, widget: string }
+      - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
       - { label: Meta Description, name: metaDescription, widget: text }
       - { label: Order,            name: order,           widget: number }
 
@@ -204,7 +207,9 @@ collections:
           - Education
           - Entertainment & Sports
       - { label: Date Range, name: dateRange, widget: string }
-      - { label: Summary,    name: summary,   widget: text }
+      - { label: Summary,          name: summary,         widget: text }
+      - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
+      - { label: Meta Description, name: metaDescription, widget: text,   required: false, hint: "SEO description shown in search results" }
       - { label: Protected,  name: protected, widget: boolean, default: false }
       - { label: Password,   name: password,  widget: string,  required: false }
       - label: Projects
@@ -252,14 +257,36 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: Name,        name: name,        widget: string }
-      - { label: Slug,        name: slug,        widget: string }
-      - { label: Description, name: description, widget: text }
-      - label: Client Slugs
-        name: clientSlugs
+      - { label: Name,             name: name,            widget: string }
+      - { label: Slug,             name: slug,            widget: string }
+      - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
+      - { label: Headline,         name: headline,        widget: string, required: false, hint: "Punchy positioning line e.g. \"Security UX that earns trust\"" }
+      - { label: Description,      name: description,     widget: text }
+      - { label: Meta Description, name: metaDescription, widget: text,   required: false }
+      - { label: Hero Image,       name: heroImage,       widget: image,  required: false }
+      - label: Key Challenges
+        name: keyChallenges
         widget: list
         required: false
-        field: { label: Slug, name: slug, widget: string }
+        hint: "2-3 pain points specific to this industry e.g. \"Complex compliance requirements\""
+        field: { label: Challenge, name: challenge, widget: string }
+      - label: Why Me
+        name: whyMe
+        widget: list
+        required: false
+        hint: "3-4 bullet points specific to this industry"
+        field: { label: Point, name: point, widget: string }
+      - { label: CTA Headline, name: ctaHeadline, widget: string, required: false, hint: "e.g. \"Working on a security product?\"" }
+      - { label: CTA Subhead,  name: ctaSubhead,  widget: string, required: false }
+      - label: Client Slugs
+        name: clientSlugs
+        widget: relation
+        collection: clients
+        search_fields: ["name", "slug"]
+        value_field: "slug"
+        display_fields: ["name"]
+        multiple: true
+        required: false
 
   # ── Values ───────────────────────────────────────────────────────────────────
   - name: values

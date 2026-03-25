@@ -25,7 +25,7 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
 ---
 
 <BaseLayout
-  title={`${s.title} — Kris Burger`}
+  title={s.pageTitle ?? `${s.title} — Kris Burger`}
   description={s.metaDescription}
 >
   <!-- ── Page header ──────────────────────────────────────── -->

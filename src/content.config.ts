@@ -15,6 +15,8 @@ const projects = defineCollection({
     protected: z.boolean().default(false),
     password: z.string().optional(),
     liveUrl: z.string().optional(),
+    pageTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
   }),
 });
 
@@ -28,6 +30,8 @@ const clients = defineCollection({
     industry: z.array(z.string()).default([]),
     dateRange: z.string(),
     summary: z.string(),
+    pageTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
     protected: z.boolean().default(false),
     password: z.string().optional(),
     projects: z.array(z.object({
@@ -48,7 +52,15 @@ const industries = defineCollection({
   schema: z.object({
     name: z.string(),
     slug: z.string(),
+    pageTitle: z.string().optional(),
+    headline: z.string().optional(),
     description: z.string(),
+    metaDescription: z.string().optional(),
+    heroImage: z.string().optional(),
+    keyChallenges: z.array(z.string()).default([]),
+    whyMe: z.array(z.string()).default([]),
+    ctaHeadline: z.string().optional(),
+    ctaSubhead: z.string().optional(),
     clientSlugs: z.array(z.string()).default([]),
   }),
 });
@@ -83,6 +95,7 @@ const services = defineCollection({
     ctaLabel: z.string(),
     relatedClientSlugs: z.array(z.string()).default([]),
     relatedProjectSlugs: z.array(z.string()).default([]),
+    pageTitle: z.string().optional(),
     metaDescription: z.string(),
     order: z.number(),
   }),
