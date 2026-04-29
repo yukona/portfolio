@@ -1,9 +1,13 @@
 ---
-name: abraLab
+name: Abralab
 slug: abralab
-industry: [Healthcare]
-dateRange: ""
-summary: ""
+logo: /images/uploads/abralab-logo-light.svg
+logoDark: /images/uploads/abralab-logo-dark.svg
+industry:
+  - Healthcare
+dateRange: "2019"
+summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua
 protected: false
 projects: []
 ---
