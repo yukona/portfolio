@@ -59,7 +59,7 @@ collections:
           - 0-to-1
           - Leadership
           - Fintech
-      - { label: Year,        name: year,         widget: number }
+      - { label: Year,        name: year,         widget: string, hint: "e.g. 2024 or 2022–2024" }
       - { label: URL,         name: url,          widget: string,  required: false }
       - { label: Featured,    name: featured,     widget: boolean, default: false }
       - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title (defaults to project title)" }
@@ -182,7 +182,8 @@ collections:
       - { label: Name,       name: name,      widget: string }
       - { label: Slug,       name: slug,      widget: string }
       - { label: Logo,        name: logo,      widget: image,  required: false }
-      - { label: Logo (Dark), name: logoDark, widget: image,  required: false, hint: "Optional dark-mode SVG version" }
+      - { label: Logo (Dark), name: logoDark, widget: image,  required: false, hint: "White/light version of the logo for dark mode backgrounds" }
+      - { label: Color Icon,  name: logoColor, widget: image, required: false, hint: "Full-color icon/mark version of the logo" }
       - label: Industry
         name: industry
         widget: select
@@ -206,10 +207,12 @@ collections:
           - Food & Hospitality
           - Education
           - Entertainment & Sports
+          - Blockchain
       - { label: Date Range, name: dateRange, widget: string }
       - { label: Summary,          name: summary,         widget: text }
       - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
       - { label: Meta Description, name: metaDescription, widget: text,   required: false, hint: "SEO description shown in search results" }
+      - { label: Featured,   name: featured,  widget: boolean, default: false, hint: "Show this client in the logo ticker on the homepage" }
       - { label: Protected,  name: protected, widget: boolean, default: false }
       - { label: Password,   name: password,  widget: string,  required: false }
       - label: Projects

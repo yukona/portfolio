@@ -73,6 +73,8 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
 <body>
   {!hideNav && <Nav />}
 
+  <div class="cursor-dot" id="cursor-dot"></div>
+
   <slot />
 
   <!-- Netlify Identity redirect -->
@@ -90,6 +92,48 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
           window.netlifyIdentity.open();
         }
       });
+    }
+  </script>
+
+  <!-- Gooey button blobs -->
+  <script>
+    document.querySelectorAll<HTMLElement>('.btn').forEach((btn) => {
+      const goo = document.createElement('span');
+      goo.className = 'btn-goo';
+      btn.insertBefore(goo, btn.firstChild);
+
+      const size = Math.max(btn.offsetWidth, btn.offsetHeight) * 2.4;
+      goo.style.width = size + 'px';
+      goo.style.height = size + 'px';
+
+      btn.addEventListener('mouseenter', (e) => {
+        const rect = btn.getBoundingClientRect();
+        goo.style.left = (e.clientX - rect.left) + 'px';
+        goo.style.top  = (e.clientY - rect.top)  + 'px';
+        goo.classList.add('is-expanded');
+        if (btn.classList.contains('btn-outline')) btn.classList.add('is-filled');
+      });
+
+      btn.addEventListener('mouseleave', (e) => {
+        const rect = btn.getBoundingClientRect();
+        goo.style.left = (e.clientX - rect.left) + 'px';
+        goo.style.top  = (e.clientY - rect.top)  + 'px';
+        goo.classList.remove('is-expanded');
+        if (btn.classList.contains('btn-outline')) btn.classList.remove('is-filled');
+      });
+    });
+  </script>
+
+  <!-- Custom cursor -->
+  <script>
+    const dot = document.getElementById('cursor-dot');
+    if (dot && window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', (e) => {
+        dot.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px';
+      });
+      document.addEventListener('mousedown', () => dot.classList.add('is-clicking'));
+      document.addEventListener('mouseup', () => dot.classList.remove('is-clicking'));
     }
   </script>
 

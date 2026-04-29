@@ -10,7 +10,10 @@ const allProjects = await getCollection('projects');
 const featured = allProjects.find((p) => p.data.featured);
 const rest = allProjects
   .filter((p) => !p.data.featured)
-  .sort((a, b) => b.data.year - a.data.year);
+  .sort((a, b) => {
+    const endYear = (y: string) => parseInt(y.split('–').pop() ?? y);
+    return endYear(b.data.year) - endYear(a.data.year);
+  });
 
 const experience = [
   {
@@ -319,16 +322,30 @@ const experience = [
   const el = document.getElementById('cycling-text');
 
   if (el) {
+    // Paint in the highlight on initial load
+    setTimeout(() => el.classList.add('is-painted'), 300);
+
     setInterval(() => {
+      // Instantly collapse the highlight (no transition) and fade out
+      el.classList.remove('is-painted');
       el.style.opacity = '0';
       el.style.transform = 'translateY(8px)';
+
       setTimeout(() => {
+        // Swap text, fade back in
         idx = (idx + 1) % phrases.length;
         el.textContent = phrases[idx];
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
+
+        // Two rAFs to ensure scaleX(0) is rendered before triggering the transition
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            el.classList.add('is-painted');
+          });
+        });
       }, 300);
-    }, 3000);
+    }, 3500);
   }
 </script>
 
@@ -340,7 +357,7 @@ const experience = [
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 128px 0 96px;
+    padding: 160px 0 120px;
   }
   .hero-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .hero-content { max-width: 900px; }
@@ -350,12 +367,23 @@ const experience = [
   }
   .hero-cycling {
     display: inline-block;
+    white-space: nowrap;
+    padding-bottom: 0.15em;
+    background: linear-gradient(105deg, #4f46e5 0%, #7c3aed 55%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    clip-path: inset(0 100% 0 0);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    color: var(--color-text-muted);
+  }
+  .hero-cycling.is-painted {
+    clip-path: inset(0 0% 0 0);
+    transition: opacity 0.3s ease, transform 0.3s ease, clip-path 0.55s cubic-bezier(0.25, 0.1, 0.25, 1.0);
   }
   .hero-dot { color: var(--color-text); }
   .hero-subhead {
-    font-size: 20px;
+    font-size: 21px;
+    font-weight: 400;
     color: var(--color-text-muted);
     margin: 0 0 48px;
     line-height: 1.6;
@@ -379,8 +407,11 @@ const experience = [
   }
 
   /* ── Sections ─────────────────────────────────────── */
-  .section { padding: 96px 0; }
-  .section--surface { background: var(--color-surface); }
+  .section { padding: 120px 0; }
+  .section--surface {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
 
   /* ── Work ─────────────────────────────────────────── */
   .featured-wrap { margin-bottom: 32px; }
@@ -398,7 +429,6 @@ const experience = [
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
-    border-top: 1px solid var(--color-border);
     padding-top: 48px;
   }
   .service-title {
@@ -436,7 +466,6 @@ const experience = [
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 32px;
-    border-top: 1px solid var(--color-border);
     padding-top: 48px;
   }
   .process-num {
@@ -500,7 +529,8 @@ const experience = [
     align-items: center;
     justify-content: center;
     min-height: 320px;
-    background: var(--color-surface);
+    background: transparent;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 48px;
   }

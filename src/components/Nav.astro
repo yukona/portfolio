@@ -70,10 +70,10 @@
     z-index: 100;
     opacity: 1;
     pointer-events: auto;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
     background: var(--color-nav-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid var(--color-border);
   }
   nav.is-hidden {
@@ -85,7 +85,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    height: 48px;
   }
 
   /* ── Logo ──────────────────────────────────────────── */
@@ -93,7 +93,7 @@
     font-family: var(--font-heading);
     font-weight: 500;
     font-size: 16px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     color: var(--color-text);
     white-space: nowrap;
   }
