@@ -5,6 +5,9 @@ logo: /images/uploads/teamout-logo-light.svg
 logoDark: /images/uploads/teamout-logo-dark.svg
 industry:
   - HR & Talent
+services:
+  - Design Systems
+  - Product Design
 dateRange: "2021"
 summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
   tempor incididunt ut labore et dolore magna aliqua

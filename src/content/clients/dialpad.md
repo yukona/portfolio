@@ -5,6 +5,13 @@ logo: /images/uploads/dialpad-logo-light.svg
 logoDark: /images/uploads/dialpad-logo-dark.svg
 industry:
   - Communications
+services:
+  - Conversion Optimization
+  - Design Systems
+  - Brand & Identity
+  - Product Design
+  - Web Design & Development
+  - Research
 dateRange: 2013 – 2016
 summary: Product Designer for Dialpad and UberConference across desktop, mobile
   and integrations

@@ -188,10 +188,20 @@ collections:
       - { label: Featured Image, name: featuredImage, widget: image, required: false, hint: "Hero/thumbnail image shown in the work list" }
       - label: Services
         name: services
-        widget: list
+        widget: select
+        multiple: true
         required: false
-        hint: "Services provided to this client e.g. Product Design, Brand Identity"
-        field: { label: Service, name: service, widget: string }
+        hint: "Select the service categories delivered for this client"
+        options:
+          - Product Design
+          - Brand & Identity
+          - Design Systems
+          - Web Design & Development
+          - Strategy
+          - Research
+          - Design Advisory
+          - eCommerce Development
+          - Conversion Optimization
       - label: Industry
         name: industry
         widget: select

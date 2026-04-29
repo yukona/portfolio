@@ -14,11 +14,13 @@ export async function getStaticPaths() {
 const { service } = Astro.props;
 const s = service.data;
 
-// Load related content
+// Load related content — match by client's services field (title) or explicit relatedClientSlugs
 const allClients = await getCollection('clients');
-const relatedClients = allClients.filter((c) => s.relatedClientSlugs.includes(c.id));
+const relatedClients = allClients.filter(
+  (c) => c.data.services.includes(s.title) || s.relatedClientSlugs.includes(c.id)
+);
 
-const credentialCount = s.credibility.length.toString().padStart(2, '0');
+
 ---
 
 <BaseLayout
@@ -28,7 +30,7 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
   <!-- ── Page header ──────────────────────────────────────── -->
   <header class="page-header">
     <div class="container">
-      <p class="section-label" data-reveal>Services</p>
+      <p class="section-label" data-reveal>{s.title} Services</p>
       <h1 class="page-headline" data-reveal>{s.headline}</h1>
       <p class="page-subhead" data-reveal>{s.subhead}</p>
     </div>
@@ -39,15 +41,14 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
     <div class="container">
       <span class="section-label" data-reveal>Why Kris</span>
       <div class="credibility-grid" data-reveal>
-        <div class="credibility-number" aria-hidden="true">{credentialCount}</div>
-        <ul class="credibility-list">
-          {s.credibility.map((point) => (
-            <li class="credibility-item" data-reveal-child>
-              <span class="credibility-check" aria-hidden="true">—</span>
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
+        {s.credibility.map((point, i) => (
+          <div class="credibility-step" data-reveal-child>
+            <span class="credibility-num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <p class="credibility-point">{point}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -84,23 +85,7 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
     </div>
   </section>
 
-  <!-- ── Process ──────────────────────────────────────────── -->
-  <section class="section section--surface">
-    <div class="container">
-      <span class="section-label" data-reveal>How I work</span>
-      <div class="process-steps" data-reveal>
-        {s.process.map((step) => (
-          <div class="process-step" data-reveal-child>
-            <span class="step-num">{step.step}</span>
-            <h3 class="step-title">{step.title}</h3>
-            <p class="step-desc">{step.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Related work ─────────────────────────────────────── -->
+  <!-- ── Related clients ──────────────────────────────────── -->
   {relatedClients.length > 0 && (
     <section class="section">
       <div class="container">
@@ -116,6 +101,7 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
               featuredImage={c.data.featuredImage}
               logo={c.data.logo}
               logoDark={c.data.logoDark}
+              companyDescription={c.data.companyDescription}
               index={i}
             />
           ))}
@@ -123,6 +109,22 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
       </div>
     </section>
   )}
+
+  <!-- ── Process ──────────────────────────────────────────── -->
+  <section class="section section--surface">
+    <div class="container">
+      <span class="section-label" data-reveal>How I work</span>
+      <div class="process-steps" data-reveal>
+        {s.process.map((step) => (
+          <div class="process-step" data-reveal-child>
+            <span class="step-num">{step.step}</span>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <!-- ── FAQ ──────────────────────────────────────────────── -->
   {s.faqs.length > 0 && (
@@ -227,44 +229,35 @@ const credentialCount = s.credibility.length.toString().padStart(2, '0');
   /* ── Credibility ──────────────────────────────────── */
   .credibility-grid {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 64px;
-    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    padding-top: 48px;
   }
   @media (max-width: 768px) {
-    .credibility-grid { grid-template-columns: 1fr; gap: 32px; }
+    .credibility-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   }
-  .credibility-number {
+  @media (max-width: 480px) {
+    .credibility-grid { grid-template-columns: 1fr; }
+  }
+  .credibility-step {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .credibility-num {
     font-family: var(--font-heading);
-    font-size: 120px;
+    font-size: 56px;
     font-weight: 300;
     color: var(--color-border);
     line-height: 1;
     letter-spacing: -0.04em;
     user-select: none;
   }
-  .credibility-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-top: 8px;
-  }
-  .credibility-item {
-    display: flex;
-    gap: 16px;
-    font-size: 16px;
+  .credibility-point {
+    font-size: 15px;
+    color: var(--color-text-muted);
     line-height: 1.7;
-    color: var(--color-text);
-  }
-  .credibility-check {
-    flex-shrink: 0;
-    font-family: var(--font-heading);
-    font-weight: 500;
-    color: var(--color-accent);
-    margin-top: 1px;
+    margin: 0;
   }
 
   /* ── Outcomes bar ─────────────────────────────────── */

@@ -5,6 +5,9 @@ logo: /images/uploads/aporeto-logo-light.svg
 logoDark: /images/uploads/aporeto-logo-dark.svg
 industry:
   - Cybersecurity
+services:
+  - Brand & Identity
+  - Product Design
 dateRange: 2016 – 2019
 summary: Founding designer — zero-trust cloud security product, from 0 to
   acquisition by Palo Alto Networks

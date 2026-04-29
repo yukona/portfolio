@@ -1,0 +1,97 @@
+---
+interface Props {
+  text: string;
+  position?: 'top' | 'bottom';
+  label?: string;
+}
+const { text, position = 'top', label = 'More information' } = Astro.props;
+---
+
+<span class={`tt tt--${position}`}>
+  <button class="tt-trigger" type="button" aria-label={label}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 5.25a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5zM7.25 8a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0V8z" clip-rule="evenodd"/>
+    </svg>
+  </button>
+  <span class="tt-bubble" role="tooltip">{text}</span>
+</span>
+
+<style>
+  .tt {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  .tt-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--color-text-muted);
+    cursor: default;
+    opacity: 0.5;
+    transition: opacity 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+  }
+  .tt-trigger:hover,
+  .tt-trigger:focus-visible {
+    opacity: 1;
+    color: var(--color-text);
+    outline: none;
+  }
+  .tt-trigger svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+
+  .tt-bubble {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: var(--font-body, sans-serif);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    white-space: normal;
+    text-align: left;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Top (default) */
+  .tt--top .tt-bubble {
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%) translateY(4px);
+  }
+  .tt--top:hover .tt-bubble,
+  .tt--top .tt-trigger:focus-visible + .tt-bubble {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Bottom */
+  .tt--bottom .tt-bubble {
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+  .tt--bottom:hover .tt-bubble,
+  .tt--bottom .tt-trigger:focus-visible + .tt-bubble {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>

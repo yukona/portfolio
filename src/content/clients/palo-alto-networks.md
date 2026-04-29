@@ -5,6 +5,10 @@ logo: /images/uploads/palo_alto_networks-logo-light.svg
 logoDark: /images/uploads/palo_alto_networks-logo-dark.svg
 industry:
   - Cybersecurity
+services:
+  - Design Systems
+  - Product Design
+  - Research
 dateRange: 2019 – 2024
 summary: Design Lead across the Prisma Cloud product suite and platform integrations
 companyDescription: "Palo Alto Networks is one of the world's largest cybersecurity companies, offering next-generation firewalls, cloud security (Prisma Cloud), and Zero Trust network access. Their platform protects thousands of enterprises globally across on-prem, cloud, and hybrid environments."

@@ -53,9 +53,7 @@ faqs:
 ctaHeadline: "Need a senior design perspective?"
 ctaSubhead: "Whether you're scaling a team, navigating a product pivot, or just want a sharper outside eye — let's talk."
 ctaLabel: "Start a conversation"
-relatedClientSlugs:
-  - palo-alto-networks
-  - aporeto
+relatedClientSlugs: []
   - dialpad
 relatedProjectSlugs:
   - prisma-cloud

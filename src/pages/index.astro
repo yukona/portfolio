@@ -72,6 +72,7 @@ const experience = [
   <section id="work" class="section">
     <div class="container">
       <span class="section-label" data-reveal>Featured work</span>
+      <p class="work-intro" data-reveal>With over 10 years across agencies, startups, and global companies, I focus on building strong creative teams that deliver results.</p>
 
       <div class="projects-list" data-reveal>
         {featuredClients.map((c, i) => (
@@ -84,6 +85,7 @@ const experience = [
             featuredImage={c.data.featuredImage}
             logo={c.data.logo}
             logoDark={c.data.logoDark}
+            companyDescription={c.data.companyDescription}
             index={i}
           />
         ))}
@@ -95,45 +97,40 @@ const experience = [
   <section id="services" class="section section--surface">
     <div class="container">
       <span class="section-label" data-reveal>What I do</span>
+      <p class="work-intro" data-reveal>Sharp design thinking and hands-on execution — across product, brand, and everything in between.</p>
       <div class="services-grid" data-reveal>
         <div class="service-item" data-reveal-child>
           <h3 class="service-title">Product design</h3>
-          <p class="service-desc">Envisioning and designing modern products and digital experiences — from research through shipped.</p>
+          <p class="service-desc">End-to-end product design across web, mobile (iOS & Android), and integrations — with a particular focus on 0-to-1 work for new companies finding their footing.</p>
         </div>
         <div class="service-item" data-reveal-child>
           <h3 class="service-title">Brand &amp; identity</h3>
-          <p class="service-desc">Shaping and activating brands through insight, vision and execution.</p>
+          <p class="service-desc">Building new brands and evolving existing ones — from positioning and visual identity through to execution. Especially comfortable with 0-to-1 brand work for early-stage companies.</p>
         </div>
         <div class="service-item" data-reveal-child>
-          <h3 class="service-title">Team &amp; process</h3>
-          <p class="service-desc">Design leadership and ops built to scale — systems and teams that keep shipping.</p>
+          <h3 class="service-title">Development</h3>
+          <p class="service-desc">Websites for SaaS companies built to convert — including conversion optimisation, ecommerce, and marketing sites that perform as well as they look.</p>
+        </div>
+        <div class="service-item" data-reveal-child>
+          <h3 class="service-title">Leadership</h3>
+          <p class="service-desc">Design strategy, team hiring, and mentorship for growing organisations. Also available for 0-to-1 brand and product design advisory at the founder or executive level.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────────────────────────── EXPERIENCE ── -->
-  <section id="experience" class="section">
-    <div class="container section-2col">
-      <div class="section-2col-label">
-        <span class="section-label" data-reveal>Experience</span>
-      </div>
-      <div class="section-2col-content" data-reveal>
-        <Timeline entries={experience} />
-      </div>
-    </div>
-  </section>
 
   <!-- ─────────────────────────────────────────── PROCESS ── -->
   <section id="process" class="section section--surface">
     <div class="container">
       <span class="section-label" data-reveal>How I work</span>
+      <p class="work-intro" data-reveal>A clear process makes the work better — and the collaboration easier.</p>
       <div class="process-grid" data-reveal>
         {[
-          { num: '01', title: 'Discover', desc: 'Research, audits, stakeholder interviews' },
-          { num: '02', title: 'Define',   desc: 'Frameworks, principles, problem framing' },
-          { num: '03', title: 'Design',   desc: 'Concepts, prototypes, iteration' },
-          { num: '04', title: 'Deliver',  desc: 'Handoff, QA, measurement' },
+          { num: '01', title: 'Discover', desc: 'Understand the problem before picking up a pen. Research, audits, and stakeholder conversations to find what actually matters.' },
+          { num: '02', title: 'Define',   desc: 'Turn ambiguity into direction. Principles, frameworks, and a shared point of view that keeps everyone aligned as the work evolves.' },
+          { num: '03', title: 'Design',   desc: 'Move fast through concepts, stay rigorous through iteration. The best ideas survive contact with real users and real constraints.' },
+          { num: '04', title: 'Deliver',  desc: 'Shipping is part of the craft. Tight handoffs, QA, and measurement so the work performs as well in production as it did in the prototype.' },
         ].map((step) => (
           <div class="process-step" data-reveal-child>
             <span class="process-num">{step.num}</span>
@@ -159,6 +156,7 @@ const experience = [
   <section id="testimonials" class="section section--surface">
     <div class="container">
       <span class="section-label" data-reveal>What people say</span>
+      <p class="work-intro" data-reveal>The measure of good work is what the people you did it with say afterwards.</p>
       <div class="testimonials-grid" data-reveal>
         <TestimonialCard
           quote="Kris has a rare ability to zoom out to strategy while staying hands-on with execution. He transformed how our design team operates and shipped a design system that actually got adopted."
@@ -404,6 +402,18 @@ const experience = [
 </script>
 
 <style>
+  /* ── Featured work intro ───────────────────────────── */
+  .work-intro {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-family: var(--font-heading);
+    font-weight: 300;
+    color: var(--color-text);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    max-width: 720px;
+    margin: 24px 0 48px;
+  }
+
   /* ── Hero ─────────────────────────────────────────── */
   .hero {
     position: relative;
@@ -473,7 +483,7 @@ const experience = [
   /* ── Services ─────────────────────────────────────── */
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 48px;
     padding-top: 48px;
   }
@@ -491,7 +501,7 @@ const experience = [
     margin: 0;
   }
   @media (max-width: 768px) {
-    .services-grid { grid-template-columns: 1fr; gap: 32px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   }
 
   /* ── Experience 2-col ─────────────────────────────── */

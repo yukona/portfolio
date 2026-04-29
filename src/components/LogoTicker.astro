@@ -5,59 +5,140 @@ const allClients = await getCollection('clients');
 const logos = allClients
   .filter((c) => c.data.featuredLogo)
   .map((c) => ({
-    name: c.data.name,
-    logo: c.data.logo ?? null,
+    name:     c.data.name,
+    logo:     c.data.logo     ?? null,
     logoDark: c.data.logoDark ?? null,
   }));
 
-const SLOTS = Math.min(logos.length, 8);
-const initial = logos.slice(0, SLOTS);
+// Always render exactly SLOTS cells; extras cycle in via JS
+const SLOTS   = 8;
+const initial = logos.slice(0, Math.min(logos.length, SLOTS));
 ---
 
 {logos.length > 0 && (
   <div class="logo-grid" id="logo-grid">
-    {initial.map((logo, i) => (
-      <div class="logo-cell" data-slot={i}>
-        <div class="logo-inner">
-          {logo.logo ? (
-            logo.logoDark ? (
-              <>
-                <img src={logo.logo}     alt={logo.name} class="logo-img logo-light" />
-                <img src={logo.logoDark} alt={logo.name} class="logo-img logo-dark"  />
-              </>
-            ) : (
-              <img src={logo.logo} alt={logo.name} class="logo-img" />
-            )
-          ) : (
-            <span class="logo-name">{logo.name}</span>
-          )}
+    {Array.from({ length: SLOTS }).map((_, i) => {
+      const logo = initial[i];
+      return (
+        <div class="logo-cell">
+          <div class="logo-flip-wrap">
+            <div class="logo-inner" data-slot={i}>
+              {logo?.logo ? (
+                logo.logoDark ? (
+                  <>
+                    <img src={logo.logo}     alt={logo.name} class="logo-img logo-light" loading="lazy" />
+                    <img src={logo.logoDark} alt={logo.name} class="logo-img logo-dark"  loading="lazy" />
+                  </>
+                ) : (
+                  <img src={logo.logo} alt={logo.name} class="logo-img" loading="lazy" />
+                )
+              ) : logo ? (
+                <span class="logo-name">{logo.name}</span>
+              ) : null}
+            </div>
+          </div>
         </div>
-      </div>
-    ))}
+      );
+    })}
   </div>
 )}
 
-<script define:vars={{ logos, SLOTS }}>
-  const cells = Array.from(document.querySelectorAll('#logo-grid .logo-cell'));
-  if (!cells.length) return;
+<!-- Styles: logo-img rules are global so JS-rendered imgs inherit them -->
+<style is:global>
+  .logo-img {
+    width: 200px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 4px !important;
+  }
+  /* Light/dark logo switching */
+  .logo-dark  { display: none !important; }
+  [data-theme="dark"]  .logo-light { display: none !important; }
+  [data-theme="dark"]  .logo-dark  { display: block !important; }
+</style>
 
-  const FLIP_MS    = 140;
-  const STAGGER_MS = 60;
-  const CYCLE_MS   = 3200;
+<style>
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  @media (max-width: 640px) { .logo-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .logo-cell {
+    background: var(--color-bg);
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-flip-wrap {
+    perspective: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+    transform-origin: center center;
+    backface-visibility: hidden;
+  }
+  .logo-cell:hover .logo-inner {
+    opacity: 1;
+    filter: grayscale(0);
+  }
+
+  .logo-name {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+</style>
+
+<script define:vars={{ logos, SLOTS }}>
+  const inners = Array.from(document.querySelectorAll('#logo-grid .logo-inner'));
+  if (!inners.length || logos.length === 0) return;
+
+  const FLIP_MS     = 280;  // half-flip duration
+  const CYCLE_DELAY = 2400; // ms between each cell swap
+
+  function styleImg(img) {
+    img.style.width        = '200px';
+    img.style.height       = '100px';
+    img.style.objectFit    = 'cover';
+    img.style.display      = 'block';
+    img.style.borderRadius = '4px';
+  }
 
   function renderLogo(inner, logo) {
     while (inner.firstChild) inner.removeChild(inner.firstChild);
     if (logo.logo) {
       if (logo.logoDark) {
         const l = document.createElement('img');
-        l.src = logo.logo; l.alt = logo.name; l.className = 'logo-img logo-light';
+        l.src = logo.logo; l.alt = logo.name; l.className = 'logo-img logo-light'; l.loading = 'lazy';
+        styleImg(l);
         const d = document.createElement('img');
-        d.src = logo.logoDark; d.alt = logo.name; d.className = 'logo-img logo-dark';
+        d.src = logo.logoDark; d.alt = logo.name; d.className = 'logo-img logo-dark'; d.loading = 'lazy';
+        styleImg(d);
         inner.appendChild(l);
         inner.appendChild(d);
       } else {
         const img = document.createElement('img');
-        img.src = logo.logo; img.alt = logo.name; img.className = 'logo-img';
+        img.src = logo.logo; img.alt = logo.name; img.className = 'logo-img'; img.loading = 'lazy';
+        styleImg(img);
         inner.appendChild(img);
       }
     } else {
@@ -68,100 +149,32 @@ const initial = logos.slice(0, SLOTS);
     }
   }
 
-  function flipCell(cell, logo, delay) {
+  function flipTo(inner, logo) {
+    inner.style.transition = `transform ${FLIP_MS}ms cubic-bezier(0.4,0,1,1)`;
+    inner.style.transform  = 'rotateY(-90deg)';
     setTimeout(() => {
-      const inner = cell.querySelector('.logo-inner');
-      inner.style.transition = `transform ${FLIP_MS}ms ease-in`;
-      inner.style.transform  = 'rotateY(-90deg)';
-      setTimeout(() => {
-        renderLogo(inner, logo);
-        inner.style.transition = 'none';
-        inner.style.transform  = 'rotateY(90deg)';
-        void inner.offsetWidth;
-        inner.style.transition = `transform ${FLIP_MS}ms ease-out`;
-        inner.style.transform  = 'rotateY(0deg)';
-      }, FLIP_MS);
-    }, delay);
+      renderLogo(inner, logo);
+      inner.style.transition = 'none';
+      inner.style.transform  = 'rotateY(90deg)';
+      void inner.offsetWidth;
+      inner.style.transition = `transform ${FLIP_MS}ms cubic-bezier(0,0,0.2,1)`;
+      inner.style.transform  = 'rotateY(0deg)';
+    }, FLIP_MS);
   }
 
-  // Intro: flip each cell in left to right on load
-  cells.forEach((cell, i) => {
-    const inner = cell.querySelector('.logo-inner');
-    inner.style.transform = 'rotateY(90deg)';
-    inner.style.opacity   = '1';
-    setTimeout(() => {
-      inner.style.transition = `transform ${FLIP_MS}ms ease-out`;
-      inner.style.transform  = 'rotateY(0deg)';
-    }, 200 + i * STAGGER_MS);
-  });
+  // Start cycling from where the initial logos left off
+  let queueIdx = Math.min(logos.length, SLOTS); // next logo index to show
+  let slotIdx  = 0;                              // next slot to replace
 
-  // Cycle: only if more logos than slots
+  // Only cycle if there are more logos than slots
   if (logos.length > SLOTS) {
-    let nextIdx = SLOTS;
-    setInterval(() => {
-      cells.forEach((cell, slotIdx) => {
-        flipCell(cell, logos[nextIdx % logos.length], slotIdx * STAGGER_MS);
-        nextIdx++;
-      });
-    }, CYCLE_MS);
+    function cycleNext() {
+      flipTo(inners[slotIdx], logos[queueIdx % logos.length]);
+      slotIdx  = (slotIdx  + 1) % SLOTS;
+      queueIdx = (queueIdx + 1) % logos.length;
+      setTimeout(cycleNext, CYCLE_DELAY);
+    }
+    // Start after a short initial pause
+    setTimeout(cycleNext, CYCLE_DELAY * 2);
   }
 </script>
-
-<style>
-  .logo-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-  }
-  @media (max-width: 768px) { .logo-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 480px) { .logo-grid { grid-template-columns: repeat(2, 1fr); } }
-
-  .logo-cell {
-    background: var(--color-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 32px;
-    perspective: 600px;
-  }
-
-  .logo-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    opacity: 0.5;
-    filter: grayscale(1);
-    transition: opacity 0.2s ease, filter 0.2s ease;
-    transform-style: preserve-3d;
-  }
-  .logo-cell:hover .logo-inner {
-    opacity: 1;
-    filter: grayscale(0);
-  }
-
-  .logo-img {
-    height: 28px;
-    width: auto;
-    max-width: 120px;
-    object-fit: contain;
-    display: block;
-  }
-  .logo-name {
-    font-family: var(--font-heading);
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--color-text);
-    white-space: nowrap;
-  }
-
-  /* Light/dark logo switching */
-  [data-theme="dark"]  .logo-light,
-  [data-theme="light"] .logo-dark  { display: none; }
-  [data-theme="dark"]  .logo-dark,
-  [data-theme="light"] .logo-light { display: block; }
-</style>
