@@ -1,9 +1,13 @@
 ---
 name: RKS
 slug: rks
-industry: [Consulting]
-dateRange: ""
-summary: ""
+logo: /images/uploads/rks-logo-light.svg
+logoDark: /images/uploads/rks-logo-dark.svg
+industry:
+  - Consulting
+dateRange: "2018"
+summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua
 protected: false
 projects: []
 ---
