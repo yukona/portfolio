@@ -5,6 +5,7 @@ logo: /images/uploads/agencio-logo-light.svg
 logoDark: /images/uploads/agencio-logo-dark.svg
 industry:
   - Marketing & Growth
+  - Agency
 dateRange: "2021"
 summary: Partnered with Agencio to support their SaaS clients across design,
   development and strategic advisory. Contributed to product and web work spanning

@@ -5,6 +5,7 @@ logo: /images/uploads/dialpad-logo-light.svg
 logoDark: /images/uploads/dialpad-logo-dark.svg
 industry:
   - Communications
+  - Unified Communications
 services:
   - Conversion Optimization
   - Design Systems

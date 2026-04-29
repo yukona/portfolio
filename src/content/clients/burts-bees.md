@@ -5,6 +5,7 @@ logo: /images/uploads/burts_bees-logo-light.svg
 logoDark: /images/uploads/burts_bees-logo-dark.svg
 industry:
   - Consumer Goods
+  - E-commerce
 services:
   - Conversion Optimization
   - Web Design & Development

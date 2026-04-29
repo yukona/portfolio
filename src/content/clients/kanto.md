@@ -5,6 +5,7 @@ logo: /images/uploads/kanto-logo-light.svg
 logoDark: /images/uploads/kanto-logo-dark.svg
 industry:
   - SaaS
+  - E-commerce
 services:
   - Conversion Optimization
   - Brand & Identity

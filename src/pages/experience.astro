@@ -12,26 +12,23 @@ const clients = [...allClients].sort((a, b) => {
   return a.data.name.localeCompare(b.data.name);
 });
 
-// Build a lookup map: slug → client data
-const clientMap = Object.fromEntries(allClients.map((c) => [c.id, c.data]));
-
-// Sort industries: those with clients first
+// Sort industries: those with matching clients first
 const industries = [...allIndustries].sort((a, b) => {
-  const aHas = a.data.clientSlugs.length;
-  const bHas = b.data.clientSlugs.length;
+  const aHas = allClients.filter(c => c.data.industry?.includes(a.data.name)).length;
+  const bHas = allClients.filter(c => c.data.industry?.includes(b.data.name)).length;
   return bHas - aHas;
 });
 ---
 
 <BaseLayout
-  title="Clients — Kris Burger"
+  title="Experience — Kris Burger"
   description="A selection of the startups, scaleups and enterprise companies Kris Burger has worked with across cybersecurity, communications, fintech and more."
 >
   <!-- ── Page header ───────────────────────────────────────────── -->
   <header class="page-header">
     <div class="container">
       <p class="page-eyebrow section-label" data-reveal>Selected clients</p>
-      <h1 class="page-headline" data-reveal>Clients</h1>
+      <h1 class="page-headline" data-reveal>Experience</h1>
       <p class="page-subhead" data-reveal>
         A selection of the startups, scaleups and enterprise companies<br class="hide-mobile" />
         I've had the privilege of working with.
@@ -51,11 +48,6 @@ const industries = [...allIndustries].sort((a, b) => {
         <span class="stat-value">20+</span>
         <span class="stat-label">Clients worldwide</span>
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-value">5</span>
-        <span class="stat-label">Industries</span>
-      </div>
     </div>
   </div>
 
@@ -63,6 +55,7 @@ const industries = [...allIndustries].sort((a, b) => {
   <section class="section">
     <div class="container">
       <span class="section-label" data-reveal>Companies</span>
+      <p class="work-intro" data-reveal>The startups, scaleups and enterprises shaping what comes next.</p>
       <div class="projects-list" data-reveal>
         {clients.map((c, i) => (
           <ProjectCard
@@ -88,35 +81,32 @@ const industries = [...allIndustries].sort((a, b) => {
       <span class="section-label" data-reveal>Industries</span>
       <div class="industries-grid" data-reveal>
         {industries.map((industry) => {
-          const relatedClients = industry.data.clientSlugs
-            .map((slug) => clientMap[slug])
-            .filter(Boolean);
+          const relatedClients = allClients
+            .filter(c => c.data.industry?.includes(industry.data.name))
+            .map(c => c.data);
           return (
             <div class="industry-card" data-reveal-child>
               <div class="industry-body">
                 <h3 class="industry-name">{industry.data.name}</h3>
                 <p class="industry-desc">{industry.data.description}</p>
               </div>
-              {relatedClients.length > 0 && (
-                <div class="industry-tags">
-                  {relatedClients.map((c) => (
-                    <span class="industry-tag">
-                      {c!.logo ? (
-                        <img
-                          src={c!.logo}
-                          alt=""
-                          class="tag-logo"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : (
-                        <span class="tag-initial" aria-hidden="true">{c!.name.charAt(0)}</span>
-                      )}
-                      <span class="tag-name">{c!.name}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
+              {relatedClients.length > 0 && (() => {
+                const MAX = 3;
+                const visible = relatedClients.slice(0, MAX);
+                const overflow = relatedClients.length - MAX;
+                return (
+                  <div class="industry-tags">
+                    {visible.map((c) => (
+                      <span class="industry-tag" data-tooltip={c!.companyDescription ?? undefined}>
+                        <span class="tag-name">{c!.name}</span>
+                      </span>
+                    ))}
+                    {overflow > 0 && (
+                      <span class="industry-tag industry-tag--overflow">+{overflow}</span>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           );
         })}
@@ -149,6 +139,32 @@ const industries = [...allIndustries].sort((a, b) => {
   </footer>
 </BaseLayout>
 
+<script>
+  const TOOLTIP_WIDTH  = 260;
+  const TOOLTIP_HEIGHT = 120; // approximate
+  document.querySelectorAll<HTMLElement>('.industry-tag[data-tooltip]').forEach((tag) => {
+    tag.addEventListener('mouseenter', () => {
+      const rect   = tag.getBoundingClientRect();
+      const vw     = window.innerWidth;
+      const center = rect.left + rect.width / 2;
+
+      // Horizontal
+      tag.classList.remove('tt-pin-left', 'tt-pin-right');
+      if (center - TOOLTIP_WIDTH / 2 < 8) {
+        tag.classList.add('tt-pin-left');
+      } else if (center + TOOLTIP_WIDTH / 2 > vw - 8) {
+        tag.classList.add('tt-pin-right');
+      }
+
+      // Vertical — flip below if not enough room above
+      tag.classList.remove('tt-below');
+      if (rect.top < TOOLTIP_HEIGHT + 16) {
+        tag.classList.add('tt-below');
+      }
+    });
+  });
+</script>
+
 <style>
   /* ── Page header ──────────────────────────────────── */
   .page-header {
@@ -169,6 +185,18 @@ const industries = [...allIndustries].sort((a, b) => {
   }
   .hide-mobile { display: none; }
   @media (min-width: 768px) { .hide-mobile { display: inline; } }
+
+  /* ── Section intro ────────────────────────────────── */
+  .work-intro {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-family: var(--font-heading);
+    font-weight: 300;
+    color: var(--color-text);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    max-width: 720px;
+    margin: 0 0 48px;
+  }
 
   /* ── Stats bar ────────────────────────────────────── */
   .stats-bar {
@@ -228,17 +256,14 @@ const industries = [...allIndustries].sort((a, b) => {
   .industries-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    column-gap: 64px;
+    row-gap: 56px;
   }
   @media (max-width: 640px) {
     .industries-grid { grid-template-columns: 1fr; }
   }
 
   .industry-card {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 32px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -246,11 +271,11 @@ const industries = [...allIndustries].sort((a, b) => {
   .industry-body { flex: 1; }
   .industry-name {
     font-family: var(--font-heading);
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 28px;
+    font-weight: 700;
     color: var(--color-text);
     margin-bottom: 12px;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
   .industry-desc {
     font-size: 15px;
@@ -263,17 +288,90 @@ const industries = [...allIndustries].sort((a, b) => {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-border);
   }
   .industry-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 10px 5px 6px;
+    padding: 5px 12px;
     border: 1px solid var(--color-border);
     border-radius: 999px;
     background: var(--color-bg);
+  }
+  .industry-tag--overflow {
+    padding: 5px 10px;
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+
+  /* Tag tooltip */
+  .industry-tag[data-tooltip] {
+    position: relative;
+    cursor: default;
+  }
+  .industry-tag[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 260px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    white-space: normal;
+    text-align: left;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  .industry-tag[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  /* Pinned left: tooltip anchors to left edge of tag */
+  .industry-tag.tt-pin-left::after {
+    left: 0;
+    transform: translateX(0) translateY(4px);
+  }
+  .industry-tag.tt-pin-left:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+  /* Pinned right: tooltip anchors to right edge of tag */
+  .industry-tag.tt-pin-right::after {
+    left: auto;
+    right: 0;
+    transform: translateX(0) translateY(4px);
+  }
+  .industry-tag.tt-pin-right:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+  /* Flip below when near top of viewport */
+  .industry-tag.tt-below::after {
+    bottom: auto;
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+  .industry-tag.tt-below:hover::after {
+    transform: translateX(-50%) translateY(0);
+  }
+  .industry-tag.tt-below.tt-pin-left::after {
+    transform: translateX(0) translateY(-4px);
+  }
+  .industry-tag.tt-below.tt-pin-left:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+  .industry-tag.tt-below.tt-pin-right::after {
+    transform: translateX(0) translateY(-4px);
+  }
+  .industry-tag.tt-below.tt-pin-right:hover::after {
+    transform: translateX(0) translateY(0);
   }
   .tag-logo {
     width: 16px;

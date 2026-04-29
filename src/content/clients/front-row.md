@@ -5,6 +5,7 @@ logo: /images/uploads/front-row-logo-light.svg
 logoDark: /images/uploads/front-row-logo-dark.svg
 industry:
   - Entertainment & Sports
+  - E-commerce
 services:
   - Product Design
 dateRange: "2018"

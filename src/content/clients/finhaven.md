@@ -5,6 +5,7 @@ logo: /images/uploads/finhaven-logo-light.svg
 logoDark: /images/uploads/finhaven-logo-dark.svg
 industry:
   - Fintech
+  - Blockchain & Web3
 services:
   - Design Systems
   - Brand & Identity

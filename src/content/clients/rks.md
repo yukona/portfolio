@@ -5,6 +5,7 @@ logo: /images/uploads/rks-logo-light.svg
 logoDark: /images/uploads/rks-logo-dark.svg
 industry:
   - Consulting
+  - Agency
 services:
   - Web Design & Development
 dateRange: "2018"

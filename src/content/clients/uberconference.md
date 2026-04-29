@@ -5,6 +5,7 @@ logo: /images/uploads/uberconference-logo-light.svg
 logoDark: /images/uploads/uberconference-logo-dark.svg
 industry:
   - Communications
+  - Unified Communications
 services:
   - Conversion Optimization
   - Design Systems

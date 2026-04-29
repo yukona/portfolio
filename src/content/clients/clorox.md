@@ -5,6 +5,7 @@ logo: /images/uploads/the_clorox_company-logo-light.svg
 logoDark: /images/uploads/the_clorox_company-logo-dark.svg
 industry:
   - Consumer Goods
+  - E-commerce
 services:
   - Conversion Optimization
   - Product Design

@@ -98,6 +98,12 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <!-- Gooey button blobs -->
   <script>
     document.querySelectorAll<HTMLElement>('.btn').forEach((btn) => {
+      // Wrap existing content in a label span so z-index works on text nodes
+      const label = document.createElement('span');
+      label.className = 'btn-label';
+      while (btn.firstChild) label.appendChild(btn.firstChild);
+      btn.appendChild(label);
+
       const goo = document.createElement('span');
       goo.className = 'btn-goo';
       btn.insertBefore(goo, btn.firstChild);
