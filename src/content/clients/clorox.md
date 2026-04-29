@@ -8,6 +8,8 @@ industry:
 dateRange: "2021"
 summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
   tempor incididunt ut labore et dolore magna aliqua
+companyDescription: "The Clorox Company is a leading American consumer goods manufacturer best known for bleach and household cleaning products. With $7B+ in annual revenue, Clorox operates across health, wellness, and household categories with brands sold in over 100 countries."
 protected: false
+featuredLogo: true
 projects: []
 ---

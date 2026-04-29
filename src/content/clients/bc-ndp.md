@@ -8,6 +8,7 @@ industry:
 dateRange: "2018"
 summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
   tempor incididunt ut labore et dolore magna aliqua
+companyDescription: "The BC NDP is British Columbia's centre-left provincial political party, forming government in BC since 2017. The party focuses on public services, affordability, and climate policy for British Columbians."
 protected: false
 projects: []
 ---

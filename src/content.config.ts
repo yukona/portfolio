@@ -33,6 +33,7 @@ const clients = defineCollection({
     industry: z.array(z.string()).default([]),
     dateRange: z.string(),
     summary: z.string(),
+    companyDescription: z.string().optional(),
     pageTitle: z.string().optional(),
     metaDescription: z.string().optional(),
     featuredWork: z.boolean().default(false),

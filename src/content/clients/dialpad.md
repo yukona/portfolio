@@ -8,7 +8,10 @@ industry:
 dateRange: 2013 – 2016
 summary: Product Designer for Dialpad and UberConference across desktop, mobile
   and integrations
+companyDescription: "Dialpad is an AI-powered cloud communications platform offering business phone, messaging, video meetings, and contact centre solutions. It serves tens of thousands of companies worldwide with a unified workspace built on Google Cloud."
 protected: false
+featuredLogo: true
+featuredWork: true
 projects:
   - title: Dialpad Desktop & Mobile Apps
     description: Designed the core Dialpad experience across desktop and mobile —
@@ -42,5 +45,4 @@ projects:
       - Design Systems
       - Figma
     year: 2013–2016
-featuredWork: true
 ---
