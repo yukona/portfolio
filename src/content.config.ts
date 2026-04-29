@@ -116,4 +116,16 @@ const values = defineCollection({
   }),
 });
 
-export const collections = { projects, clients, industries, services, values };
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/testimonials' }),
+  schema: z.object({
+    name: z.string(),
+    title: z.string(),
+    company: z.string(),
+    quote: z.string(),
+    avatar: z.string().optional(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { projects, clients, industries, services, values, testimonials };

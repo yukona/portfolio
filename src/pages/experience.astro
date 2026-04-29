@@ -55,7 +55,7 @@ const industries = [...allIndustries].sort((a, b) => {
   <section class="section">
     <div class="container">
       <span class="section-label" data-reveal>Companies</span>
-      <p class="work-intro" data-reveal>The startups, scaleups and enterprises shaping what comes next.</p>
+      <p class="work-intro" data-word-reveal>The startups, scaleups and enterprises shaping what comes next.</p>
       <div class="projects-list" data-reveal>
         {clients.map((c, i) => (
           <ProjectCard
@@ -132,7 +132,6 @@ const industries = [...allIndustries].sort((a, b) => {
       <p class="footer-copy">© {new Date().getFullYear()} Kris Burger. All Rights Reserved.</p>
       <nav class="footer-links" aria-label="Footer navigation">
         <a href="https://linkedin.com/in/krisburger" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://angel.co/krisburger"        target="_blank" rel="noopener">AngelList</a>
         <a href="mailto:kris@krisburger.com">Email</a>
       </nav>
     </div>
@@ -188,13 +187,13 @@ const industries = [...allIndustries].sort((a, b) => {
 
   /* ── Section intro ────────────────────────────────── */
   .work-intro {
-    font-size: clamp(20px, 2.5vw, 28px);
+    font-size: clamp(26px, 3.5vw, 48px);
     font-family: var(--font-heading);
-    font-weight: 300;
+    font-weight: 500;
     color: var(--color-text);
-    line-height: 1.4;
+    line-height: 1.35;
     letter-spacing: -0.02em;
-    max-width: 720px;
+    max-width: 900px;
     margin: 0 0 48px;
   }
 

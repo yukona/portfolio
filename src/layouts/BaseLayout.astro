@@ -143,6 +143,32 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
     }
   </script>
 
+  <!-- Word-by-word scroll opacity reveal -->
+  <script>
+    (function () {
+      document.querySelectorAll<HTMLElement>('[data-word-reveal]').forEach((el) => {
+        const text = el.textContent || '';
+        el.innerHTML = text.trim().split(/\s+/).map(
+          (w) => `<span class="word-token">${w}</span>`
+        ).join(' ');
+      });
+
+      function updateWordOpacity() {
+        const vh = window.innerHeight;
+        const fadeStart = vh * 0.88;
+        const fadeEnd   = vh * 0.38;
+        document.querySelectorAll<HTMLElement>('.word-token').forEach((word) => {
+          const center = word.getBoundingClientRect().top + word.offsetHeight / 2;
+          const progress = Math.max(0, Math.min(1, (fadeStart - center) / (fadeStart - fadeEnd)));
+          word.style.opacity = String(0.15 + progress * 0.85);
+        });
+      }
+
+      updateWordOpacity();
+      window.addEventListener('scroll', updateWordOpacity, { passive: true });
+    })();
+  </script>
+
   <!-- Scroll reveal via IntersectionObserver -->
   <script>
     const revealObserver = new IntersectionObserver(

@@ -4,9 +4,10 @@ interface Props {
   name: string;
   title: string;
   company: string;
+  avatar?: string;
 }
 
-const { quote, name, title, company } = Astro.props;
+const { quote, name, title, company, avatar } = Astro.props;
 ---
 
 <figure class="testimonial-card" data-reveal-child>
@@ -14,8 +15,14 @@ const { quote, name, title, company } = Astro.props;
     <p class="quote-text">"{quote}"</p>
   </blockquote>
   <figcaption class="quote-author">
-    <span class="author-name">{name}</span>
-    <span class="author-role">{title}, {company}</span>
+    {avatar
+      ? <img class="author-avatar" src={avatar} alt={name} width="40" height="40" />
+      : <div class="author-avatar author-avatar--placeholder" aria-hidden="true"></div>
+    }
+    <div class="author-meta">
+      <span class="author-name">{name}</span>
+      <span class="author-role">{title}, {company}</span>
+    </div>
   </figcaption>
 </figure>
 
@@ -37,6 +44,22 @@ const { quote, name, title, company } = Astro.props;
     margin: 0;
   }
   .quote-author {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+  .author-avatar--placeholder {
+    background: var(--color-border);
+  }
+  .author-meta {
     display: flex;
     flex-direction: column;
     gap: 4px;

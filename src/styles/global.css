@@ -90,6 +90,13 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
 .text-hero { font-size: clamp(48px, 7vw, 96px); }
 .text-section { font-size: clamp(36px, 5vw, 56px); }
 
+/* ── Word-by-word scroll reveal ──────────────────────────────────────────── */
+.word-token {
+  display: inline;
+  opacity: 0.15;
+  will-change: opacity;
+}
+
 /* ── Section label ───────────────────────────────────────────────────────── */
 .section-label {
   display: block;
