@@ -10,8 +10,10 @@ services:
   - Brand & Identity
   - Product Design
 dateRange: "2018"
-summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua
+summary: Founding designer at Finhaven. Conducted initial user and stakeholder
+  research, presenting findings to leadership to inform product direction. Created
+  the initial product design and brand from the ground up, contributing to a $5M
+  Series A raise. Designed and facilitated the implementation of the company website.
 companyDescription: "Finhaven is a technology and financial services group bridging traditional finance with blockchain and private markets — operating across deal-closing software, corporate finance advisory, and AI-powered capital market solutions."
 protected: false
 projects: []

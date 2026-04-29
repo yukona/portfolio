@@ -8,8 +8,8 @@ industry:
 services:
   - Brand & Identity
 dateRange: "2018"
-summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua
+summary: Supported the initial growth of Node AI with brand and identity design —
+  including logo, business cards, and document and slide templates.
 protected: false
 projects: []
 ---
