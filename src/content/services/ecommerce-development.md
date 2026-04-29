@@ -40,8 +40,14 @@ serviceItems:
   - title: Headless & custom builds
     description: "Custom storefront development for brands that have outgrown off-the-shelf platforms or need deeper integrations."
 faqs:
-  - question: "Do you work with platforms other than Shopify?"
-    answer: "Shopify is the primary platform I build on, but I've worked with WooCommerce and custom headless setups. If you're on a different platform, get in touch and we can discuss what's possible."
+  - question: "Do you work with Shopify?"
+    answer: "Yes. Shopify is the primary platform I build on — custom themes, app integrations, and full storefront builds. Whether you're launching from scratch or migrating from another platform, it's where I do my best eCommerce work."
+  - question: "Do you work with WordPress and WooCommerce?"
+    answer: "Yes. WooCommerce is a solid option for brands that are already in the WordPress ecosystem or need more flexibility than Shopify allows. I've built and redesigned WooCommerce stores across retail and service categories."
+  - question: "Do you work with BigCommerce?"
+    answer: "Yes. BigCommerce is a strong fit for higher-volume stores or brands with complex catalogue and pricing requirements. I've worked with the platform on both design and front-end development engagements."
+  - question: "Do you do a design phase before development?"
+    answer: "Yes, in most cases. A design phase reduces build risk, aligns stakeholders early, and typically results in a better outcome. That said, for smaller scopes or well-defined projects with existing brand guidelines, we can move faster and fold design decisions into development. I'll recommend the right approach based on what you're building."
   - question: "Can you redesign our store without rebuilding it from scratch?"
     answer: "Yes. Depending on your current setup, a redesign can range from a visual refresh within your existing theme to a full rebuild. I'll assess what makes sense technically and commercially before recommending an approach."
   - question: "Do you handle copywriting and product photography?"

@@ -6,6 +6,7 @@ industry: [Cybersecurity]
 dateRange: "2019 – 2024"
 summary: "Design Lead across the Prisma Cloud product suite and platform integrations"
 protected: false
+featuredWork: true
 projects:
   - title: Prisma Cloud Core Product
     description: "Led design across the core Prisma Cloud security platform — a complex enterprise product used by thousands of security teams globally. Responsible for defining features, leading design direction and maintaining consistency across a fast-moving product team."

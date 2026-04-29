@@ -13,5 +13,6 @@ summary: >-2
     by Foundation Capital, and the company was subsequently acquired by Proofpoint in 
     early 2026.
 protected: false
+featuredWork: true
 projects: []
 ---

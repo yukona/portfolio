@@ -3,87 +3,162 @@ import { getCollection } from 'astro:content';
 
 const allClients = await getCollection('clients');
 const logos = allClients
-  .filter((c) => c.data.featured)
-  .map((c) => ({ name: c.data.name, logo: c.data.logo, logoDark: c.data.logoDark, slug: c.data.slug }));
+  .filter((c) => c.data.featuredLogo)
+  .map((c) => ({
+    name: c.data.name,
+    logo: c.data.logo ?? null,
+    logoDark: c.data.logoDark ?? null,
+  }));
+
+const SLOTS = Math.min(logos.length, 8);
+const initial = logos.slice(0, SLOTS);
 ---
 
 {logos.length > 0 && (
-  <div class="ticker-wrapper" aria-hidden="true">
-    <div class="ticker-track">
-      {[...logos, ...logos].map((logo) => (
-        <div class="ticker-item">
+  <div class="logo-grid" id="logo-grid">
+    {initial.map((logo, i) => (
+      <div class="logo-cell" data-slot={i}>
+        <div class="logo-inner">
           {logo.logo ? (
-            <>
-              {logo.logoDark
-                ? <>
-                    <img src={logo.logo}     alt={logo.name} class="ticker-logo logo-light" />
-                    <img src={logo.logoDark} alt={logo.name} class="ticker-logo logo-dark"  />
-                  </>
-                : <img src={logo.logo} alt={logo.name} class="ticker-logo" />
-              }
-            </>
+            logo.logoDark ? (
+              <>
+                <img src={logo.logo}     alt={logo.name} class="logo-img logo-light" />
+                <img src={logo.logoDark} alt={logo.name} class="logo-img logo-dark"  />
+              </>
+            ) : (
+              <img src={logo.logo} alt={logo.name} class="logo-img" />
+            )
           ) : (
-            <span class="ticker-name">{logo.name}</span>
+            <span class="logo-name">{logo.name}</span>
           )}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
   </div>
 )}
 
+<script define:vars={{ logos, SLOTS }}>
+  const cells = Array.from(document.querySelectorAll('#logo-grid .logo-cell'));
+  if (!cells.length) return;
+
+  const FLIP_MS    = 140;
+  const STAGGER_MS = 60;
+  const CYCLE_MS   = 3200;
+
+  function renderLogo(inner, logo) {
+    while (inner.firstChild) inner.removeChild(inner.firstChild);
+    if (logo.logo) {
+      if (logo.logoDark) {
+        const l = document.createElement('img');
+        l.src = logo.logo; l.alt = logo.name; l.className = 'logo-img logo-light';
+        const d = document.createElement('img');
+        d.src = logo.logoDark; d.alt = logo.name; d.className = 'logo-img logo-dark';
+        inner.appendChild(l);
+        inner.appendChild(d);
+      } else {
+        const img = document.createElement('img');
+        img.src = logo.logo; img.alt = logo.name; img.className = 'logo-img';
+        inner.appendChild(img);
+      }
+    } else {
+      const span = document.createElement('span');
+      span.className = 'logo-name';
+      span.textContent = logo.name;
+      inner.appendChild(span);
+    }
+  }
+
+  function flipCell(cell, logo, delay) {
+    setTimeout(() => {
+      const inner = cell.querySelector('.logo-inner');
+      inner.style.transition = `transform ${FLIP_MS}ms ease-in`;
+      inner.style.transform  = 'rotateY(-90deg)';
+      setTimeout(() => {
+        renderLogo(inner, logo);
+        inner.style.transition = 'none';
+        inner.style.transform  = 'rotateY(90deg)';
+        void inner.offsetWidth;
+        inner.style.transition = `transform ${FLIP_MS}ms ease-out`;
+        inner.style.transform  = 'rotateY(0deg)';
+      }, FLIP_MS);
+    }, delay);
+  }
+
+  // Intro: flip each cell in left to right on load
+  cells.forEach((cell, i) => {
+    const inner = cell.querySelector('.logo-inner');
+    inner.style.transform = 'rotateY(90deg)';
+    inner.style.opacity   = '1';
+    setTimeout(() => {
+      inner.style.transition = `transform ${FLIP_MS}ms ease-out`;
+      inner.style.transform  = 'rotateY(0deg)';
+    }, 200 + i * STAGGER_MS);
+  });
+
+  // Cycle: only if more logos than slots
+  if (logos.length > SLOTS) {
+    let nextIdx = SLOTS;
+    setInterval(() => {
+      cells.forEach((cell, slotIdx) => {
+        flipCell(cell, logos[nextIdx % logos.length], slotIdx * STAGGER_MS);
+        nextIdx++;
+      });
+    }, CYCLE_MS);
+  }
+</script>
+
 <style>
-  .ticker-wrapper {
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
     overflow: hidden;
-    position: relative;
-    width: 100%;
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 15%,
-      black 85%,
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 15%,
-      black 85%,
-      transparent 100%
-    );
   }
-  .ticker-track {
-    display: flex;
-    width: max-content;
-    animation: ticker 28s linear infinite;
-  }
-  .ticker-track:hover { animation-play-state: paused; }
-  .ticker-item {
+  @media (max-width: 768px) { .logo-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .logo-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .logo-cell {
+    background: var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 48px;
-    opacity: 0.45;
-    transition: opacity 0.2s ease;
-    filter: grayscale(1);
-    white-space: nowrap;
+    padding: 40px 32px;
+    perspective: 600px;
   }
-  .ticker-item:hover {
+
+  .logo-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+    transform-style: preserve-3d;
+  }
+  .logo-cell:hover .logo-inner {
     opacity: 1;
     filter: grayscale(0);
   }
-  .ticker-name {
-    font-family: var(--font-heading);
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--color-text);
-  }
-  .ticker-logo {
+
+  .logo-img {
     height: 28px;
     width: auto;
     max-width: 120px;
     object-fit: contain;
+    display: block;
   }
+  .logo-name {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
   /* Light/dark logo switching */
   [data-theme="dark"]  .logo-light,
   [data-theme="light"] .logo-dark  { display: none; }

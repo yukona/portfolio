@@ -184,6 +184,13 @@ collections:
       - { label: Logo,        name: logo,      widget: image,  required: false }
       - { label: Logo (Dark), name: logoDark, widget: image,  required: false, hint: "White/light version of the logo for dark mode backgrounds" }
       - { label: Color Icon,  name: logoColor, widget: image, required: false, hint: "Full-color icon/mark version of the logo" }
+      - { label: Featured Image, name: featuredImage, widget: image, required: false, hint: "Hero/thumbnail image shown in the work list" }
+      - label: Services
+        name: services
+        widget: list
+        required: false
+        hint: "Services provided to this client e.g. Product Design, Brand Identity"
+        field: { label: Service, name: service, widget: string }
       - label: Industry
         name: industry
         widget: select
@@ -212,7 +219,8 @@ collections:
       - { label: Summary,          name: summary,         widget: text }
       - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
       - { label: Meta Description, name: metaDescription, widget: text,   required: false, hint: "SEO description shown in search results" }
-      - { label: Featured,   name: featured,  widget: boolean, default: false, hint: "Show this client in the logo ticker on the homepage" }
+      - { label: Featured Work, name: featuredWork, widget: boolean, default: false, hint: "Show this client in the Featured Work list on the homepage" }
+      - { label: Featured Logo, name: featuredLogo, widget: boolean, default: false, hint: "Show this client's logo in the Trusted By grid on the homepage" }
       - { label: Protected,  name: protected, widget: boolean, default: false }
       - { label: Password,   name: password,  widget: string,  required: false }
       - label: Projects

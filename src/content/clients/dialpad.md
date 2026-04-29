@@ -6,6 +6,7 @@ industry: [Communications]
 dateRange: "2013 – 2016"
 summary: "Product Designer for Dialpad and UberConference across desktop, mobile and integrations"
 protected: false
+featuredWork: true
 projects:
   - title: Dialpad Desktop & Mobile Apps
     description: "Designed the core Dialpad experience across desktop and mobile — voice, video, messaging and meetings. Worked across iOS, Android and web with a focus on simplicity for complex communication workflows."

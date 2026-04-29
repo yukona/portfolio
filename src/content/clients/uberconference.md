@@ -5,5 +5,6 @@ industry: [Communications]
 dateRange: ""
 summary: ""
 protected: false
+featuredWork: true
 projects: []
 ---

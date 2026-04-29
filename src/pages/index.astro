@@ -6,14 +6,11 @@ import LogoTicker from '../components/LogoTicker.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
 import { getCollection } from 'astro:content';
 
-const allProjects = await getCollection('projects');
-const featured = allProjects.find((p) => p.data.featured);
-const rest = allProjects
-  .filter((p) => !p.data.featured)
-  .sort((a, b) => {
-    const endYear = (y: string) => parseInt(y.split('–').pop() ?? y);
-    return endYear(b.data.year) - endYear(a.data.year);
-  });
+const allClients = await getCollection('clients');
+const endYear = (s: string) => parseInt(s.split('–').pop()?.trim() ?? s);
+const featuredClients = allClients
+  .filter((c) => c.data.featuredWork)
+  .sort((a, b) => endYear(b.data.dateRange) - endYear(a.data.dateRange));
 
 const experience = [
   {
@@ -57,7 +54,7 @@ const experience = [
         </p>
         <div class="hero-ctas">
           <a href="#work" class="btn btn-primary">View work</a>
-          <a href="#contact" class="btn btn-outline">Get in touch</a>
+          <a href="mailto:kris@krisburger.com?subject=Project%20Enquiry%20via%20krisburger.com" class="btn btn-outline">Get in touch</a>
         </div>
       </div>
     </div>
@@ -74,39 +71,23 @@ const experience = [
   <!-- ────────────────────────────────────── SELECTED WORK ── -->
   <section id="work" class="section">
     <div class="container">
-      <span class="section-label" data-reveal>Selected work</span>
+      <span class="section-label" data-reveal>Featured work</span>
 
-      {featured && (
-        <div class="featured-wrap" data-reveal>
+      <div class="projects-list" data-reveal>
+        {featuredClients.map((c, i) => (
           <ProjectCard
-            slug={featured.id}
-            title={featured.data.title}
-            description={featured.data.description}
-            tags={featured.data.tags}
-            year={featured.data.year}
-            thumbnail={featured.data.thumbnail}
-            featured={true}
-            index={0}
+            slug={c.id}
+            name={c.data.name}
+            summary={c.data.summary}
+            services={c.data.services}
+            dateRange={c.data.dateRange}
+            featuredImage={c.data.featuredImage}
+            logo={c.data.logo}
+            logoDark={c.data.logoDark}
+            index={i}
           />
-        </div>
-      )}
-
-      {rest.length > 0 && (
-        <div class="projects-grid" data-reveal>
-          {rest.map((p, i) => (
-            <ProjectCard
-              slug={p.id}
-              title={p.data.title}
-              description={p.data.description}
-              tags={p.data.tags}
-              year={p.data.year}
-              thumbnail={p.data.thumbnail}
-              featured={false}
-              index={i + 1}
-            />
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   </section>
 
@@ -231,6 +212,54 @@ const experience = [
     </div>
   </section>
 
+  <!-- ─────────────────────────────────────────── FAQ ── -->
+  <section id="faq" class="section section--surface">
+    <div class="container faq-container">
+      <span class="section-label" data-reveal>Common questions</span>
+      <div class="faq-list" data-reveal>
+        {[
+          {
+            q: 'Do you still design hands-on?',
+            a: "Yes — always. Strategy and leadership are part of the work, but I stay close to the craft. I'm in Figma regularly, working through concepts, pushing pixels, and staying current with how tools and patterns are evolving.",
+          },
+          {
+            q: 'How do you work with AI in your process?',
+            a: "As a tool, not a shortcut. I use AI to accelerate ideation, explore directions faster, and reduce repetitive production work — while keeping creative direction and design judgement firmly human. The output gets better; the thinking stays rigorous.",
+          },
+          {
+            q: 'What kinds of organizations do you work best with?',
+            a: "Startups and scaleups with real problems to solve — teams that value clarity, move with intent, and want design to do more than make things look good. I'm equally comfortable as the first design hire or embedded in an established org.",
+          },
+          {
+            q: 'What industries do you have the most experience in?',
+            a: "Cybersecurity, SaaS, and fintech make up the bulk of my product work. On the brand and eCommerce side I've worked across consumer goods, retail, and professional services. I follow the problem more than the category.",
+          },
+          {
+            q: 'What is your approach to design leadership?',
+            a: "Give people clear direction, real ownership, and honest feedback — then get out of the way. I try to build environments where designers can do their best work, not just execute on a brief. Good leadership makes the work better and the team stronger.",
+          },
+          {
+            q: 'What kinds of problems do you solve best?',
+            a: "The ones without an obvious answer. 0-to-1 product design, complex platform overhauls, brand systems that need to scale, teams that need structure without losing momentum. I do well when the problem is still being defined.",
+          },
+        ].map((item, i) => (
+          <div class="faq-item" data-index={i}>
+            <button class="faq-trigger" aria-expanded="false" aria-controls={`home-faq-${i}`}>
+              <span class="faq-question">{item.q}</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg class="icon-plus"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg class="icon-minus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </button>
+            <div class="faq-body" id={`home-faq-${i}`} role="region">
+              <p class="faq-answer">{item.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ─────────────────────────────────────────── CONTACT ── -->
   <section id="contact" class="section section--surface">
     <div class="container contact-inner">
@@ -309,6 +338,31 @@ const experience = [
     </div>
   </footer>
 </BaseLayout>
+
+<!-- ─────────────────────────────────────── FAQ ACCORDION ── -->
+<script>
+  document.querySelectorAll('#faq .faq-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item   = btn.closest('.faq-item') as HTMLElement;
+      const body   = item.querySelector('.faq-body') as HTMLElement;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      document.querySelectorAll('#faq .faq-item').forEach((el) => {
+        const b = el.querySelector('.faq-body') as HTMLElement;
+        const t = el.querySelector('.faq-trigger') as HTMLElement;
+        el.classList.remove('is-open');
+        t?.setAttribute('aria-expanded', 'false');
+        if (b) b.style.maxHeight = '0';
+      });
+
+      if (!isOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
 
 <!-- ─────────────────────────────────────── HERO CYCLING TEXT ── -->
 <script>
@@ -414,15 +468,7 @@ const experience = [
   }
 
   /* ── Work ─────────────────────────────────────────── */
-  .featured-wrap { margin-bottom: 32px; }
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-  @media (max-width: 640px) {
-    .projects-grid { grid-template-columns: 1fr; }
-  }
+  .projects-list { display: flex; flex-direction: column; }
 
   /* ── Services ─────────────────────────────────────── */
   .services-grid {
@@ -551,6 +597,45 @@ const experience = [
   @media (max-width: 768px) {
     .about-grid { grid-template-columns: 1fr; gap: 48px; }
     .about-visual { min-height: 200px; }
+  }
+
+  /* ── FAQ ──────────────────────────────────────────── */
+  .faq-container { max-width: 760px; }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item { border-bottom: 1px solid var(--color-border); }
+  .faq-item:first-child { border-top: 1px solid var(--color-border); }
+  .faq-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 0;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+  .faq-question {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .faq-icon { flex-shrink: 0; color: var(--color-text-muted); transition: color 0.2s ease; }
+  .faq-trigger:hover .faq-icon { color: var(--color-text); }
+  .icon-plus  { display: block; }
+  .icon-minus { display: none; }
+  .faq-item.is-open .icon-plus  { display: none; }
+  .faq-item.is-open .icon-minus { display: block; }
+  .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .faq-answer {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0;
+    padding-bottom: 20px;
   }
 
   /* ── Contact ──────────────────────────────────────── */

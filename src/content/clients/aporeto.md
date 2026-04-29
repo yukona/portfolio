@@ -6,6 +6,7 @@ industry: [Cybersecurity]
 dateRange: "2016 – 2019"
 summary: "Founding designer — zero-trust cloud security product, from 0 to acquisition by Palo Alto Networks"
 protected: false
+featuredWork: true
 projects:
   - title: "Aporeto Product — 0 to 1"
     description: "Founding designer responsible for the entire product experience of Aporeto's zero-trust microsegmentation platform. Defined features, wireframed concepts, led user research and testing, and directed design from first line of code to acquisition."

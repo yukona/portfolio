@@ -5,5 +5,6 @@ industry: [Cybersecurity]
 dateRange: ""
 summary: ""
 protected: false
+featuredWork: true
 projects: []
 ---
