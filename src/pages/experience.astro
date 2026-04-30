@@ -27,7 +27,7 @@ const industries = [...allIndustries].sort((a, b) => {
   <!-- ── Page header ───────────────────────────────────────────── -->
   <header class="page-header">
     <div class="container">
-      <p class="page-eyebrow section-label" data-reveal>Selected clients</p>
+      <p class="page-eyebrow section-label" data-reveal>Who I've worked with</p>
       <h1 class="page-headline" data-reveal>Experience</h1>
       <p class="page-subhead" data-reveal>
         A selection of the startups, scaleups and enterprise companies<br class="hide-mobile" />
@@ -79,6 +79,7 @@ const industries = [...allIndustries].sort((a, b) => {
   <section class="section section--surface">
     <div class="container">
       <span class="section-label" data-reveal>Industries</span>
+      <p class="work-intro" data-word-reveal>Sectors I've worked across, from early-stage disruption to enterprise scale.</p>
       <div class="industries-grid" data-reveal>
         {industries.map((industry) => {
           const relatedClients = allClients
@@ -315,13 +316,13 @@ const industries = [...allIndustries].sort((a, b) => {
     left: 50%;
     transform: translateX(-50%) translateY(4px);
     width: 260px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background: var(--color-text);
+    border: 1px solid transparent;
     border-radius: 10px;
     padding: 12px 14px;
     font-size: 13px;
     line-height: 1.55;
-    color: var(--color-text-muted);
+    color: var(--color-bg);
     white-space: normal;
     text-align: left;
     pointer-events: none;

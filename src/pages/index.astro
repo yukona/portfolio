@@ -158,15 +158,25 @@ const experience = [
     <div class="container">
       <span class="section-label" data-reveal>What people say</span>
       <p class="work-intro" data-word-reveal>The measure of good work is what the people you did it with say afterwards.</p>
-      <div class="testimonials-grid" data-reveal>
+
+      <!-- Visible 2×1 grid (slots filled + cycled by JS) -->
+      <div class="testimonials-grid" id="testimonials-grid" data-reveal>
+        <div class="testimonial-slot" data-slot="0"></div>
+        <div class="testimonial-slot" data-slot="1"></div>
+      </div>
+
+      <!-- Hidden pool: all cards pre-rendered for JS to clone -->
+      <div id="testimonial-pool" aria-hidden="true" style="display:none">
         {allTestimonials.map((t) => (
-          <TestimonialCard
-            quote={t.data.quote}
-            name={t.data.name}
-            title={t.data.title}
-            company={t.data.company}
-            avatar={t.data.avatar}
-          />
+          <div>
+            <TestimonialCard
+              quote={t.data.quote}
+              name={t.data.name}
+              title={t.data.title}
+              company={t.data.company}
+              avatar={t.data.avatar}
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -370,6 +380,55 @@ const experience = [
   }
 </script>
 
+<script>
+  // Testimonial grid cycling
+  const TSLOTS    = 2;
+  const FADE_MS   = 400;
+  const CYCLE_MS  = 5000;
+
+  const grid = document.getElementById('testimonials-grid');
+  const pool = document.getElementById('testimonial-pool');
+  if (grid && pool) {
+    const poolItems = Array.from(pool.children); // each is a <div> wrapping a card
+    const total     = poolItems.length;
+    const slots     = Array.from(grid.querySelectorAll<HTMLElement>('.testimonial-slot'));
+
+    function fillSlot(slot: HTMLElement, poolItem: Element) {
+      while (slot.firstChild) slot.removeChild(slot.firstChild);
+      const card = poolItem.firstElementChild!.cloneNode(true) as HTMLElement;
+      // Ensure cloned reveal-children are visible immediately
+      card.querySelectorAll('[data-reveal-child]').forEach((el) => el.classList.add('is-visible'));
+      if (card.hasAttribute('data-reveal-child')) card.classList.add('is-visible');
+      slot.appendChild(card);
+    }
+
+    // Fill initial 4 slots
+    slots.forEach((slot, i) => {
+      if (poolItems[i]) fillSlot(slot, poolItems[i]);
+    });
+
+    // Only cycle if there are more testimonials than slots
+    if (total > TSLOTS) {
+      let queueIdx = TSLOTS;
+      let slotIdx  = 0;
+
+      function cycleNext() {
+        const slot = slots[slotIdx];
+        slot.style.opacity = '0';
+        setTimeout(() => {
+          fillSlot(slot, poolItems[queueIdx % total]);
+          slot.style.opacity = '1';
+          slotIdx  = (slotIdx  + 1) % TSLOTS;
+          queueIdx = (queueIdx + 1) % total;
+          setTimeout(cycleNext, CYCLE_MS);
+        }, FADE_MS);
+      }
+
+      setTimeout(cycleNext, CYCLE_MS * 2);
+    }
+  }
+</script>
+
 <style>
   /* ── Featured work intro ───────────────────────────── */
   .work-intro {
@@ -524,6 +583,9 @@ const experience = [
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+  }
+  .testimonial-slot {
+    transition: opacity 0.4s ease;
   }
   @media (max-width: 640px) {
     .testimonials-grid { grid-template-columns: 1fr; }

@@ -27,17 +27,13 @@ const services = [...allServices].sort((a, b) => a.data.order - b.data.order);
     <div class="container">
       <div class="services-grid" data-reveal>
         {services.map((service) => (
-          <a href={`/services/${service.id}`} class="service-card" data-reveal-child>
+          <a href={`/services/${service.id}`} class="service-card" data-reveal-child data-cursor-grow>
             <div class="card-body">
               <h2 class="card-title">{service.data.title}</h2>
               <p class="card-subhead">{service.data.subhead}</p>
             </div>
             <span class="card-cta">
               Learn more
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
             </span>
           </a>
         ))}

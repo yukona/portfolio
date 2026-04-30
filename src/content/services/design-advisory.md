@@ -1,63 +1,64 @@
 ---
 title: Design Advisory
 slug: design-advisory
-headline: "Senior design judgment, available without the full-time hire."
-subhead: "Strategic design counsel for founders, CPOs, and executive teams navigating product direction, design org growth, or a pivotal moment in their company's trajectory."
+headline: "Design leadership for every stage of the journey."
+subhead: "From the first design decisions through to a scaled team — embedded or external, strategic or hands-on, and everything in between."
 credibility:
-  - "10+ years as a senior design practitioner and team leader"
-  - "Scaled design orgs from 3 to 12 at Palo Alto Networks / Prisma Cloud"
-  - "First design hire at Aporeto — built design function from zero through acquisition"
-  - "Worked across seed-stage startups, growth-stage scaleups, and enterprise products"
+  - "Founding designer at multiple companies that went on to raise significant rounds or reach acquisition"
+  - "Scaled design orgs and helped companies hire and build their first design teams"
+  - "Works across the full arc — 0-to-1 execution, team growth, mentorship, and ongoing strategic support"
+  - "Equally comfortable as an external sounding board or embedded within the team"
 process:
   - step: "01"
-    title: Assess
-    description: "A structured audit of your current design maturity — team, process, artifacts, and outputs — to establish where you are and what's limiting progress."
+    title: Foundation
+    description: "Establish the product's design direction from scratch — early decisions on UX, visual language, and component foundations that everything else builds on."
   - step: "02"
-    title: Align
-    description: "A shared strategic picture: what design needs to accomplish for the business over the next 6–12 months and where to focus first."
+    title: Build
+    description: "Hands-on design execution across core product areas, with strategic input on prioritisation, scope, and what actually matters at this stage."
   - step: "03"
-    title: Advise
-    description: "Recurring structured sessions — weekly or biweekly — plus async support between sessions for reviews, decisions, and escalations."
+    title: Grow
+    description: "Support for bringing the right design talent in — role scoping, candidate evaluation, and helping you build a team that can carry the work forward."
   - step: "04"
-    title: Enable
-    description: "Frameworks, hiring playbooks, and practices embedded in your team so the improvements outlast the engagement."
+    title: Sustain
+    description: "Ongoing mentorship, design reviews, and strategic advisory — staying connected as the team and product evolve."
 outcomes:
+  - metric: "0→1"
+    label: "Products taken from concept to shipped across multiple founding roles"
   - metric: "3→12"
     label: "Design org scaled at Palo Alto Networks"
-  - metric: "2"
-    label: "Products taken from 0 to acquisition"
-  - metric: "10+"
-    label: "Years of senior design leadership"
+  - metric: "4+"
+    label: "Companies supported through successful fundraising rounds"
 serviceItems:
-  - title: Fractional Design Lead
-    description: "Ongoing senior design leadership on a retained basis — strategy, team management, stakeholder alignment, and execution oversight."
-  - title: Design org assessment
-    description: "A structured review of your team structure, hiring gaps, processes, and design quality — with a prioritised action plan."
-  - title: Hiring & team building
-    description: "Role scoping, job description review, candidate evaluation, and interview process design to help you hire and build the right design team."
-  - title: Design reviews
-    description: "Regular critique sessions that raise the quality bar and give your design team senior feedback without adding headcount."
-  - title: Design strategy workshops
-    description: "Facilitated working sessions that align product, design, and business leadership on direction, priorities, and investment."
-  - title: Investor & board narrative
-    description: "Translating design and product vision into clear, compelling narratives for fundraising, board decks, and external positioning."
+  - title: 0-to-1 product design
+    description: "End-to-end design for early-stage products — from the first wireframe through to a polished, shippable experience."
+  - title: Brand and identity foundation
+    description: "Visual language, logo, and identity systems that give early-stage products something credible and coherent to build on."
+  - title: Design team hiring
+    description: "Role definition, job description review, candidate evaluation, and interview process design to help you hire the right design talent."
+  - title: Design mentorship
+    description: "Structured support for designers on your team — feedback, career guidance, and raising the quality of the work over time."
+  - title: Strategic design advisory
+    description: "A senior outside perspective on product direction, design priorities, and how design connects to your business goals."
+  - title: Embedded or external support
+    description: "Works however makes sense — integrated into your team and process, or as an independent advisor with a clear outside view."
 faqs:
-  - question: "How is this different from hiring a full-time design leader?"
-    answer: "Advisory gives you senior judgment and a proven outside perspective at a fraction of the cost and commitment. It works best when you have a functioning design team that needs better direction, or when you're between design leadership hires and need to maintain momentum."
-  - question: "What does a typical engagement look like?"
-    answer: "Most advisory engagements are 3–6 months with weekly or biweekly structured sessions. Between sessions I'm available async for reviews, decisions, and critical feedback. Scope and cadence are set at the start based on what you actually need."
-  - question: "Do you take on multiple advisory clients at once?"
-    answer: "Yes, but selectively. I keep a small roster to ensure each engagement gets genuine attention. If there's a conflict of interest — same market, competing products — I'll tell you upfront."
-  - question: "Can advisory evolve into embedded design work?"
-    answer: "Absolutely. Several advisory relationships have expanded into hands-on design work when it made sense. The advisory relationship gives us a shared foundation that makes deeper collaboration faster and more effective."
-ctaHeadline: "Need a senior design perspective?"
-ctaSubhead: "Whether you're scaling a team, navigating a product pivot, or just want a sharper outside eye — let's talk."
+  - question: "Is this more strategic or hands-on?"
+    answer: "Both. Advisory relationships often start with 0-to-1 execution and shift toward mentorship and strategic input as the team grows. The balance depends on what you actually need."
+  - question: "Do you work externally or embedded in teams?"
+    answer: "Either. Some engagements work best with an independent outside perspective; others benefit from being closer to the team and day-to-day work. I'm open to both and have worked well in each."
+  - question: "Can you help us hire our first designer?"
+    answer: "Yes — and it's one of the most high-leverage things to get right. I can help define the role, evaluate candidates, structure the interview process, and make sure you're hiring for what the company actually needs at this stage."
+  - question: "What does an ongoing advisory relationship look like?"
+    answer: "It varies. Some clients want a regular touchpoint for reviews and strategic input; others reach out when something specific comes up. I keep it flexible and focused on what's genuinely useful."
+  - question: "Have advisory relationships led to deeper collaboration?"
+    answer: "Often. Many start with a defined scope and evolve as the relationship develops and the company's needs change. I'm open to where things go."
+ctaHeadline: "Looking for a design partner who can grow with you?"
+ctaSubhead: "Whether you're starting from zero or scaling what you've built — let's talk about where you are and what would actually help."
 ctaLabel: "Start a conversation"
-relatedClientSlugs:
-  - dialpad
+relatedClientSlugs: []
 relatedProjectSlugs:
   - prisma-cloud
 pageTitle: "Design Advisory — Kris Burger"
-metaDescription: "Fractional design leadership and strategic design counsel from Kris Burger — for founders, CPOs, and teams at a pivotal moment."
+metaDescription: "Design advisory and leadership by Kris Burger — from 0-to-1 execution through team building, mentorship, and ongoing strategic support."
 order: 1
 ---

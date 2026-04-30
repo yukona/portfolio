@@ -73,7 +73,12 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
 <body>
   {!hideNav && <Nav />}
 
-  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-dot" id="cursor-dot">
+    <svg class="cursor-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
+  </div>
 
   <slot />
 
@@ -140,6 +145,16 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
       });
       document.addEventListener('mousedown', () => dot.classList.add('is-clicking'));
       document.addEventListener('mouseup', () => dot.classList.remove('is-clicking'));
+
+      // Grow cursor with arrow on hoverable cards
+      let isOverCard = false;
+      document.addEventListener('mouseover', (e) => {
+        const over = !!(e.target as Element).closest('[data-cursor-grow]');
+        if (over !== isOverCard) {
+          isOverCard = over;
+          dot.classList.toggle('is-hovering-card', over);
+        }
+      });
     }
   </script>
 

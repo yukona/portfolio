@@ -193,13 +193,34 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
     background: var(--color-text);
     pointer-events: none;
     z-index: 99999;
-    transform: translate(-50%, -50%) scale(1);
-    transition: transform 0.12s cubic-bezier(0.25, 0.1, 0.25, 1);
-    will-change: transform;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, transform 0.12s cubic-bezier(0.25, 0.1, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    will-change: transform, width, height;
   }
 
   .cursor-dot.is-clicking {
     transform: translate(-50%, -50%) scale(0.6);
+  }
+
+  .cursor-dot.is-hovering-card {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cursor-arrow {
+    opacity: 0;
+    color: var(--color-bg);
+    flex-shrink: 0;
+    transition: opacity 0.15s ease;
+    position: absolute;
+  }
+
+  .cursor-dot.is-hovering-card .cursor-arrow {
+    opacity: 1;
   }
 }
 
