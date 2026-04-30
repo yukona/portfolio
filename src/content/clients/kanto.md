@@ -1,6 +1,7 @@
 ---
 name: Kanto
 slug: kanto
+featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/kanto-logo-light.svg
 logoDark: /images/uploads/kanto-logo-dark.svg
 industry:
@@ -12,10 +13,10 @@ services:
   - Web Design & Development
 dateRange: "2016"
 summary: Designed and developed Kanto's initial ecommerce website, supporting
-  multiple brands, products and vendor requirements. Built out new features,
+  multiple brands, products and vendor requirements. Built new features,
   functionality and assets — including 3D renders and interactive embeds.
   Set up analytics and reporting, and optimised pages for conversion. Also
-  supported the team with digital and print advertising design as needed.
+  supported the team with digital and print advertising.
 protected: false
 projects: []
 ---

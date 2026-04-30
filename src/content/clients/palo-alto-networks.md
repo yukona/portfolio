@@ -1,6 +1,7 @@
 ---
 name: Palo Alto Networks
 slug: palo-alto-networks
+featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/palo_alto_networks-logo-light.svg
 logoDark: /images/uploads/palo_alto_networks-logo-dark.svg
 industry:
@@ -11,12 +12,11 @@ services:
   - Research
 dateRange: 2019 – 2024
 summary: Lead Designer on Palo Alto Networks' Network Security team and later the
-  core Prisma Cloud team, leading the integration of Aporeto, Twistlock, and
-  Bridgecrew into Prisma Cloud. Led key efforts across integrations, querying,
-  onboarding and activation, and a full redesign of the Prisma Cloud product.
-  Redesigned the Prisma Cloud design system and UI kit, used by 10+ designers.
-  Also contributed to the company-wide Palo Alto Networks design system effort,
-  used by 50+ designers across the organisation.
+  core Prisma Cloud team. Directed the integration of Aporeto, Twistlock, and
+  Bridgecrew into Prisma Cloud, leading key efforts across integrations, querying,
+  onboarding and activation, and a full product redesign. Redesigned the Prisma
+  Cloud design system and UI kit, used by 10+ designers. Also contributed to the
+  company-wide design system effort, used by 50+ designers across the organisation.
 companyDescription: "Palo Alto Networks is one of the world's largest cybersecurity companies, offering next-generation firewalls, cloud security (Prisma Cloud), and Zero Trust network access. Their platform protects thousands of enterprises globally across on-prem, cloud, and hybrid environments."
 protected: false
 featuredLogo: true

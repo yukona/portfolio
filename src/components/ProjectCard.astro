@@ -48,12 +48,14 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     )}
   </div>
 
-  <!-- Thumbnail + date range -->
+  <!-- Date range (standalone grid item) -->
+  <span class="project-year">{dateRange}</span>
+
+  <!-- Thumbnail -->
   <div class="project-right">
     {featuredImage && (
       <img src={featuredImage} alt="" class="project-thumb-sm" loading="lazy" decoding="async" />
     )}
-    <span class="project-year">{dateRange}</span>
   </div>
 
   <!-- Floating hover preview -->
@@ -67,7 +69,7 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
 <style>
   .project-row {
     display: grid;
-    grid-template-columns: 128px 1fr auto;
+    grid-template-columns: 128px 1fr auto auto;
     align-items: start;
     gap: 40px;
     padding: 28px 0;
@@ -79,16 +81,19 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   /* Default: full strength. Dim siblings when list is being hovered. */
   .project-logo-cell,
   .project-info,
+  .project-year,
   .project-right {
     transition: opacity 0.25s ease;
   }
   :global(.projects-list.is-row-hovered) .project-logo-cell,
   :global(.projects-list.is-row-hovered) .project-info,
+  :global(.projects-list.is-row-hovered) .project-year,
   :global(.projects-list.is-row-hovered) .project-right {
     opacity: 0.35;
   }
   .project-row:hover .project-logo-cell,
   .project-row:hover .project-info,
+  .project-row:hover .project-year,
   .project-row:hover .project-right {
     opacity: 1;
   }
@@ -149,18 +154,14 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   }
 
   .project-right {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
     flex-shrink: 0;
-    padding-top: 2px;
   }
   .project-thumb-sm {
-    width: 56px;
-    height: 40px;
-    object-fit: cover;
+    width: auto;
+    height: 120px;
     border-radius: 6px;
     flex-shrink: 0;
+    cursor: pointer;
   }
 
   .project-year {
@@ -168,6 +169,10 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     font-size: 13px;
     color: var(--color-text-muted);
     white-space: nowrap;
+    width: 96px;
+    text-align: right;
+    padding-top: 2px;
+    align-self: start;
   }
 
   /* Floating preview */
@@ -175,7 +180,7 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     position: fixed;
     top: 0;
     left: 0;
-    width: 380px;
+    width: 475px;
     aspect-ratio: 16 / 10;
     pointer-events: none;
     z-index: 9998;
@@ -193,17 +198,30 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   @media (max-width: 768px) {
     .project-row {
       grid-template-columns: 96px 1fr;
-      grid-template-rows: auto auto;
       gap: 12px 16px;
     }
-    .project-info { grid-column: 2; }
-    .project-right { grid-column: 1 / -1; padding-left: 112px; }
+    .project-right { grid-column: 1 / -1; grid-row: 1; }
+    .project-thumb-sm {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    .project-logo-cell { grid-row: 2; grid-column: 1; }
+    .project-info { grid-row: 2; grid-column: 2; }
+    .project-year {
+      grid-row: 3;
+      grid-column: 2;
+      width: auto;
+      text-align: left;
+      padding-top: 0;
+    }
     .project-preview { display: none; }
   }
 </style>
 
 <script>
-  // Dim sibling rows on hover
+  // Dim sibling rows on row hover
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
     const list = row.closest('.projects-list');
     if (!list) return;
@@ -211,10 +229,11 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     row.addEventListener('mouseleave', () => list.classList.remove('is-row-hovered'));
   });
 
-  // Floating preview
+  // Floating preview on thumbnail hover only
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
+    const thumb = row.querySelector<HTMLElement>('.project-thumb-sm');
     const preview = row.querySelector<HTMLElement>('.project-preview');
-    if (!preview) return;
+    if (!thumb || !preview) return;
 
     let targetX = 0, targetY = 0;
     let currentX = 0, currentY = 0;
@@ -231,10 +250,10 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
       raf = requestAnimationFrame(tick);
     }
 
-    row.addEventListener('mouseenter', (e) => {
+    thumb.addEventListener('mouseenter', (e) => {
       const mx = (e as MouseEvent).clientX;
       const my = (e as MouseEvent).clientY;
-      targetX = mx + 28; targetY = my - 140;
+      targetX = mx - 475 - 28; targetY = my - 140;
       currentX = targetX; currentY = targetY;
       preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
       preview.classList.add('is-visible');
@@ -242,12 +261,12 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
       raf = requestAnimationFrame(tick);
     });
 
-    row.addEventListener('mousemove', (e) => {
-      targetX = (e as MouseEvent).clientX + 28;
+    thumb.addEventListener('mousemove', (e) => {
+      targetX = (e as MouseEvent).clientX - 475 - 28;
       targetY = (e as MouseEvent).clientY - 140;
     });
 
-    row.addEventListener('mouseleave', () => {
+    thumb.addEventListener('mouseleave', () => {
       preview.classList.remove('is-visible');
       active = false;
       if (raf) cancelAnimationFrame(raf);

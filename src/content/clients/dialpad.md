@@ -1,6 +1,7 @@
 ---
 name: Dialpad
 slug: dialpad
+featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/dialpad-logo-light.svg
 logoDark: /images/uploads/dialpad-logo-dark.svg
 industry:
@@ -14,14 +15,13 @@ services:
   - Web Design & Development
   - Research
 dateRange: 2013 – 2016
-summary: Designed for the Dialpad website including the rebrand and integration
-  of UberConference as Dialpad Meetings. Led conversion optimisation across the
-  Dialpad website and dedicated landing pages. Served as Product Design Lead for
-  all integrations — including Salesforce, ServiceNow, ServiceTitan, Google,
-  Microsoft, and more. Supported the redesign of Dialpad's core application,
-  leading work on integrations, analytics, onboarding and activation. Contributed
-  to the design and development of Dialpad's design system, Dialtone. Additional
-  work included ads, landing pages, billboards, and print and digital reports.
+summary: Led website design and rebrand, including the integration of UberConference
+  as Dialpad Meetings. Drove conversion optimisation across the Dialpad website and
+  dedicated landing pages. Served as Product Design Lead for all integrations —
+  including Salesforce, ServiceNow, ServiceTitan, Google, Microsoft, and more.
+  Supported the redesign of Dialpad's core application across integrations, analytics,
+  onboarding and activation. Contributed to the Dialtone design system. Additional
+  work spanned ads, landing pages, billboards, and print and digital reports.
 companyDescription: "Dialpad is an AI-powered cloud communications platform offering business phone, messaging, video meetings, and contact centre solutions. It serves tens of thousands of companies worldwide with a unified workspace built on Google Cloud."
 protected: false
 featuredLogo: true

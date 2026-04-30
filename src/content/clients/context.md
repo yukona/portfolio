@@ -1,6 +1,7 @@
 ---
 name: Context Research
 slug: context-research
+featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/context_research-logo-light.svg
 logoDark: /images/uploads/context_research-logo-dark.svg
 industry:

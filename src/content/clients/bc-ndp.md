@@ -1,6 +1,7 @@
 ---
 name: BC NDP
 slug: bc-ndp
+featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/bcndp-logo-light.svg
 logoDark: /images/uploads/bcndp-logo-dark.svg
 industry:
