@@ -13,6 +13,10 @@ const featuredClients = allClients
   .filter((c) => c.data.featuredWork)
   .sort((a, b) => endYear(b.data.dateRange) - endYear(a.data.dateRange));
 
+const carouselClients = allClients
+  .filter((c) => c.data.homeCarousel && c.data.featuredImage)
+  .sort((a, b) => endYear(b.data.dateRange) - endYear(a.data.dateRange));
+
 const experience = [
   {
     company: 'Palo Alto Networks / Prisma Cloud',
@@ -48,7 +52,7 @@ const experience = [
       <div class="hero-content">
         <h1 class="hero-headline text-hero">
           Design for<br />
-          <span id="cycling-text" class="hero-cycling">what comes next</span><span class="hero-dot">.</span>
+          <span id="cycling-text" class="hero-cycling">what comes next</span>
         </h1>
         <p class="hero-subhead">
           Forecasting, developing concepts and designing<br class="hide-mobile" /> systems that shape the future.
@@ -68,6 +72,25 @@ const experience = [
       </svg>
     </a>
   </section>
+
+  <!-- ──────────────────────────────────── IMAGE CAROUSEL ── -->
+  {carouselClients.length > 0 && (
+    <div class="carousel-outer" aria-hidden="true">
+      <div class="carousel-track">
+        {[...carouselClients, ...carouselClients].map((c) => (
+          <div class="carousel-item">
+            <img
+              src={c.data.featuredImage}
+              alt={c.data.name}
+              class="carousel-img"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
 
   <!-- ────────────────────────────────────── SELECTED WORK ── -->
   <section id="work" class="section">
@@ -450,6 +473,38 @@ const experience = [
     margin: 24px 0 48px;
   }
 
+  /* ── Image Carousel ───────────────────────────────── */
+  .carousel-outer {
+    width: 100%;
+    overflow: hidden;
+    padding: 48px 0;
+  }
+  .carousel-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    animation: carousel-scroll 28s linear infinite;
+  }
+  .carousel-outer:hover .carousel-track {
+    animation-play-state: paused;
+  }
+  @keyframes carousel-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .carousel-item {
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .carousel-img {
+    height: 280px;
+    width: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
   /* ── Hero ─────────────────────────────────────────── */
   .hero {
     position: relative;
@@ -467,13 +522,18 @@ const experience = [
   }
   .hero-cycling {
     display: inline-block;
-    white-space: nowrap;
+    white-space: normal;
+    margin-top: 0.15em;
     padding: 0.05em 0.2em 0.12em;
     border-radius: 8px;
     background: oklch(94.8% 0.028 342.258);
-    color: var(--color-text);
+    color: #0F0F0F;
     clip-path: inset(0 100% 0 0);
     transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  [data-theme="dark"] .hero-cycling { background: oklch(21% 0.006 285.885); color: #F5F5F5; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .hero-cycling { background: oklch(21% 0.006 285.885); color: #F5F5F5; }
   }
   .hero-cycling.is-painted {
     clip-path: inset(0 0% 0 0);
@@ -599,10 +659,7 @@ const experience = [
   }
 
   /* ── About ────────────────────────────────────────── */
-  .about-centered {
-    max-width: 960px;
-    margin-inline: auto;
-  }
+  .about-centered {}
   .about-headline {
     font-size: clamp(44px, 6vw, 80px);
     color: var(--color-text);

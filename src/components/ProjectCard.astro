@@ -43,7 +43,10 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
       <span class="project-title">{name}</span>
       {companyDescription && <Tooltip text={companyDescription} />}
     </div>
-    <p class="project-desc">{summary}</p>
+    <div class="desc-wrap">
+      <p class="project-desc">{summary}</p>
+      <button class="read-more-btn" aria-expanded="false">Read more</button>
+    </div>
     {services.length > 0 && (
       <span class="project-tags">{services.join(' · ')}</span>
     )}
@@ -198,30 +201,90 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   /* Mobile */
   @media (max-width: 768px) {
     .project-row {
-      grid-template-columns: 96px 1fr;
-      gap: 12px 16px;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
-    .project-right { grid-column: 1 / -1; grid-row: 1; }
+    .project-right { grid-column: 1; grid-row: 1; }
     .project-thumb-sm {
       width: 100%;
       height: auto;
       aspect-ratio: 16 / 9;
       object-fit: cover;
     }
-    .project-logo-cell { grid-row: 2; grid-column: 1; }
-    .project-info { grid-row: 2; grid-column: 2; }
+    .project-logo-cell { display: none; }
+    .project-info { grid-row: 2; grid-column: 1; padding-top: 8px; }
     .project-year {
       grid-row: 3;
-      grid-column: 2;
+      grid-column: 1;
       width: auto;
       text-align: left;
       padding-top: 0;
     }
     .project-preview { display: none; }
+
+    /* 3-line clamp with read more */
+    .desc-wrap {
+      position: relative;
+      cursor: pointer;
+    }
+    .project-desc {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .desc-wrap.is-expanded .project-desc {
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+    }
+    /* gradient fade behind "Read more" */
+    .desc-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1.65em;
+      background: linear-gradient(to right, transparent 50%, var(--color-bg) 85%);
+      pointer-events: none;
+    }
+    .desc-wrap.is-expanded::after { display: none; }
+    .read-more-btn {
+      display: inline;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0 0 0 6px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      z-index: 1;
+    }
+    .desc-wrap.is-expanded .read-more-btn { display: none; }
+  }
+  @media (min-width: 769px) {
+    .desc-wrap { cursor: default; }
+    .read-more-btn { display: none; }
   }
 </style>
 
 <script>
+  // Read more toggle (mobile) — click anywhere on desc-wrap to expand
+  document.querySelectorAll<HTMLElement>('.desc-wrap').forEach((wrap) => {
+    const btn = wrap.querySelector<HTMLElement>('.read-more-btn');
+    if (!btn) return;
+    wrap.addEventListener('click', () => {
+      const expanded = wrap.classList.toggle('is-expanded');
+      btn.setAttribute('aria-expanded', String(expanded));
+    });
+  });
+
   // Dim sibling rows on row hover
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
     const list = row.closest('.projects-list');

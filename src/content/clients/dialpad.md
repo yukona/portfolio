@@ -15,7 +15,7 @@ services:
   - Product Design
   - Web Design & Development
   - Research
-dateRange: 2013 – 2016
+dateRange: 2015 – 2018
 summary: Led website design and rebrand, including the integration of UberConference
   as Dialpad Meetings. Drove conversion optimisation across the Dialpad website and
   dedicated landing pages. Served as Product Design Lead for all integrations —
@@ -27,6 +27,7 @@ companyDescription: "Dialpad is an AI-powered cloud communications platform offe
 protected: false
 featuredLogo: true
 featuredWork: true
+homeCarousel: true
 projects:
   - title: Dialpad Desktop & Mobile Apps
     description: Designed the core Dialpad experience across desktop and mobile —

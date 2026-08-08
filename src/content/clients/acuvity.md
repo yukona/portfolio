@@ -11,7 +11,7 @@ services:
   - Product Design
 industry:
   - Cybersecurity
-dateRange: "2025"
+dateRange: "2024"
 summary: Led 0-to-1 product and brand design for Acuvity — including the initial
   cybersecurity web app design and a Figma component library that became the product's
   foundation. The work contributed to a $9M raise led by Foundation Capital; Acuvity
@@ -19,6 +19,6 @@ summary: Led 0-to-1 product and brand design for Acuvity — including the initi
 companyDescription: "Acuvity was an AI security startup focused on securing enterprise AI usage and preventing data exposure through AI tools and APIs. The company raised $9M led by Foundation Capital and was subsequently acquired by Proofpoint in early 2026."
 protected: false
 featuredLogo: true
-featuredWork: true
+featuredWork: false
 projects: []
 ---

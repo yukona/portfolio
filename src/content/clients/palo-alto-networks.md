@@ -11,7 +11,7 @@ services:
   - Design Systems
   - Product Design
   - Research
-dateRange: 2019 – 2024
+dateRange: 2019 – 2023
 summary: Lead Designer on Palo Alto Networks' Network Security team and later the
   core Prisma Cloud team. Directed the integration of Aporeto, Twistlock, and
   Bridgecrew into Prisma Cloud, leading key efforts across integrations, querying,
@@ -22,6 +22,7 @@ companyDescription: "Palo Alto Networks is one of the world's largest cybersecur
 protected: false
 featuredLogo: true
 featuredWork: true
+homeCarousel: true
 projects:
   - title: Prisma Cloud Core Product
     description: Led design across the core Prisma Cloud security platform — a

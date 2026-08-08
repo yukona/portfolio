@@ -10,7 +10,7 @@ industry:
 services:
   - Brand & Identity
   - Product Design
-dateRange: 2016 – 2020
+dateRange: 2018 – 2019
 summary: Founding designer at Aporeto from pre-product through acquisition.
   Audited the initial product, then designed, developed, tested and shipped a
   rebuilt UI across all core screens and workflows. Redesigned signup, onboarding
@@ -33,4 +33,5 @@ projects:
       - Research
     year: 2016–2019
 featuredWork: true
+homeCarousel: true
 ---

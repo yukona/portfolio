@@ -12,7 +12,7 @@ services:
   - Conversion Optimization
   - Design Systems
   - Product Design
-dateRange: "2017"
+dateRange: 2015 – 2018
 summary: Designed and supported front-end development of the UberConference
   marketing website, then led the rebrand and transition to Dialpad Meetings —
   including brand identity, website design and development, and asset production.
@@ -22,5 +22,6 @@ companyDescription: "UberConference was a PIN-free web conferencing tool that ma
 protected: false
 featuredLogo: true
 featuredWork: true
+homeCarousel: true
 projects: []
 ---

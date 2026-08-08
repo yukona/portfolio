@@ -40,6 +40,7 @@ const clients = defineCollection({
     businessType: z.enum(['startup', 'scaleup', 'enterprise', 'public-company', 'agency', 'nonprofit', 'government']).optional(),
     featuredWork: z.boolean().default(false),
     featuredLogo: z.boolean().default(false),
+    homeCarousel: z.boolean().default(false),
     protected: z.boolean().default(false),
     password: z.string().optional(),
     projects: z.array(z.object({

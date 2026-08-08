@@ -244,8 +244,9 @@ collections:
           - { label: Agency,         value: agency }
           - { label: Non-profit,     value: nonprofit }
           - { label: Government,     value: government }
-      - { label: Featured Work, name: featuredWork, widget: boolean, default: false, required: false, hint: "Show this client in the Featured Work list on the homepage" }
-      - { label: Featured Logo, name: featuredLogo, widget: boolean, default: false, required: false, hint: "Show this client's logo in the Trusted By grid on the homepage" }
+      - { label: Featured Work,       name: featuredWork,  widget: boolean, default: false, required: false, hint: "Show this client in the Featured Work list on the homepage" }
+      - { label: Featured Logo,       name: featuredLogo,  widget: boolean, default: false, required: false, hint: "Show this client's logo in the Trusted By grid on the homepage" }
+      - { label: Home Page Carousel,  name: homeCarousel,  widget: boolean, default: false, required: false, hint: "Include this client's featured image in the homepage image carousel" }
       - { label: Protected,  name: protected, widget: boolean, default: false }
       - { label: Password,   name: password,  widget: string,  required: false }
       - label: Projects

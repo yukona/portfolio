@@ -13,7 +13,7 @@ services:
   - Product Design
   - Web Design & Development
   - Research
-dateRange: "2023"
+dateRange: 2023 – 2026
 summary: Founding designer at Exaforce. Created the initial product design and brand
   from the ground up, contributing to a $75M Series A backed by Khosla Ventures and
   Mayfield Fund. Built and maintained the design system in close collaboration with
@@ -23,4 +23,5 @@ companyDescription: "Exaforce is the first agentic SOC platform, using autonomou
 protected: false
 projects: []
 featuredWork: true
+homeCarousel: true
 ---
