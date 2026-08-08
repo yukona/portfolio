@@ -83,7 +83,7 @@ const experience = [
               src={c.data.featuredImage}
               alt={c.data.name}
               class="carousel-img"
-              loading="lazy"
+              loading="eager"
               decoding="async"
             />
           </div>
@@ -496,7 +496,7 @@ const experience = [
 
     function updateHalfW() {
       const w = track.scrollWidth / 2;
-      if (w > 0) halfW = w;
+      if (w > 10) halfW = w; // only accept a meaningful value
     }
 
     function wrap() {
@@ -511,6 +511,8 @@ const experience = [
     }
 
     function loop() {
+      // Don't start moving until we have a valid track width
+      if (halfW === 0) { updateHalfW(); requestAnimationFrame(loop); return; }
       if (!dragging && !hovering) {
         pos -= AUTO_SPEED;
         setPos();
@@ -590,7 +592,13 @@ const experience = [
     // Prevent native image ghost-drag
     track.querySelectorAll('img').forEach((img) => img.setAttribute('draggable', 'false'));
 
-    // Init — measure after layout, then re-measure after images load
+    // Re-measure whenever any image loads (fixes lazy/late-loaded dimensions)
+    track.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+      if (img.complete) { updateHalfW(); }
+      else { img.addEventListener('load', updateHalfW); }
+    });
+
+    // Start loop; it will wait internally until halfW > 0
     requestAnimationFrame(() => {
       updateHalfW();
       loop();
