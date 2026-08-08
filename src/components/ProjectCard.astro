@@ -11,11 +11,12 @@ interface Props {
   logo?: string;
   logoDark?: string;
   companyDescription?: string;
+  acquired?: boolean;
   showDate?: boolean;
   index?: number;
 }
 
-const { name, summary, services, dateRange, featuredImage, logo, logoDark, companyDescription, showDate = true } = Astro.props;
+const { name, summary, services, dateRange, featuredImage, logo, logoDark, companyDescription, acquired, showDate = true } = Astro.props;
 ---
 
 <div class="project-row" data-reveal-child>
@@ -41,6 +42,7 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   <div class="project-info">
     <div class="project-title-row">
       <span class="project-title">{name}</span>
+      {acquired && <span class="acquired-tag">ACQUIRED</span>}
       {companyDescription && <Tooltip text={companyDescription} />}
     </div>
     <div class="desc-wrap">
@@ -136,6 +138,18 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     display: flex;
     align-items: center;
     gap: 6px;
+  }
+  .acquired-tag {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    background: var(--color-surface, var(--color-bg));
+    border: 1px solid var(--color-border);
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    align-self: center;
   }
   .project-title {
     font-family: var(--font-heading);

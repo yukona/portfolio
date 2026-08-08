@@ -110,6 +110,7 @@ const experience = [
             logo={c.data.logo}
             logoDark={c.data.logoDark}
             companyDescription={c.data.companyDescription}
+            acquired={c.data.acquired}
             index={i}
           />
         ))}
@@ -474,6 +475,101 @@ const experience = [
   }
 </script>
 
+<script>
+  // ── Draggable image carousel ─────────────────────────────────────────────
+  const outer = document.querySelector<HTMLElement>('.carousel-outer');
+  const track = document.querySelector<HTMLElement>('.carousel-track');
+  if (outer && track) {
+    const AUTO_SPEED = 1.2;  // px per rAF frame (~72px/s @ 60fps)
+    const FRICTION   = 0.92; // momentum decay per frame
+
+    let pos      = 0;
+    let dragging = false;
+    let hovering = false;
+    let lastX    = 0;
+    let vel      = 0;
+    let halfW    = 0;
+    let momentumRaf: number | null = null;
+
+    function getHalfW() { return track.scrollWidth / 2; }
+
+    function wrap() {
+      if (pos <= -halfW) pos += halfW;
+      if (pos >  0)      pos -= halfW;
+    }
+
+    function setPos() {
+      wrap();
+      track.style.transform = `translateX(${pos}px)`;
+    }
+
+    // Auto-scroll loop
+    function loop() {
+      if (!dragging && !hovering) {
+        pos -= AUTO_SPEED;
+        setPos();
+      }
+      requestAnimationFrame(loop);
+    }
+
+    // Momentum glide after release
+    function momentum() {
+      if (Math.abs(vel) < 0.3) { vel = 0; return; }
+      vel *= FRICTION;
+      pos += vel;
+      setPos();
+      momentumRaf = requestAnimationFrame(momentum);
+    }
+
+    function startDrag(x: number) {
+      if (momentumRaf) cancelAnimationFrame(momentumRaf);
+      dragging = true;
+      lastX    = x;
+      vel      = 0;
+      outer.classList.add('is-dragging');
+    }
+
+    function moveDrag(x: number) {
+      if (!dragging) return;
+      const dx = x - lastX;
+      pos  += dx;
+      vel   = dx;
+      lastX = x;
+      setPos();
+    }
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      outer.classList.remove('is-dragging');
+      momentum();
+    }
+
+    // Mouse
+    outer.addEventListener('mousedown',  (e) => startDrag((e as MouseEvent).clientX));
+    window.addEventListener('mousemove', (e) => moveDrag((e as MouseEvent).clientX));
+    window.addEventListener('mouseup',   () => endDrag());
+
+    // Touch
+    outer.addEventListener('touchstart', (e) => startDrag((e as TouchEvent).touches[0].clientX), { passive: true });
+    window.addEventListener('touchmove', (e) => moveDrag((e as TouchEvent).touches[0].clientX),  { passive: true });
+    window.addEventListener('touchend',  () => endDrag());
+
+    // Hover pause (desktop auto-scroll only)
+    outer.addEventListener('mouseenter', () => { hovering = true; });
+    outer.addEventListener('mouseleave', () => { hovering = false; });
+
+    // Prevent native image drag
+    track.querySelectorAll('img').forEach((img) => img.setAttribute('draggable', 'false'));
+
+    // Init — wait one frame for layout to settle
+    requestAnimationFrame(() => {
+      halfW = getHalfW();
+      loop();
+    });
+  }
+</script>
+
 <style>
   /* ── Featured work intro ───────────────────────────── */
   .work-intro {
@@ -492,19 +588,15 @@ const experience = [
     width: 100%;
     overflow: hidden;
     padding: 48px 0;
+    cursor: grab;
+    user-select: none;
   }
+  .carousel-outer.is-dragging { cursor: grabbing; }
   .carousel-track {
     display: flex;
     gap: 12px;
     width: max-content;
-    animation: carousel-scroll 28s linear infinite;
-  }
-  .carousel-outer:hover .carousel-track {
-    animation-play-state: paused;
-  }
-  @keyframes carousel-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    will-change: transform;
   }
   .carousel-item {
     flex-shrink: 0;

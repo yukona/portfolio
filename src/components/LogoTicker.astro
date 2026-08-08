@@ -59,8 +59,8 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
   [data-theme="dark"]  .logo-light { display: none !important; }
   [data-theme="dark"]  .logo-dark  { display: block !important; }
 
-  /* Acquired badge — global so JS-created spans also get the styles */
-  .acquired-tag {
+  /* Acquired badge — scoped to logo-cell so it doesn't affect other uses of .acquired-tag */
+  .logo-cell .acquired-tag {
     position: absolute;
     top: 10px;
     right: 10px;
