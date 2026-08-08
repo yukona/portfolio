@@ -95,3 +95,32 @@ const { text, position = 'top', label = 'More information' } = Astro.props;
     transform: translateX(-50%) translateY(0);
   }
 </style>
+
+<script>
+  const PADDING = 12; // min gap from viewport edge
+
+  function clampBubble(tt: HTMLElement) {
+    const bubble = tt.querySelector<HTMLElement>('.tt-bubble');
+    if (!bubble) return;
+
+    // Reset any previous correction so we measure from natural position
+    bubble.style.marginLeft = '';
+
+    const rect   = bubble.getBoundingClientRect();
+    const vw     = window.innerWidth;
+    let shift = 0;
+
+    if (rect.left < PADDING) {
+      shift = PADDING - rect.left;
+    } else if (rect.right > vw - PADDING) {
+      shift = (vw - PADDING) - rect.right;
+    }
+
+    bubble.style.marginLeft = shift ? `${shift}px` : '';
+  }
+
+  document.querySelectorAll<HTMLElement>('.tt').forEach((tt) => {
+    tt.addEventListener('mouseenter', () => clampBubble(tt));
+    tt.addEventListener('focusin',    () => clampBubble(tt));
+  });
+</script>

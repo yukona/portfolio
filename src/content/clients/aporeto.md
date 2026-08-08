@@ -19,6 +19,7 @@ summary: Founding designer at Aporeto from pre-product through acquisition.
 companyDescription: "Aporeto was a zero-trust security startup that provided identity-based microsegmentation for cloud-native workloads. The company was acquired by Palo Alto Networks in 2019 and its technology was integrated into the Prisma Cloud platform."
 protected: false
 featuredLogo: true
+acquired: true
 projects:
   - title: Aporeto Product — 0 to 1
     description: Founding designer responsible for the entire product experience of

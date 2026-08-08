@@ -15,6 +15,7 @@ companyDescription: "Front Row is a global commerce agency that helps consumer b
 summary: Product research and design for Front Row's multi-channel ecommerce
   platform, with a focus on funnel optimisation and data visualisation. Front Row
   has since been acquired by Charlesbank Capital Partners.
+acquired: true
 protected: false
 projects: []
 ---

@@ -8,6 +8,7 @@ const logos = allClients
     name:     c.data.name,
     logo:     c.data.logo     ?? null,
     logoDark: c.data.logoDark ?? null,
+    acquired: c.data.acquired ?? false,
   }));
 
 // Always render exactly SLOTS cells; extras cycle in via JS
@@ -20,7 +21,8 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
     {Array.from({ length: SLOTS }).map((_, i) => {
       const logo = initial[i];
       return (
-        <div class="logo-cell">
+        <div class="logo-cell" data-acquired={logo?.acquired ? 'true' : 'false'}>
+          {logo?.acquired && <span class="acquired-tag">ACQUIRED</span>}
           <div class="logo-flip-wrap">
             <div class="logo-inner" data-slot={i}>
               {logo?.logo ? (
@@ -43,7 +45,7 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
   </div>
 )}
 
-<!-- Styles: logo-img rules are global so JS-rendered imgs inherit them -->
+<!-- Styles: logo-img + acquired-tag are global so JS-rendered elements inherit them -->
 <style is:global>
   .logo-img {
     width: 200px !important;
@@ -56,6 +58,22 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
   .logo-dark  { display: none !important; }
   [data-theme="dark"]  .logo-light { display: none !important; }
   [data-theme="dark"]  .logo-dark  { display: block !important; }
+
+  /* Acquired badge — global so JS-created spans also get the styles */
+  .acquired-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    background: var(--color-surface, var(--color-bg));
+    border: 1px solid var(--color-border);
+    padding: 2px 5px;
+    border-radius: 3px;
+    pointer-events: none;
+  }
 </style>
 
 <style>
@@ -67,7 +85,10 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
   }
-  @media (max-width: 640px) { .logo-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) {
+    .logo-grid { grid-template-columns: repeat(2, 1fr); }
+    .logo-cell { padding: 24px; }
+  }
 
   .logo-cell {
     background: var(--color-bg);
@@ -75,6 +96,7 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
 
   .logo-flip-wrap {
@@ -154,6 +176,19 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
     inner.style.transform  = 'rotateY(-90deg)';
     setTimeout(() => {
       renderLogo(inner, logo);
+      const cell = inner.closest('.logo-cell');
+      if (cell) {
+        cell.dataset.acquired = logo.acquired ? 'true' : 'false';
+        let tag = cell.querySelector('.acquired-tag');
+        if (logo.acquired && !tag) {
+          tag = document.createElement('span');
+          tag.className = 'acquired-tag';
+          tag.textContent = 'ACQUIRED';
+          cell.prepend(tag);
+        } else if (!logo.acquired && tag) {
+          tag.remove();
+        }
+      }
       inner.style.transition = 'none';
       inner.style.transform  = 'rotateY(90deg)';
       void inner.offsetWidth;

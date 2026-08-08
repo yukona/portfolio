@@ -20,5 +20,6 @@ companyDescription: "Acuvity was an AI security startup focused on securing ente
 protected: false
 featuredLogo: true
 featuredWork: false
+acquired: true
 projects: []
 ---
