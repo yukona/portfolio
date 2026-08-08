@@ -65,7 +65,7 @@ const experience = [
     </div>
 
     <!-- Scroll indicator -->
-    <a href="#work" class="scroll-indicator" aria-label="Scroll to work">
+    <a href="#carousel" class="scroll-indicator" aria-label="Scroll to work">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="12" y1="5" x2="12" y2="19"/>
         <polyline points="19 12 12 19 5 12"/>
@@ -75,7 +75,7 @@ const experience = [
 
   <!-- ──────────────────────────────────── IMAGE CAROUSEL ── -->
   {carouselClients.length > 0 && (
-    <div class="carousel-outer" aria-hidden="true">
+    <div class="carousel-outer" id="carousel" aria-hidden="true">
       <div class="carousel-track">
         {[...carouselClients, ...carouselClients].map((c) => (
           <div class="carousel-item">
