@@ -1,5 +1,6 @@
 ---
 name: Burt's Bees
+businessType: enterprise
 slug: burts-bees
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/burts_bees-logo-light.svg

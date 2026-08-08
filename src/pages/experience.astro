@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 
-const allClients    = await getCollection('clients');
+const allClients    = (await getCollection('clients')).filter(c => c.data.published !== false);
 const allIndustries = await getCollection('industries');
 
 // Non-protected first, then alphabetical
@@ -55,7 +55,7 @@ const industries = [...allIndustries].sort((a, b) => {
   <section class="section">
     <div class="container">
       <span class="section-label" data-reveal>Companies</span>
-      <p class="work-intro" data-word-reveal>The startups, scaleups and enterprises shaping what comes next.</p>
+      <p class="work-intro" data-word-reveal>Partnering with the startups, scaleups and enterprises shaping what comes next.</p>
       <div class="projects-list" data-reveal>
         {clients.map((c, i) => (
           <ProjectCard
@@ -68,6 +68,7 @@ const industries = [...allIndustries].sort((a, b) => {
             logo={c.data.logo}
             logoDark={c.data.logoDark}
             companyDescription={c.data.companyDescription}
+            showDate={false}
             index={i}
           />
         ))}
@@ -91,23 +92,15 @@ const industries = [...allIndustries].sort((a, b) => {
                 <h3 class="industry-name">{industry.data.name}</h3>
                 <p class="industry-desc">{industry.data.description}</p>
               </div>
-              {relatedClients.length > 0 && (() => {
-                const MAX = 3;
-                const visible = relatedClients.slice(0, MAX);
-                const overflow = relatedClients.length - MAX;
-                return (
-                  <div class="industry-tags">
-                    {visible.map((c) => (
-                      <span class="industry-tag" data-tooltip={c!.companyDescription ?? undefined}>
-                        <span class="tag-name">{c!.name}</span>
-                      </span>
-                    ))}
-                    {overflow > 0 && (
-                      <span class="industry-tag industry-tag--overflow">+{overflow}</span>
-                    )}
-                  </div>
-                );
-              })()}
+              {relatedClients.length > 0 && (
+                <div class="industry-tags">
+                  {relatedClients.map((c) => (
+                    <span class="industry-tag" data-tooltip={c!.companyDescription ?? undefined}>
+                      <span class="tag-name">{c!.name}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })}
@@ -121,7 +114,7 @@ const industries = [...allIndustries].sort((a, b) => {
       <h2 class="cta-headline">Working on something interesting?</h2>
       <p class="cta-subhead">I'm always open to the right project or role.</p>
       <div class="cta-buttons">
-        <a href="/#contact" class="btn btn-primary">Get in touch</a>
+        <button class="btn btn-primary" data-contact-trigger>Get in touch</button>
         <a href="/#work"    class="btn btn-outline">View work</a>
       </div>
     </div>
@@ -132,8 +125,14 @@ const industries = [...allIndustries].sort((a, b) => {
     <div class="container footer-inner">
       <p class="footer-copy">© {new Date().getFullYear()} Kris Burger. All Rights Reserved.</p>
       <nav class="footer-links" aria-label="Footer navigation">
-        <a href="https://linkedin.com/in/krisburger" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:kris@krisburger.com">Email</a>
+        <a href="mailto:kris@krisburger.com">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          kris@krisburger.com
+        </a>
+        <a href="https://linkedin.com/in/krisburger" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
       </nav>
     </div>
   </footer>

@@ -1,5 +1,6 @@
 ---
 name: Palo Alto Networks
+businessType: public-company
 slug: palo-alto-networks
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/palo_alto_networks-logo-light.svg

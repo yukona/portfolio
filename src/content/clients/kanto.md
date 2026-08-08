@@ -1,5 +1,6 @@
 ---
 name: Kanto
+businessType: startup
 slug: kanto
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/kanto-logo-light.svg
@@ -12,6 +13,7 @@ services:
   - Brand & Identity
   - Web Design & Development
 dateRange: "2016"
+companyDescription: "Kanto is a Vancouver, BC–based consumer electronics brand that designs audio products—such as powered speakers, subwoofers, and amplifiers—along with TV and monitor mounts, cables, and AV furniture."
 summary: Designed and developed Kanto's initial ecommerce website, supporting
   multiple brands, products and vendor requirements. Built new features,
   functionality and assets — including 3D renders and interactive embeds.

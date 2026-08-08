@@ -1,5 +1,6 @@
 ---
 name: insightsoftware
+businessType: enterprise
 slug: insightsoftware
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/insight_software-logo-light.svg

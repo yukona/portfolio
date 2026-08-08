@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
+import ContactModal from '../components/ContactModal.astro';
 
 interface Props {
   title?: string;
@@ -30,10 +31,10 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <link rel="canonical" href={canonicalURL} />
   <link rel="sitemap" href="/sitemap-index.xml" />
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Momo Trust Sans + Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Momo+Trust+Sans:wght@600&display=swap" rel="stylesheet" />
 
   <title>{title}</title>
   <meta name="description" content={description} />
@@ -79,6 +80,8 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
       <polyline points="12 5 19 12 12 19"/>
     </svg>
   </div>
+
+  <ContactModal />
 
   <slot />
 

@@ -14,11 +14,10 @@
     <ul class="nav-links" role="list">
       <li><a href="/experience">Experience</a></li>
       <li><a href="/services">Services</a></li>
-      <li><a href="/#contact">Contact</a></li>
     </ul>
 
     <div class="nav-actions">
-      <a href="mailto:kris@krisburger.com?subject=Project%20Enquiry%20via%20krisburger.com" class="btn btn-outline btn-sm nav-cta">Get in touch</a>
+      <button class="btn btn-outline btn-sm nav-cta" data-contact-trigger>Get in touch</button>
 
       <button id="theme-toggle" aria-label="Toggle colour theme" class="theme-btn">
         <!-- Sun -->
@@ -60,7 +59,7 @@
     <li><a href="/#work">Work</a></li>
     <li><a href="/experience">Experience</a></li>
     <li><a href="/services">Services</a></li>
-    <li><a href="/#contact">Contact</a></li>
+    <li><a href="#" data-contact-trigger>Contact</a></li>
   </ul>
 </div>
 <div id="mobile-backdrop" class="mobile-backdrop"></div>
@@ -166,13 +165,14 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: var(--radius-sm);
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
     color: var(--color-text-muted);
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   }
   .theme-btn:hover {
     color: var(--color-text);
-    background: var(--color-surface);
+    border-color: var(--color-text-muted);
   }
   [data-theme="light"] .icon-moon { display: block; }
   [data-theme="light"] .icon-sun  { display: none;  }

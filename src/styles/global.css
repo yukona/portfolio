@@ -9,8 +9,8 @@
   --color-border: #E5E5E5;
   --color-accent: #0F0F0F;
   --color-nav-bg: rgba(255, 255, 255, 0.85);
-  --font-heading: 'Plus Jakarta Sans', sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: 'Momo Trust Sans', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --radius-sm: 12px;
   --radius-md: 18px;
   --max-width: 1280px;
@@ -72,7 +72,24 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.15;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Momo Trust Sans', sans-serif;
+  font-weight: 600;
+}
+
+::selection {
+  background: oklch(94.8% 0.028 342.258);
+  color: var(--color-text);
+}
+
 a { color: inherit; text-decoration: none; }
+
+/* ── Footer link with icon ───────────────────────────────────────────────── */
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 img { display: block; max-width: 100%; }
 button { cursor: pointer; border: none; background: none; padding: 0; }
 

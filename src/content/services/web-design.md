@@ -31,8 +31,8 @@ serviceItems:
     description: "Conversion-focused websites that communicate your value clearly and load instantly."
   - title: Landing pages
     description: "High-performance campaign pages with focused copy, clear hierarchy, and measurable conversion goals."
-  - title: Portfolio sites
-    description: "Personal and studio portfolio sites that present work beautifully and load fast on every device."
+  - title: Campaign sites
+    description: "Custom campaign-specific websites that connect brands with the campaigns or events they're running."
   - title: CMS integration
     description: "Decap, Sanity, or Contentful integration so your team can update content without touching code."
   - title: Performance optimisation

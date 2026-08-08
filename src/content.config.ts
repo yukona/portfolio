@@ -36,6 +36,8 @@ const clients = defineCollection({
     companyDescription: z.string().optional(),
     pageTitle: z.string().optional(),
     metaDescription: z.string().optional(),
+    published: z.boolean().default(true),
+    businessType: z.enum(['startup', 'scaleup', 'enterprise', 'public-company', 'agency', 'nonprofit', 'government']).optional(),
     featuredWork: z.boolean().default(false),
     featuredLogo: z.boolean().default(false),
     protected: z.boolean().default(false),

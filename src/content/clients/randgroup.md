@@ -1,5 +1,7 @@
 ---
-name: RANDGROUP
+name: Rand Group
+companyDescription: "Rand Group is a professional services firm that helps businesses select, implement, and optimize ERP, CRM, and analytics software—such as Microsoft Dynamics 365, Oracle NetSuite, and Sage—along with related consulting, engineering, and support services."
+businessType: agency
 slug: randgroup
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/rand-group-logo-light.svg

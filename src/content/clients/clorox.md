@@ -1,5 +1,6 @@
 ---
 name: The Clorox Company
+businessType: public-company
 slug: clorox
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/the_clorox_company-logo-light.svg

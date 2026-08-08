@@ -11,10 +11,11 @@ interface Props {
   logo?: string;
   logoDark?: string;
   companyDescription?: string;
+  showDate?: boolean;
   index?: number;
 }
 
-const { name, summary, services, dateRange, featuredImage, logo, logoDark, companyDescription } = Astro.props;
+const { name, summary, services, dateRange, featuredImage, logo, logoDark, companyDescription, showDate = true } = Astro.props;
 ---
 
 <div class="project-row" data-reveal-child>
@@ -49,7 +50,7 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   </div>
 
   <!-- Date range (standalone grid item) -->
-  <span class="project-year">{dateRange}</span>
+  {showDate && <span class="project-year">{dateRange}</span>}
 
   <!-- Thumbnail -->
   <div class="project-right">

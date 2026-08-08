@@ -231,6 +231,19 @@ collections:
       - { label: Company Description, name: companyDescription, widget: text, required: false, hint: "What the company does — 1–2 sentences max" }
       - { label: Page Title,       name: pageTitle,       widget: string, required: false, hint: "Override the browser tab title" }
       - { label: Meta Description, name: metaDescription, widget: text,   required: false, hint: "SEO description shown in search results" }
+      - { label: Published,  name: published,  widget: boolean, default: true,  required: false, hint: "Uncheck to hide this client from the site without deleting them" }
+      - label: Business Type
+        name: businessType
+        widget: select
+        required: false
+        options:
+          - { label: Startup,        value: startup }
+          - { label: Scaleup,        value: scaleup }
+          - { label: Enterprise,     value: enterprise }
+          - { label: Public Company, value: public-company }
+          - { label: Agency,         value: agency }
+          - { label: Non-profit,     value: nonprofit }
+          - { label: Government,     value: government }
       - { label: Featured Work, name: featuredWork, widget: boolean, default: false, required: false, hint: "Show this client in the Featured Work list on the homepage" }
       - { label: Featured Logo, name: featuredLogo, widget: boolean, default: false, required: false, hint: "Show this client's logo in the Trusted By grid on the homepage" }
       - { label: Protected,  name: protected, widget: boolean, default: false }

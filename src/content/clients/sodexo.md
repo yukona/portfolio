@@ -1,5 +1,6 @@
 ---
 name: Sodexo
+businessType: public-company
 slug: sodexo
 featuredImage: /images/uploads/640f8bc07ea2875216b3b28f_pawel-czerwinski-6YutWe6awpM-unsplash.jpg
 logo: /images/uploads/sodexo-logo-light.svg
