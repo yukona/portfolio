@@ -480,20 +480,27 @@ const experience = [
   const outer = document.querySelector<HTMLElement>('.carousel-outer');
   const track = document.querySelector<HTMLElement>('.carousel-track');
   if (outer && track) {
-    const AUTO_SPEED = 1.2;  // px per rAF frame (~72px/s @ 60fps)
-    const FRICTION   = 0.92; // momentum decay per frame
+    const AUTO_SPEED = 1.2;
+    const FRICTION   = 0.92;
 
-    let pos      = 0;
-    let dragging = false;
-    let hovering = false;
-    let lastX    = 0;
-    let vel      = 0;
-    let halfW    = 0;
+    let pos          = 0;
+    let dragging     = false;
+    let hovering     = false;
+    let lastX        = 0;
+    let touchStartX  = 0;
+    let touchStartY  = 0;
+    let isHoriz: boolean | null = null; // null = undecided
+    let vel          = 0;
+    let halfW        = 0;
     let momentumRaf: number | null = null;
 
-    function getHalfW() { return track.scrollWidth / 2; }
+    function updateHalfW() {
+      const w = track.scrollWidth / 2;
+      if (w > 0) halfW = w;
+    }
 
     function wrap() {
+      if (halfW === 0) return;
       if (pos <= -halfW) pos += halfW;
       if (pos >  0)      pos -= halfW;
     }
@@ -503,7 +510,6 @@ const experience = [
       track.style.transform = `translateX(${pos}px)`;
     }
 
-    // Auto-scroll loop
     function loop() {
       if (!dragging && !hovering) {
         pos -= AUTO_SPEED;
@@ -512,7 +518,6 @@ const experience = [
       requestAnimationFrame(loop);
     }
 
-    // Momentum glide after release
     function momentum() {
       if (Math.abs(vel) < 0.3) { vel = 0; return; }
       vel *= FRICTION;
@@ -540,33 +545,57 @@ const experience = [
 
     function endDrag() {
       if (!dragging) return;
-      dragging = false;
+      dragging  = false;
+      isHoriz   = null;
       outer.classList.remove('is-dragging');
       momentum();
     }
 
-    // Mouse
+    // Mouse (desktop)
     outer.addEventListener('mousedown',  (e) => startDrag((e as MouseEvent).clientX));
     window.addEventListener('mousemove', (e) => moveDrag((e as MouseEvent).clientX));
     window.addEventListener('mouseup',   () => endDrag());
 
-    // Touch
-    outer.addEventListener('touchstart', (e) => startDrag((e as TouchEvent).touches[0].clientX), { passive: true });
-    window.addEventListener('touchmove', (e) => moveDrag((e as TouchEvent).touches[0].clientX),  { passive: true });
-    window.addEventListener('touchend',  () => endDrag());
+    // Touch — detect horizontal intent before consuming the gesture
+    outer.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isHoriz = null;
+    }, { passive: true });
 
-    // Hover pause (desktop auto-scroll only)
+    outer.addEventListener('touchmove', (e: TouchEvent) => {
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+
+      // Decide direction on first significant movement
+      if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        isHoriz = Math.abs(dx) > Math.abs(dy);
+        if (isHoriz) startDrag(e.touches[0].clientX);
+      }
+
+      if (!isHoriz) return; // let vertical page scroll proceed
+      e.preventDefault();   // block page scroll while dragging carousel
+      moveDrag(e.touches[0].clientX);
+    }, { passive: false }); // non-passive so preventDefault works
+
+    outer.addEventListener('touchend', () => {
+      if (isHoriz) endDrag();
+      isHoriz = null;
+    });
+
+    // Hover pause (desktop)
     outer.addEventListener('mouseenter', () => { hovering = true; });
     outer.addEventListener('mouseleave', () => { hovering = false; });
 
-    // Prevent native image drag
+    // Prevent native image ghost-drag
     track.querySelectorAll('img').forEach((img) => img.setAttribute('draggable', 'false'));
 
-    // Init — wait one frame for layout to settle
+    // Init — measure after layout, then re-measure after images load
     requestAnimationFrame(() => {
-      halfW = getHalfW();
+      updateHalfW();
       loop();
     });
+    window.addEventListener('load', updateHalfW);
   }
 </script>
 
