@@ -281,10 +281,13 @@
   const THRESHOLD = 8; // px of movement before reacting
 
   const onScroll = () => {
-    const currentY = window.scrollY;
+    const currentY = Math.max(0, window.scrollY);
     const delta = currentY - lastScrollY;
 
-    if (delta > THRESHOLD) {
+    if (currentY <= 10) {
+      // Always visible at top of page (handles Safari URL-bar reappear edge case)
+      nav?.classList.remove('is-hidden');
+    } else if (delta > THRESHOLD) {
       // Scrolling down — hide
       nav?.classList.add('is-hidden');
     } else if (delta < -THRESHOLD) {
