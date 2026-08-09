@@ -1,0 +1,262 @@
+---
+// All content filled by JS via the project:open custom event
+---
+
+<div id="pm-overlay" class="pm-overlay" role="dialog" aria-modal="true" aria-label="Project detail">
+  <div class="pm-panel">
+    <!-- Header: nav + close -->
+    <div class="pm-header">
+      <div class="pm-nav-group">
+        <button class="pm-nav-btn" id="pm-prev" aria-label="Previous project">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </button>
+        <button class="pm-nav-btn" id="pm-next" aria-label="Next project">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </div>
+      <button class="pm-close" id="pm-close" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body: info left, images right -->
+    <div class="pm-body">
+      <div class="pm-info"   id="pm-info"></div>
+      <div class="pm-images" id="pm-images"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9500;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .pm-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .pm-panel {
+    background: var(--color-bg);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1100px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-border);
+  }
+  .pm-overlay.is-visible .pm-panel {
+    transform: none;
+  }
+
+  /* Header */
+  .pm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+  .pm-nav-group { display: flex; gap: 8px; }
+
+  .pm-nav-btn,
+  .pm-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    transition: background 0.15s ease, border-color 0.15s ease;
+    flex-shrink: 0;
+  }
+  .pm-nav-btn:hover,
+  .pm-close:hover {
+    background: var(--color-surface);
+  }
+  .pm-nav-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  /* Body */
+  .pm-body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .pm-info {
+    padding: 32px;
+    border-right: 1px solid var(--color-border);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pm-images {
+    padding: 32px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .pm-images img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Logo light/dark switching inside modal info (elements injected via innerHTML) */
+  :global(.pm-info .logo-dark)                     { display: none; }
+  :global([data-theme="dark"] .pm-info .logo-light) { display: none; }
+  :global([data-theme="dark"] .pm-info .logo-dark)  { display: block; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .pm-overlay {
+      padding: 0;
+      align-items: flex-end;
+    }
+    .pm-panel {
+      max-height: 92vh;
+      border-radius: 20px 20px 0 0;
+      border-bottom: none;
+    }
+    .pm-body {
+      grid-template-columns: 1fr;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .pm-info {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+      overflow-y: visible;
+      padding: 24px;
+    }
+    .pm-images {
+      padding: 24px;
+      overflow-y: visible;
+    }
+  }
+</style>
+
+<script>
+  const overlay  = document.getElementById('pm-overlay')  as HTMLElement | null;
+  const infoEl   = document.getElementById('pm-info')     as HTMLElement | null;
+  const imagesEl = document.getElementById('pm-images')   as HTMLElement | null;
+  const prevBtn  = document.getElementById('pm-prev')     as HTMLButtonElement | null;
+  const nextBtn  = document.getElementById('pm-next')     as HTMLButtonElement | null;
+  const closeBtn = document.getElementById('pm-close')    as HTMLButtonElement | null;
+
+  if (!overlay || !infoEl || !imagesEl) throw new Error('[ProjectModal] missing DOM');
+
+  let projectList: any[] = [];
+  let currentIdx = 0;
+
+  function renderInfo(d: any) {
+    const hasLogo = d.logo || d.logoDark;
+    infoEl!.innerHTML = `
+      ${hasLogo ? `<div style="margin-bottom:20px">
+        ${d.logo     ? `<img src="${d.logo}"     alt="${d.name}" class="logo-light" style="max-height:44px;max-width:180px;object-fit:contain;display:block">` : ''}
+        ${d.logoDark ? `<img src="${d.logoDark}" alt="${d.name}" class="logo-dark"  style="max-height:44px;max-width:180px;object-fit:contain;display:block">` : ''}
+      </div>` : ''}
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-family:var(--font-heading);font-size:17px;font-weight:500;color:var(--color-text);letter-spacing:-0.02em">${d.name}</span>
+        ${d.acquired ? `<span style="font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--color-text-muted);background:var(--color-surface,var(--color-bg));border:1px solid var(--color-border);padding:2px 5px;border-radius:3px;white-space:nowrap">ACQUIRED</span>` : ''}
+      </div>
+      <p style="font-size:14px;color:var(--color-text);line-height:1.65;margin:0 0 12px">${d.summary ?? ''}</p>
+      ${d.services?.length ? `<p style="font-size:12px;color:var(--color-text-muted);margin:0 0 8px">${(d.services as string[]).join(' · ')}</p>` : ''}
+      ${d.dateRange ? `<p style="font-family:var(--font-heading);font-size:13px;color:var(--color-text-muted);margin:0">${d.dateRange}</p>` : ''}
+    `;
+  }
+
+  function renderImages(d: any) {
+    const imgs: string[] = (Array.isArray(d.images) && d.images.length)
+      ? d.images
+      : (d.featuredImage ? [d.featuredImage] : []);
+    imagesEl!.innerHTML = imgs
+      .map((src) => `<img src="${src}" alt="${d.name}" loading="lazy" decoding="async">`)
+      .join('');
+  }
+
+  function render() {
+    const d = projectList[currentIdx];
+    if (!d) return;
+    renderInfo(d);
+    renderImages(d);
+    if (prevBtn) prevBtn.disabled = projectList.length <= 1;
+    if (nextBtn) nextBtn.disabled = projectList.length <= 1;
+    // Scroll info panel back to top on nav
+    if (infoEl) infoEl.scrollTop = 0;
+    if (imagesEl) imagesEl.scrollTop = 0;
+  }
+
+  function openModal(list: any[], index: number) {
+    projectList = list;
+    currentIdx  = index;
+    render();
+    overlay!.classList.add('is-visible');
+    document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
+  }
+
+  function closeModal() {
+    overlay!.classList.remove('is-visible');
+    document.body.style.overflow = '';
+  }
+
+  function navigate(dir: number) {
+    currentIdx = (currentIdx + dir + projectList.length) % projectList.length;
+    render();
+  }
+
+  // Listen for project:open events dispatched by ProjectCard
+  document.addEventListener('project:open', (e: Event) => {
+    const { list, index } = (e as CustomEvent<{ list: any[]; index: number }>).detail;
+    openModal(list, index);
+  });
+
+  prevBtn?.addEventListener('click',  () => navigate(-1));
+  nextBtn?.addEventListener('click',  () => navigate(1));
+  closeBtn?.addEventListener('click', closeModal);
+  overlay.addEventListener('click',  (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (!overlay!.classList.contains('is-visible')) return;
+    if (e.key === 'Escape')    closeModal();
+    if (e.key === 'ArrowUp')  { e.preventDefault(); navigate(-1); }
+    if (e.key === 'ArrowDown'){ e.preventDefault(); navigate(1);  }
+  });
+</script>

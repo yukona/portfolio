@@ -42,6 +42,7 @@ const clients = defineCollection({
     featuredLogo: z.boolean().default(false),
     homeCarousel: z.boolean().default(false),
     acquired: z.boolean().default(false),
+    images: z.array(z.string()).default([]),
     protected: z.boolean().default(false),
     password: z.string().optional(),
     projects: z.array(z.object({

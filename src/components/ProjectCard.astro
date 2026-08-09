@@ -8,6 +8,7 @@ interface Props {
   services: string[];
   dateRange: string;
   featuredImage?: string;
+  images?: string[];
   logo?: string;
   logoDark?: string;
   companyDescription?: string;
@@ -16,10 +17,22 @@ interface Props {
   index?: number;
 }
 
-const { name, summary, services, dateRange, featuredImage, logo, logoDark, companyDescription, acquired, showDate = true } = Astro.props;
+const { name, summary, services, dateRange, featuredImage, images, logo, logoDark, companyDescription, acquired, showDate = true } = Astro.props;
+
+const projectData = JSON.stringify({
+  name,
+  summary,
+  services,
+  dateRange,
+  featuredImage,
+  images: images ?? [],
+  logo,
+  logoDark,
+  acquired,
+});
 ---
 
-<div class="project-row" data-reveal-child>
+<div class="project-row" data-reveal-child data-project-json={projectData}>
 
   <!-- Logo cell (replaces number) -->
   <div class="project-logo-cell">
@@ -57,17 +70,16 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   <!-- Date range (standalone grid item) -->
   {showDate && <span class="project-year">{dateRange}</span>}
 
-  <!-- Thumbnail -->
-  <div class="project-right">
-    {featuredImage && (
-      <img src={featuredImage} alt="" class="project-thumb-sm" loading="lazy" decoding="async" />
-    )}
-  </div>
-
-  <!-- Floating hover preview -->
+  <!-- Floating hover preview (desktop only, triggered by row hover) -->
   {featuredImage && (
     <div class="project-preview" aria-hidden="true">
       <img src={featuredImage} alt={name} loading="lazy" decoding="async" />
+      <div class="preview-expand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg>
+      </div>
     </div>
   )}
 </div>
@@ -75,32 +87,30 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
 <style>
   .project-row {
     display: grid;
-    grid-template-columns: 128px 1fr auto auto;
+    grid-template-columns: 128px 1fr auto;
     align-items: start;
     gap: 40px;
     padding: 28px 0;
     border-bottom: 1px solid var(--color-border);
     position: relative;
+    cursor: pointer;
   }
   .project-row:first-child { border-top: 1px solid var(--color-border); }
 
   /* Default: full strength. Dim siblings when list is being hovered. */
   .project-logo-cell,
   .project-info,
-  .project-year,
-  .project-right {
+  .project-year {
     transition: opacity 0.25s ease;
   }
   :global(.projects-list.is-row-hovered) .project-logo-cell,
   :global(.projects-list.is-row-hovered) .project-info,
-  :global(.projects-list.is-row-hovered) .project-year,
-  :global(.projects-list.is-row-hovered) .project-right {
+  :global(.projects-list.is-row-hovered) .project-year {
     opacity: 0.35;
   }
   .project-row:hover .project-logo-cell,
   .project-row:hover .project-info,
-  .project-row:hover .project-year,
-  .project-row:hover .project-right {
+  .project-row:hover .project-year {
     opacity: 1;
   }
 
@@ -171,17 +181,6 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
     line-height: 1.4;
   }
 
-  .project-right {
-    flex-shrink: 0;
-  }
-  .project-thumb-sm {
-    width: auto;
-    height: 120px;
-    border-radius: 6px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-
   .project-year {
     font-family: var(--font-heading);
     font-size: 13px;
@@ -212,23 +211,32 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   .project-preview.is-visible { opacity: 1; }
   .project-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+  /* Expand icon overlay */
+  .preview-expand {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    backdrop-filter: blur(4px);
+  }
+
   /* Mobile */
   @media (max-width: 768px) {
     .project-row {
       grid-template-columns: 1fr;
       gap: 10px;
-    }
-    .project-right { grid-column: 1; grid-row: 1; }
-    .project-thumb-sm {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
+      cursor: default;
     }
     .project-logo-cell { display: none; }
-    .project-info { grid-row: 2; grid-column: 1; padding-top: 8px; }
+    .project-info { grid-column: 1; padding-top: 8px; }
     .project-year {
-      grid-row: 3;
       grid-column: 1;
       width: auto;
       text-align: left;
@@ -293,25 +301,32 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
   document.querySelectorAll<HTMLElement>('.desc-wrap').forEach((wrap) => {
     const btn = wrap.querySelector<HTMLElement>('.read-more-btn');
     if (!btn) return;
-    wrap.addEventListener('click', () => {
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
       const expanded = wrap.classList.toggle('is-expanded');
       btn.setAttribute('aria-expanded', String(expanded));
     });
   });
 
-  // Dim sibling rows on row hover
+  // Stop tooltip clicks from bubbling to row
+  document.querySelectorAll<HTMLElement>('.tt').forEach((tt) => {
+    tt.addEventListener('click', (e) => e.stopPropagation());
+  });
+
+  const isDesktop = () => window.matchMedia('(min-width: 769px)').matches;
+
+  // Dim sibling rows on row hover (desktop)
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
     const list = row.closest('.projects-list');
     if (!list) return;
-    row.addEventListener('mouseenter', () => list.classList.add('is-row-hovered'));
+    row.addEventListener('mouseenter', () => { if (isDesktop()) list.classList.add('is-row-hovered'); });
     row.addEventListener('mouseleave', () => list.classList.remove('is-row-hovered'));
   });
 
-  // Floating preview on thumbnail hover only
+  // Floating preview on row hover (desktop only)
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
-    const thumb = row.querySelector<HTMLElement>('.project-thumb-sm');
     const preview = row.querySelector<HTMLElement>('.project-preview');
-    if (!thumb || !preview) return;
+    if (!preview) return;
 
     let targetX = 0, targetY = 0;
     let currentX = 0, currentY = 0;
@@ -328,7 +343,8 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
       raf = requestAnimationFrame(tick);
     }
 
-    thumb.addEventListener('mouseenter', (e) => {
+    row.addEventListener('mouseenter', (e) => {
+      if (!isDesktop()) return;
       const mx = (e as MouseEvent).clientX;
       const my = (e as MouseEvent).clientY;
       targetX = mx - 475 - 28; targetY = my - 140;
@@ -339,15 +355,40 @@ const { name, summary, services, dateRange, featuredImage, logo, logoDark, compa
       raf = requestAnimationFrame(tick);
     });
 
-    thumb.addEventListener('mousemove', (e) => {
+    row.addEventListener('mousemove', (e) => {
+      if (!active) return;
       targetX = (e as MouseEvent).clientX - 475 - 28;
       targetY = (e as MouseEvent).clientY - 140;
     });
 
-    thumb.addEventListener('mouseleave', () => {
+    row.addEventListener('mouseleave', () => {
       preview.classList.remove('is-visible');
       active = false;
       if (raf) cancelAnimationFrame(raf);
+    });
+  });
+
+  // Row click → open modal (desktop only)
+  document.querySelectorAll<HTMLElement>('.project-row[data-project-json]').forEach((row) => {
+    row.addEventListener('click', () => {
+      if (!isDesktop()) return;
+
+      // Build list from all sibling rows in the same .projects-list
+      const list = row.closest('.projects-list');
+      const allRows = list
+        ? Array.from(list.querySelectorAll<HTMLElement>('.project-row[data-project-json]'))
+        : [row];
+
+      const projectList = allRows.map((r) => {
+        try { return JSON.parse(r.dataset.projectJson!); }
+        catch { return null; }
+      }).filter(Boolean);
+
+      const index = allRows.indexOf(row);
+
+      document.dispatchEvent(new CustomEvent('project:open', {
+        detail: { list: projectList, index: Math.max(0, index) },
+      }));
     });
   });
 </script>

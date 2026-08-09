@@ -248,6 +248,12 @@ collections:
       - { label: Featured Logo,       name: featuredLogo,  widget: boolean, default: false, required: false, hint: "Show this client's logo in the Trusted By grid on the homepage" }
       - { label: Home Page Carousel,  name: homeCarousel,  widget: boolean, default: false, required: false, hint: "Include this client's featured image in the homepage image carousel" }
       - { label: Acquired,           name: acquired,      widget: boolean, default: false, required: false, hint: "Show an 'ACQUIRED' badge on this client's logo in the grid" }
+      - label: "Gallery Images"
+        name: images
+        widget: list
+        required: false
+        hint: "Additional images shown in the project detail modal (after the featured image)"
+        field: { label: Image, name: image, widget: image }
       - { label: Protected,  name: protected, widget: boolean, default: false }
       - { label: Password,   name: password,  widget: string,  required: false }
       - label: Projects
