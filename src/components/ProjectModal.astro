@@ -136,10 +136,6 @@
     display: block;
   }
 
-  /* Logo light/dark switching inside modal info (elements injected via innerHTML) */
-  :global(.pm-info .logo-dark)                     { display: none; }
-  :global([data-theme="dark"] .pm-info .logo-light) { display: none; }
-  :global([data-theme="dark"] .pm-info .logo-dark)  { display: block; }
 
   /* Responsive */
   @media (max-width: 768px) {
@@ -183,12 +179,7 @@
   let currentIdx = 0;
 
   function renderInfo(d: any) {
-    const hasLogo = d.logo || d.logoDark;
     infoEl!.innerHTML = `
-      ${hasLogo ? `<div style="margin-bottom:20px">
-        ${d.logo     ? `<img src="${d.logo}"     alt="${d.name}" class="logo-light" style="max-height:80px;max-width:260px;object-fit:contain;display:block">` : ''}
-        ${d.logoDark ? `<img src="${d.logoDark}" alt="${d.name}" class="logo-dark"  style="max-height:80px;max-width:260px;object-fit:contain;display:block">` : ''}
-      </div>` : ''}
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="font-family:var(--font-heading);font-size:17px;font-weight:500;color:var(--color-text);letter-spacing:-0.02em">${d.name}</span>
         ${d.acquired ? `<span style="font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--color-text-muted);background:var(--color-surface,var(--color-bg));border:1px solid var(--color-border);padding:2px 5px;border-radius:3px;white-space:nowrap">ACQUIRED</span>` : ''}
