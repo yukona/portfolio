@@ -343,12 +343,19 @@ const projectData = JSON.stringify({
       raf = requestAnimationFrame(tick);
     }
 
+    // Preview is 475px wide, 16:10 → ~297px tall
+    const PW = 475, PH = Math.round(475 * 10 / 16);
+    const GAP = 16;
+
+    function posFromCursor(mx: number, my: number) {
+      return { x: mx - PW / 2, y: my - PH - GAP };
+    }
+
     row.addEventListener('mouseenter', (e) => {
       if (!isDesktop()) return;
-      const mx = (e as MouseEvent).clientX;
-      const my = (e as MouseEvent).clientY;
-      targetX = mx - 475 - 28; targetY = my - 140;
-      currentX = targetX; currentY = targetY;
+      const { x, y } = posFromCursor((e as MouseEvent).clientX, (e as MouseEvent).clientY);
+      targetX = x; targetY = y;
+      currentX = x; currentY = y;
       preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
       preview.classList.add('is-visible');
       active = true;
@@ -357,8 +364,8 @@ const projectData = JSON.stringify({
 
     row.addEventListener('mousemove', (e) => {
       if (!active) return;
-      targetX = (e as MouseEvent).clientX - 475 - 28;
-      targetY = (e as MouseEvent).clientY - 140;
+      const { x, y } = posFromCursor((e as MouseEvent).clientX, (e as MouseEvent).clientY);
+      targetX = x; targetY = y;
     });
 
     row.addEventListener('mouseleave', () => {
