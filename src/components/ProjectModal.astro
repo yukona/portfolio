@@ -186,8 +186,8 @@
     const hasLogo = d.logo || d.logoDark;
     infoEl!.innerHTML = `
       ${hasLogo ? `<div style="margin-bottom:20px">
-        ${d.logo     ? `<img src="${d.logo}"     alt="${d.name}" class="logo-light" style="max-height:64px;max-width:220px;object-fit:contain;display:block">` : ''}
-        ${d.logoDark ? `<img src="${d.logoDark}" alt="${d.name}" class="logo-dark"  style="max-height:64px;max-width:220px;object-fit:contain;display:block">` : ''}
+        ${d.logo     ? `<img src="${d.logo}"     alt="${d.name}" class="logo-light" style="max-height:80px;max-width:260px;object-fit:contain;display:block">` : ''}
+        ${d.logoDark ? `<img src="${d.logoDark}" alt="${d.name}" class="logo-dark"  style="max-height:80px;max-width:260px;object-fit:contain;display:block">` : ''}
       </div>` : ''}
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="font-family:var(--font-heading);font-size:17px;font-weight:500;color:var(--color-text);letter-spacing:-0.02em">${d.name}</span>

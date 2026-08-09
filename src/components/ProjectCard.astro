@@ -51,6 +51,19 @@ const projectData = JSON.stringify({
     )}
   </div>
 
+  <!-- Mobile/tablet hero image (tap to open modal) -->
+  {featuredImage && (
+    <div class="project-mobile-hero" role="button" aria-label={`View ${name} details`} tabindex="0">
+      <img src={featuredImage} alt={name} loading="lazy" decoding="async" />
+      <div class="mobile-hero-expand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg>
+      </div>
+    </div>
+  )}
+
   <!-- Name + summary + services -->
   <div class="project-info">
     <div class="project-title-row">
@@ -227,6 +240,40 @@ const projectData = JSON.stringify({
     backdrop-filter: blur(4px);
   }
 
+  /* Mobile hero image */
+  .project-mobile-hero {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .project-mobile-hero {
+      display: block;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .project-mobile-hero img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+    .mobile-hero-expand {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+  }
+
   /* Mobile */
   @media (max-width: 768px) {
     .project-row {
@@ -397,6 +444,27 @@ const projectData = JSON.stringify({
         if (isDesktop()) showPreview((e as MouseEvent).clientX, (e as MouseEvent).clientY);
       });
     }
+  });
+
+  // Mobile hero image tap → open modal
+  document.querySelectorAll<HTMLElement>('.project-mobile-hero').forEach((hero) => {
+    const row = hero.closest<HTMLElement>('.project-row[data-project-json]');
+    if (!row) return;
+    const openForRow = () => {
+      const list = row.closest('.projects-list');
+      const allRows = list
+        ? Array.from(list.querySelectorAll<HTMLElement>('.project-row[data-project-json]'))
+        : [row];
+      const projectList = allRows.map((r) => {
+        try { return JSON.parse(r.dataset.projectJson!); } catch { return null; }
+      }).filter(Boolean);
+      const index = allRows.indexOf(row);
+      document.dispatchEvent(new CustomEvent('project:open', {
+        detail: { list: projectList, index: Math.max(0, index) },
+      }));
+    };
+    hero.addEventListener('click', openForRow);
+    hero.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openForRow(); } });
   });
 
   // Row click → open modal (desktop only)
