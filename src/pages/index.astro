@@ -75,7 +75,7 @@ const experience = [
 
   <!-- ──────────────────────────────────── IMAGE CAROUSEL ── -->
   {carouselClients.length > 0 && (
-    <div class="carousel-outer" id="carousel" aria-hidden="true">
+    <div class="carousel-outer" id="carousel" aria-hidden="true" data-cursor-hand>
       <div class="carousel-track">
         {[...carouselClients, ...carouselClients].map((c) => (
           <div class="carousel-item">
@@ -625,10 +625,13 @@ const experience = [
     width: 100%;
     overflow: hidden;
     padding: 48px 0;
-    cursor: grab;
     user-select: none;
   }
-  .carousel-outer.is-dragging { cursor: grabbing; }
+  /* Fallback grab cursor for non-fine-pointer devices */
+  @media (pointer: coarse) {
+    .carousel-outer { cursor: grab; }
+    .carousel-outer.is-dragging { cursor: grabbing; }
+  }
   .carousel-track {
     display: flex;
     gap: 12px;

@@ -238,7 +238,8 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
     height: 44px;
   }
 
-  .cursor-arrow {
+  .cursor-arrow,
+  .cursor-hand {
     opacity: 0;
     color: var(--color-bg);
     flex-shrink: 0;
@@ -247,6 +248,14 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
   }
 
   .cursor-dot.is-hovering-card .cursor-arrow {
+    opacity: 1;
+  }
+
+  .cursor-dot.is-hovering-carousel {
+    width: 44px;
+    height: 44px;
+  }
+  .cursor-dot.is-hovering-carousel .cursor-hand {
     opacity: 1;
   }
 }
