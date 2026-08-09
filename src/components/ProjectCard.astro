@@ -297,11 +297,12 @@ const projectData = JSON.stringify({
 </style>
 
 <script>
-  // Read more toggle (mobile) — click anywhere on desc-wrap to expand
+  // Read more toggle (mobile only) — click anywhere on desc-wrap to expand
   document.querySelectorAll<HTMLElement>('.desc-wrap').forEach((wrap) => {
     const btn = wrap.querySelector<HTMLElement>('.read-more-btn');
     if (!btn) return;
     wrap.addEventListener('click', (e) => {
+      if (isDesktop()) return; // let click bubble up to row → open modal
       e.stopPropagation();
       const expanded = wrap.classList.toggle('is-expanded');
       btn.setAttribute('aria-expanded', String(expanded));
