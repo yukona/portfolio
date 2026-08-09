@@ -327,12 +327,14 @@ const projectData = JSON.stringify({
   // Floating preview on row hover (desktop only)
   document.querySelectorAll<HTMLElement>('.project-row').forEach((row) => {
     const preview = row.querySelector<HTMLElement>('.project-preview');
+    const tooltip = row.querySelector<HTMLElement>('.tt');
     if (!preview) return;
 
     let targetX = 0, targetY = 0;
     let currentX = 0, currentY = 0;
     let raf: number | null = null;
     let active = false;
+    let overTooltip = false;
 
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -352,15 +354,25 @@ const projectData = JSON.stringify({
       return { x: mx - PW / 2, y: my - PH - GAP };
     }
 
-    row.addEventListener('mouseenter', (e) => {
-      if (!isDesktop()) return;
-      const { x, y } = posFromCursor((e as MouseEvent).clientX, (e as MouseEvent).clientY);
+    function showPreview(mx: number, my: number) {
+      const { x, y } = posFromCursor(mx, my);
       targetX = x; targetY = y;
       currentX = x; currentY = y;
       preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
       preview.classList.add('is-visible');
       active = true;
       raf = requestAnimationFrame(tick);
+    }
+
+    function hidePreview() {
+      preview.classList.remove('is-visible');
+      active = false;
+      if (raf) cancelAnimationFrame(raf);
+    }
+
+    row.addEventListener('mouseenter', (e) => {
+      if (!isDesktop()) return;
+      showPreview((e as MouseEvent).clientX, (e as MouseEvent).clientY);
     });
 
     row.addEventListener('mousemove', (e) => {
@@ -370,10 +382,21 @@ const projectData = JSON.stringify({
     });
 
     row.addEventListener('mouseleave', () => {
-      preview.classList.remove('is-visible');
-      active = false;
-      if (raf) cancelAnimationFrame(raf);
+      overTooltip = false;
+      hidePreview();
     });
+
+    // Hide preview while hovering the tooltip icon, restore on leave
+    if (tooltip) {
+      tooltip.addEventListener('mouseenter', () => {
+        overTooltip = true;
+        hidePreview();
+      });
+      tooltip.addEventListener('mouseleave', (e) => {
+        overTooltip = false;
+        if (isDesktop()) showPreview((e as MouseEvent).clientX, (e as MouseEvent).clientY);
+      });
+    }
   });
 
   // Row click → open modal (desktop only)
