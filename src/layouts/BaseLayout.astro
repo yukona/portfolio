@@ -87,7 +87,9 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <ContactModal />
   <ProjectModal />
 
-  <slot />
+  <main>
+    <slot />
+  </main>
 
   <!-- Gooey button blobs -->
   <script>
@@ -159,8 +161,9 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
     (function () {
       document.querySelectorAll<HTMLElement>('[data-word-reveal]').forEach((el) => {
         const text = el.textContent || '';
+        el.setAttribute('aria-label', text.trim());
         el.innerHTML = text.trim().split(/\s+/).map(
-          (w) => `<span class="word-token">${w}</span>`
+          (w) => `<span class="word-token" aria-hidden="true">${w}</span>`
         ).join(' ');
       });
 

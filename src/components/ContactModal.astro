@@ -1,7 +1,7 @@
 ---
 ---
 
-<div id="contact-modal-overlay" class="modal-overlay" aria-hidden="true">
+<div id="contact-modal-overlay" class="modal-overlay" aria-hidden="true" inert>
   <div id="contact-modal" class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
     <button id="contact-modal-close" class="modal-close" aria-label="Close">
@@ -220,6 +220,7 @@
   function openModal() {
     overlay?.classList.add('is-open');
     overlay?.removeAttribute('aria-hidden');
+    overlay?.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
     (document.getElementById('modal-name') as HTMLInputElement)?.focus();
   }
@@ -227,6 +228,7 @@
   function closeModal() {
     overlay?.classList.remove('is-open');
     overlay?.setAttribute('aria-hidden', 'true');
+    overlay?.setAttribute('inert', '');
     document.body.style.overflow = '';
   }
 
