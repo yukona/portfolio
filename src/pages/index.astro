@@ -850,8 +850,14 @@ const experience = [
   /* ── FAQ ──────────────────────────────────────────── */
   .faq-container { max-width: 960px; }
   .faq-list { display: flex; flex-direction: column; }
-  .faq-item { border-bottom: 1px solid var(--color-border); }
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+    transition: opacity 0.25s ease;
+  }
   .faq-item:first-child { border-top: 1px solid var(--color-border); }
+  /* Dim siblings when list is hovered */
+  .faq-list:hover .faq-item { opacity: 0.35; }
+  .faq-list:hover .faq-item:hover { opacity: 1; }
   .faq-trigger {
     width: 100%;
     display: flex;
@@ -870,9 +876,15 @@ const experience = [
     color: var(--color-text);
     letter-spacing: -0.01em;
     line-height: 1.4;
+    transition: transform 0.25s ease;
   }
-  .faq-icon { flex-shrink: 0; color: var(--color-text-muted); transition: color 0.2s ease; }
-  .faq-trigger:hover .faq-icon { color: var(--color-text); }
+  .faq-trigger:hover .faq-question { transform: translateX(6px); }
+  .faq-icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+  .faq-trigger:hover .faq-icon { color: var(--color-text); transform: rotate(45deg); }
   .icon-plus  { display: block; }
   .icon-minus { display: none; }
   .faq-item.is-open .icon-plus  { display: none; }
