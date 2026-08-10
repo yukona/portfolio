@@ -164,11 +164,14 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <script>
     (function () {
       document.querySelectorAll<HTMLElement>('[data-word-reveal]').forEach((el) => {
-        const text = el.textContent || '';
-        el.setAttribute('aria-label', text.trim());
-        el.innerHTML = text.trim().split(/\s+/).map(
-          (w) => `<span class="word-token" aria-hidden="true">${w}</span>`
-        ).join(' ');
+        const text = (el.textContent || '').trim();
+        // Use a visually-hidden span instead of aria-label (aria-label is not
+        // permitted on <p> elements and fails accessibility tree validation)
+        el.innerHTML =
+          `<span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${text}</span>` +
+          text.split(/\s+/).map(
+            (w) => `<span class="word-token" aria-hidden="true">${w}</span>`
+          ).join(' ');
       });
 
       function updateWordOpacity() {
