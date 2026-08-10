@@ -7,7 +7,7 @@ role: Design Lead
 tools: ["Figma", "ProtoPie"]
 featured: false
 protected: true
-password: design2024
+password: 06670ae47e9dcae627053c4387f3f74ec68fdc9e6bd7554ce58f2fa862366702
 ---
 
 ## Overview

@@ -32,7 +32,7 @@ collections:
           - mobile
           - enterprise-ux
       - { label: Protected,   name: protected,   widget: boolean, default: false }
-      - { label: Password,    name: password,    widget: string,  required: false }
+      - { label: Password,    name: password,    widget: string,  required: false, hint: "SHA-256 hash of the password (generate at: https://emn178.github.io/online-tools/sha256.html)" }
       - label: Tags
         name: tags
         widget: select
@@ -255,7 +255,7 @@ collections:
         hint: "Additional images shown in the project detail modal (after the featured image)"
         field: { label: Image, name: image, widget: image }
       - { label: Protected,  name: protected, widget: boolean, default: false }
-      - { label: Password,   name: password,  widget: string,  required: false }
+      - { label: Password,   name: password,  widget: string,  required: false, hint: "SHA-256 hash of the password (generate at: https://emn178.github.io/online-tools/sha256.html)" }
       - label: Projects
         name: projects
         widget: list

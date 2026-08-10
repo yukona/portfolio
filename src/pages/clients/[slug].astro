@@ -184,13 +184,19 @@ const clientId = client.id;
       content?.removeAttribute('hidden');
     }
 
-    document.getElementById('gate-form')?.addEventListener('submit', function(e) {
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('gate-form')?.addEventListener('submit', async function(e) {
       e.preventDefault();
       const input = document.getElementById('gate-input');
       const val = (input && input.value) ? input.value.trim() : '';
       const errorEl = document.getElementById('gate-error');
+      const inputHash = await sha256(val);
 
-      if (val.toLowerCase() === pw.toLowerCase()) {
+      if (inputHash === pw) {
         sessionStorage.setItem(STORAGE_KEY, 'true');
         if (gate) {
           gate.style.opacity = '0';

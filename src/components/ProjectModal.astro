@@ -178,24 +178,57 @@
   let currentIdx = 0;
 
   function renderInfo(d: any) {
-    infoEl!.innerHTML = `
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-        <span style="font-family:var(--font-heading);font-size:17px;font-weight:500;color:var(--color-text);letter-spacing:-0.02em">${d.name}</span>
-        ${d.acquired ? `<span style="font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--color-text-muted);background:var(--color-surface,var(--color-bg));border:1px solid var(--color-border);padding:2px 5px;border-radius:3px;white-space:nowrap">ACQUIRED</span>` : ''}
-      </div>
-      <p style="font-size:14px;color:var(--color-text);line-height:1.65;margin:0 0 12px">${d.summary ?? ''}</p>
-      ${d.services?.length ? `<p style="font-size:12px;color:var(--color-text-muted);margin:0 0 8px">${(d.services as string[]).join(' · ')}</p>` : ''}
-      ${d.dateRange ? `<p style="font-family:var(--font-heading);font-size:13px;color:var(--color-text-muted);margin:0">${d.dateRange}</p>` : ''}
-    `;
+    infoEl!.innerHTML = '';
+
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.style.cssText = 'font-family:var(--font-heading);font-size:17px;font-weight:500;color:var(--color-text);letter-spacing:-0.02em';
+    nameSpan.textContent = d.name;
+    header.appendChild(nameSpan);
+
+    if (d.acquired) {
+      const badge = document.createElement('span');
+      badge.style.cssText = 'font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--color-text-muted);background:var(--color-surface,var(--color-bg));border:1px solid var(--color-border);padding:2px 5px;border-radius:3px;white-space:nowrap';
+      badge.textContent = 'ACQUIRED';
+      header.appendChild(badge);
+    }
+    infoEl!.appendChild(header);
+
+    const summary = document.createElement('p');
+    summary.style.cssText = 'font-size:14px;color:var(--color-text);line-height:1.65;margin:0 0 12px';
+    summary.textContent = d.summary ?? '';
+    infoEl!.appendChild(summary);
+
+    if (d.services?.length) {
+      const services = document.createElement('p');
+      services.style.cssText = 'font-size:12px;color:var(--color-text-muted);margin:0 0 8px';
+      services.textContent = (d.services as string[]).join(' · ');
+      infoEl!.appendChild(services);
+    }
+
+    if (d.dateRange) {
+      const date = document.createElement('p');
+      date.style.cssText = 'font-family:var(--font-heading);font-size:13px;color:var(--color-text-muted);margin:0';
+      date.textContent = d.dateRange;
+      infoEl!.appendChild(date);
+    }
   }
 
   function renderImages(d: any) {
+    imagesEl!.innerHTML = '';
     const imgs: string[] = (Array.isArray(d.images) && d.images.length)
       ? d.images
       : (d.featuredImage ? [d.featuredImage] : []);
-    imagesEl!.innerHTML = imgs
-      .map((src) => `<img src="${src}" alt="${d.name}" loading="lazy" decoding="async">`)
-      .join('');
+    imgs.forEach((src) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = d.name;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      imagesEl!.appendChild(img);
+    });
   }
 
   function render() {
