@@ -80,7 +80,7 @@ const experience = [
         {[...carouselClients, ...carouselClients].map((c) => (
           <div class="carousel-item">
             <img
-              src={`/.netlify/images?url=${encodeURIComponent(c.data.featuredImage ?? '')}&h=560&format=webp`}
+              src={`/.netlify/images?url=${encodeURIComponent(c.data.featuredImage ?? '')}&w=735&h=490&fit=cover&format=webp`}
               alt={c.data.name}
               class="carousel-img"
               width="497"

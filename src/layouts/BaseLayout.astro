@@ -94,6 +94,10 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
   <!-- Gooey button blobs -->
   <script>
     document.querySelectorAll<HTMLElement>('.btn').forEach((btn) => {
+      // Read layout properties BEFORE any DOM mutations to avoid forced reflow
+      const w = btn.offsetWidth;
+      const h = btn.offsetHeight;
+
       // Wrap existing content in a label span so z-index works on text nodes
       const label = document.createElement('span');
       label.className = 'btn-label';
@@ -104,7 +108,7 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
       goo.className = 'btn-goo';
       btn.insertBefore(goo, btn.firstChild);
 
-      const size = Math.max(btn.offsetWidth, btn.offsetHeight) * 2.4;
+      const size = Math.max(w, h) * 2.4;
       goo.style.width = size + 'px';
       goo.style.height = size + 'px';
 

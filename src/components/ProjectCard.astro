@@ -54,7 +54,7 @@ const projectData = JSON.stringify({
   <!-- Mobile/tablet hero image (tap to open modal) -->
   {featuredImage && (
     <div class="project-mobile-hero" role="button" aria-label={`View ${name} details`} tabindex="0">
-      <img src={featuredImage} alt={name} loading="lazy" decoding="async" />
+      <img src={`/.netlify/images?url=${encodeURIComponent(featuredImage)}&w=800&format=webp`} alt={name} loading="lazy" decoding="async" />
       <div class="mobile-hero-expand">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
@@ -86,7 +86,7 @@ const projectData = JSON.stringify({
   <!-- Floating hover preview (desktop only, triggered by row hover) -->
   {featuredImage && (
     <div class="project-preview" aria-hidden="true">
-      <img src={featuredImage} alt={name} loading="lazy" decoding="async" />
+      <img src={`/.netlify/images?url=${encodeURIComponent(featuredImage)}&w=950&format=webp`} alt={name} loading="lazy" decoding="async" />
       <div class="preview-expand">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
