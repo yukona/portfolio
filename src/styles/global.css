@@ -120,7 +120,7 @@ button { cursor: pointer; border: none; background: none; padding: 0; }
 /* ── Word-by-word scroll reveal ──────────────────────────────────────────── */
 .word-token {
   display: inline;
-  opacity: 0.15;
+  opacity: 0;
   will-change: opacity;
 }
 

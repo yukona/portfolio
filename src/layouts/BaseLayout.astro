@@ -181,7 +181,7 @@ const ogImage = new URL(image, Astro.site ?? 'https://krisburger.com');
         document.querySelectorAll<HTMLElement>('.word-token').forEach((word) => {
           const center = word.getBoundingClientRect().top + word.offsetHeight / 2;
           const progress = Math.max(0, Math.min(1, (fadeStart - center) / (fadeStart - fadeEnd)));
-          word.style.opacity = String(0.15 + progress * 0.85);
+          word.style.opacity = String(progress);
         });
       }
 
