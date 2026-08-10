@@ -110,13 +110,16 @@ const initial = logos.slice(0, Math.min(logos.length, SLOTS));
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.5;
-    filter: grayscale(1);
-    transition: opacity 0.2s ease, filter 0.2s ease;
     transform-origin: center center;
     backface-visibility: hidden;
   }
-  .logo-cell:hover .logo-inner {
+  /* Apply greyscale/fade to images only so text fallbacks keep full contrast */
+  .logo-inner img {
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+  .logo-cell:hover .logo-inner img {
     opacity: 1;
     filter: grayscale(0);
   }
