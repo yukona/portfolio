@@ -16,6 +16,7 @@
       <p class="modal-subhead">I'm open to select freelance and advisory projects. Reach out and let's figure out if we're a good fit.</p>
 
       <form
+        id="contact-form"
         class="modal-form"
         name="contact-modal"
         method="POST"
@@ -43,8 +44,17 @@
           <textarea id="modal-message" name="message" rows="5" placeholder="Tell me about your project..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Send message</button>
+        <button id="contact-submit" type="submit" class="btn btn-primary">Send message</button>
+        <p id="contact-error" class="form-error" aria-live="polite"></p>
       </form>
+
+      <div id="contact-success" class="form-success" hidden>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/>
+        </svg>
+        <p class="success-heading">Message sent!</p>
+        <p class="success-sub">Thanks for reaching out — I'll get back to you soon.</p>
+      </div>
 
       <div class="modal-links">
         <a href="mailto:kris@krisburger.com" class="modal-link">
@@ -211,11 +221,48 @@
   .modal-link:hover { color: var(--color-text); }
 
   .hidden { display: none !important; }
+
+  .form-error {
+    font-size: 14px;
+    color: #C62828;
+    min-height: 20px;
+    margin: 0;
+  }
+
+  .form-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    padding: 48px 0 24px;
+    color: var(--color-text-muted);
+  }
+  .form-success svg { color: var(--color-text); }
+  .success-heading {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .success-sub {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
 </style>
 
 <script>
-  const overlay = document.getElementById('contact-modal-overlay');
-  const closeBtn = document.getElementById('contact-modal-close');
+  const overlay   = document.getElementById('contact-modal-overlay');
+  const closeBtn  = document.getElementById('contact-modal-close');
+  const form      = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const errorEl   = document.getElementById('contact-error');
+  const successEl = document.getElementById('contact-success');
 
   function openModal() {
     overlay?.classList.add('is-open');
@@ -231,6 +278,35 @@
     overlay?.setAttribute('inert', '');
     document.body.style.overflow = '';
   }
+
+  // Handle form submission via fetch so the page doesn't navigate away
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!submitBtn) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    if (errorEl) errorEl.textContent = '';
+
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form) as any).toString(),
+      });
+
+      if (res.ok) {
+        form.hidden = true;
+        if (successEl) successEl.hidden = false;
+      } else {
+        throw new Error('Server error');
+      }
+    } catch {
+      if (errorEl) errorEl.textContent = 'Something went wrong — please try emailing directly.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send message';
+    }
+  });
 
   // Open on any element with data-contact-trigger
   document.querySelectorAll('[data-contact-trigger]').forEach((el) => {
